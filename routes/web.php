@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Auth\Events\Registered;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,3 +54,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return redirect()->route('user.dashboard'); // or admin.dashboard based on your logic
     })->name('dashboard');
 });
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
