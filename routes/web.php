@@ -1,12 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AdminDashboardController;
-use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Controllers\Admin\TraderController;
 use App\Http\Controllers\Admin\TradeLogController;
+use App\Http\Controllers\Admin\AdminUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,13 +38,19 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
 
     // Admin trader management
-Route::prefix('traders')->group(function () {
+    Route::prefix('traders')->group(function () {
     Route::get('/', [TraderController::class, 'index'])->name('admin.traders.index');
     Route::get('/create', [TraderController::class, 'create'])->name('admin.traders.create');
     Route::post('/', [TraderController::class, 'store'])->name('admin.traders.store');
     Route::get('/{id}/edit', [TraderController::class, 'edit'])->name('admin.traders.edit');
     Route::patch('/{id}', [TraderController::class, 'update'])->name('admin.traders.update');
     Route::delete('/{id}', [TraderController::class, 'destroy'])->name('admin.traders.destroy');
+
+    // Admin user management routes
+    Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    Route::get('/users/{user}/edit-role', [AdminUserController::class, 'editRole'])->name('admin.users.editRole');
+    Route::post('/users/{user}/update-role', [AdminUserController::class, 'updateRole'])->name('admin.users.updateRole');
+
 });
 
 // Admin trade logs
