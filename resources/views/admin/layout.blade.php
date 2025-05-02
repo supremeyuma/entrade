@@ -10,7 +10,8 @@
     <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
         <nav class="mb-6">
             <a href="{{ route('admin.dashboard') }}" class="text-blue-600 hover:underline">Dashboard</a> |
-            <a href="{{ route('admin.users.index') }}" class="text-blue-600 hover:underline">Manage Users</a>
+            <a href="{{ route('admin.users.index') }}" class="text-blue-600 hover:underline">Manage User Roles</a>
+            <a href="{{ route('admin.profile.edit') }}" class="text-gray-900 hover:text-gray-700">Profile</a>
         </nav>
 
         @yield('content')

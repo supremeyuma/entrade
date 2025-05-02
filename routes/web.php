@@ -8,6 +8,7 @@ use Illuminate\Auth\Events\Registered;
 use App\Http\Controllers\Admin\TraderController;
 use App\Http\Controllers\Admin\TradeLogController;
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\AdminProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,10 +33,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     // Add more admin routes here
     
-    // Admin profile routes (optional - if you want to keep profile separate for admin)
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
+    // Admin Profile Routes
+    Route::get('/profile', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::patch('/profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
 
     // Admin trader management
     Route::prefix('traders')->group(function () {
