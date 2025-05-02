@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
 });
 
 // Admin trade logs
+Route::resource('trade-logs', TradeLogController::class);
 Route::get('trade-logs', [TradeLogController::class, 'index'])->name('admin.trade_logs.index');
 
 });
