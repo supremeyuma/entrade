@@ -53,7 +53,7 @@ Route::get('trade-logs', [TradeLogController::class, 'index'])->name('admin.trad
 
 // User routes
 Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(function () {
-    Route::get('/dashboard', function (){return view('dashboard');})->name('dashboard');
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     // Add more user routes here
     
     // User profile routes
