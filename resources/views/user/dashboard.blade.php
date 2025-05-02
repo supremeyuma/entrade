@@ -1,34 +1,29 @@
 @extends('layouts.user')
 
 @section('content')
-    <h1 class="text-2xl mb-6">Dashboard</h1>
+<div class="container mx-auto px-4">
+    <h1 class="text-2xl font-bold mb-4">Welcome to Your Dashboard</h1>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="p-4 bg-white shadow rounded-xl">
-            <h2 class="text-lg font-semibold">Balance</h2>
-            <p class="mt-2 text-2xl font-bold">${{ number_format($balance, 2) }}</p>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Account Summary -->
+        <div class="bg-white shadow rounded-lg p-4">
+            <h2 class="text-lg font-semibold mb-2">Account Summary</h2>
+            <p>Balance: $0.00</p>
+            <p>Country: {{ Auth::user()->country ?? 'N/A' }}</p>
+            <p>Phone: {{ Auth::user()->phone_number ?? 'N/A' }}</p>
         </div>
 
-        <div class="p-4 bg-white shadow rounded-xl">
-            <h2 class="text-lg font-semibold">Portfolio</h2>
-            <p class="mt-2">Invested: ${{ number_format($portfolioSummary['total_invested'], 2) }}</p>
-            <p>Returns: ${{ number_format($portfolioSummary['total_returns'], 2) }}</p>
-            <p class="font-bold {{ $portfolioSummary['net_profit'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
-                Net Profit: ${{ number_format($portfolioSummary['net_profit'], 2) }}
-            </p>
+        <!-- Copy Trading Section -->
+        <div class="bg-white shadow rounded-lg p-4">
+            <h2 class="text-lg font-semibold mb-2">Your Copy Trading</h2>
+            <p>You are currently not copying any trader.</p>
         </div>
 
-        <div class="p-4 bg-white shadow rounded-xl">
-            <h2 class="text-lg font-semibold">Active Trades</h2>
-            <ul class="mt-2">
-                @foreach ($activeTrades as $trade)
-                    <li class="mb-2">
-                        <span class="font-medium">{{ $trade['trader'] }}</span> - 
-                        <span class="text-sm">{{ $trade['status'] }}</span> 
-                        (<span class="text-green-600">{{ $trade['profit'] }}</span>)
-                    </li>
-                @endforeach
-            </ul>
+        <!-- Latest Trades (Stub) -->
+        <div class="bg-white shadow rounded-lg p-4">
+            <h2 class="text-lg font-semibold mb-2">Latest Trades</h2>
+            <p>No trades yet.</p>
         </div>
     </div>
+</div>
 @endsection
