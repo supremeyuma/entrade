@@ -1,15 +1,17 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Trader;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class TraderController extends Controller
 {
     public function index()
     {
-        return view('admin.traders.index');
+        $traders = Trader::all();
+        return view('admin.traders.index', compact('traders'));
     }
 
     public function create()
@@ -19,21 +21,58 @@ class TraderController extends Controller
 
     public function store(Request $request)
     {
-        // To-do: store logic
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'bio' => 'nullable|string',
+            'performance_metrics' => 'nullable|json',
+            'profile_photo' => 'nullable|image|max:2048',
+        ]);
+
+        $data = $request->only('name', 'bio', 'performance_metrics');
+
+        if ($request->hasFile('profile_photo')) {
+            $data['profile_photo'] = $request->file('profile_photo')->store('traders', 'public');
+        }
+
+        Trader::create($data);
+
+        return redirect()->route('admin.traders.index')->with('success', 'Trader created successfully.');
     }
 
-    public function edit($id)
+    public function edit(Trader $trader)
     {
-        return view('admin.traders.edit', compact('id'));
+        return view('admin.traders.edit', compact('trader'));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, Trader $trader)
     {
-        // To-do: update logic
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'bio' => 'nullable|string',
+            'performance_metrics' => 'nullable|json',
+            'profile_photo' => 'nullable|image|max:2048',
+        ]);
+
+        $data = $request->only('name', 'bio', 'performance_metrics');
+
+        if ($request->hasFile('profile_photo')) {
+            if ($trader->profile_photo) {
+                Storage::disk('public')->delete($trader->profile_photo);
+            }
+            $data['profile_photo'] = $request->file('profile_photo')->store('traders', 'public');
+        }
+
+        $trader->update($data);
+
+        return redirect()->route('admin.traders.index')->with('success', 'Trader updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Trader $trader)
     {
-        // To-do: delete logic
+        if ($trader->profile_photo) {
+            Storage::disk('public')->delete($trader->profile_photo);
+        }
+        $trader->delete();
+        return redirect()->route('admin.traders.index')->with('success', 'Trader deleted successfully.');
     }
 }

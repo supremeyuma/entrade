@@ -37,6 +37,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
     Route::get('/profile', [AdminProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::patch('/profile', [AdminProfileController::class, 'update'])->name('admin.profile.update');
 
+
+    Route::resource('traders', TraderController::class);
     // Admin trader management
     Route::prefix('traders')->group(function () {
     Route::get('/', [TraderController::class, 'index'])->name('admin.traders.index');
