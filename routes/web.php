@@ -5,6 +5,8 @@ use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Auth\Events\Registered;
+use App\Http\Controllers\Admin\TraderController;
+use App\Http\Controllers\Admin\TradeLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,15 +35,29 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->group(fu
     Route::get('/profile', [ProfileController::class, 'edit'])->name('admin.profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('admin.profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('admin.profile.destroy');
+
+    // Admin trader management
+Route::prefix('traders')->group(function () {
+    Route::get('/', [TraderController::class, 'index'])->name('admin.traders.index');
+    Route::get('/create', [TraderController::class, 'create'])->name('admin.traders.create');
+    Route::post('/', [TraderController::class, 'store'])->name('admin.traders.store');
+    Route::get('/{id}/edit', [TraderController::class, 'edit'])->name('admin.traders.edit');
+    Route::patch('/{id}', [TraderController::class, 'update'])->name('admin.traders.update');
+    Route::delete('/{id}', [TraderController::class, 'destroy'])->name('admin.traders.destroy');
+});
+
+// Admin trade logs
+Route::get('trade-logs', [TradeLogController::class, 'index'])->name('admin.trade_logs.index');
+
 });
 
 // User routes
 Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(function () {
-    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
+    Route::get('/dashboard', function (){return view('dashboard');})->name('dashboard');
     // Add more user routes here
     
     // User profile routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
