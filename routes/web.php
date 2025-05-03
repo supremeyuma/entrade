@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TradeLogController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\User\DepositController;
+use App\Http\Controllers\PlisioCallbackController;
 use App\Http\Controllers\Admin\SettingsController;
 
 /*
@@ -77,13 +78,15 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'verified', 'role:user', 'check.deposits'])
-    ->prefix('deposits')
-    ->group(function () {
-        Route::get('/', [DepositController::class, 'index'])->name('deposit.index');
-        Route::get('/create', [DepositController::class, 'create'])->name('deposit.create');
-        Route::post('/store', [DepositController::class, 'store'])->name('deposit.store');
-    });
+Route::middleware(['auth', 'role:user'])->prefix('deposit')->name('user.deposit.')->group(function () {
+    Route::get('/create', [DepositController::class, 'showForm'])->name('create');
+    Route::post('/create', [DepositController::class, 'create'])->name('store');
+    Route::get('/success/{deposit}', fn() => view('user.deposits.success'))->name('success');
+    Route::get('/cancel/{deposit}', fn() => view('user.deposits.cancel'))->name('cancel');
+});
+
+// Webhook route (no auth)
+Route::post('/plisio/callback', [PlisioCallbackController::class, 'handle'])->name('plisio.callback');
 
 
 //Callback route for Deposit
