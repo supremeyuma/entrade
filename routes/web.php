@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\TradeLogController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\User\DepositController;
+use App\Http\Controllers\Admin\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,11 +72,16 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-
-    Route::get('/', [DepositController::class, 'index'])->name('deposit.index');
-    Route::get('/create', [DepositController::class, 'create'])->name('deposit.create');
-    Route::post('/store', [DepositController::class, 'store'])->name('deposit.store');
 });
+
+Route::middleware(['auth', 'verified', 'role:user', 'check.deposits'])
+    ->prefix('deposits')
+    ->group(function () {
+        Route::get('/', [DepositController::class, 'index'])->name('deposit.index');
+        Route::get('/create', [DepositController::class, 'create'])->name('deposit.create');
+        Route::post('/store', [DepositController::class, 'store'])->name('deposit.store');
+    });
+
 
 //Callback route for Deposit
 Route::post('/deposit-callback', [DepositController::class, 'callback'])->name('deposit.callback');
