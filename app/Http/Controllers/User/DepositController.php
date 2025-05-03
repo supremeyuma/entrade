@@ -61,4 +61,12 @@ class DepositController extends Controller
             return back()->with('error', 'Payment failed to initialize. Please try again.');
         }
     }
+
+    public function history()
+        {
+            $user = Auth::user();
+            $deposits = Deposit::where('user_id', $user->id)->orderByDesc('created_at')->get();
+
+            return view('user.deposits.history', compact('deposits'));
+        }
 }

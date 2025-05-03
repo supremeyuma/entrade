@@ -78,11 +78,13 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+//User Deposit Routes
 Route::middleware(['auth', 'role:user'])->prefix('deposit')->name('user.deposit.')->group(function () {
     Route::get('/create', [DepositController::class, 'showForm'])->name('create');
     Route::post('/create', [DepositController::class, 'create'])->name('store');
     Route::get('/success/{deposit}', fn() => view('user.deposits.success'))->name('success');
     Route::get('/cancel/{deposit}', fn() => view('user.deposits.cancel'))->name('cancel');
+    Route::get('/history', [DepositController::class, 'history'])->name('history');
 });
 
 // Webhook route (no auth)
