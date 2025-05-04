@@ -11,6 +11,7 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Database\Eloquent\Model;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -66,5 +67,21 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(Deposit::class);
     }
+
+    public function traderSubscriptions()
+    {
+        return $this->hasMany(UserTraderSubscription::class);
+    }
+
+    public function balances()
+    {
+        return $this->hasOne(Balance::class);
+    }
+
+    public function subscriptions()
+    {
+        return $this->hasMany(UserTraderSubscription::class);
+    }
+
 
 }

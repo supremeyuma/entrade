@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Trader extends Model
+class Balance extends Model
 {
     use HasFactory;
 
-    public function subscriptions()
-    {
-        return $this->hasMany(UserTraderSubscription::class);
-    }
+    protected $fillable = ['main_balance', 'trade_balance'];
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

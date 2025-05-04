@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\User\DepositController;
 use App\Http\Controllers\PlisioCallbackController;
 use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\User\UserTraderSubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,6 +91,26 @@ Route::middleware(['auth', 'role:user'])->prefix('deposit')->name('user.deposit.
 // Webhook route (no auth)
 Route::post('/plisio/callback', [PlisioCallbackController::class, 'handle'])->name('plisio.callback');
 
+// User Trader Subscription routes
+Route::middleware('auth')->group(function () {
+    // ✅ Search traders (GET) — shows search form and results
+    Route::get('/trade/search', [UserTraderSubscriptionController::class, 'searchForm'])->name('user.trade.search');
+
+    // ✅ Show subscribe form for a trader (GET)
+    Route::get('/trade/{trader}/subscribe', [UserTraderSubscriptionController::class, 'showSubscribeForm'])->name('user.trade.showSubscribeForm');
+
+    // ✅ Subscribe to trader (POST)
+    Route::post('/subscribe/{traderId}', [UserTraderSubscriptionController::class, 'subscribe'])->name('user.subscribe');
+
+    // ✅ Unsubscribe (POST)
+    Route::post('/unsubscribe/{subscriptionId}', [UserTraderSubscriptionController::class, 'unsubscribe'])->name('user.unsubscribe');
+
+    // ✅ Update allocation (POST)
+    Route::post('/update-allocation/{subscriptionId}', [UserTraderSubscriptionController::class, 'updateAllocation'])->name('user.updateAllocation');
+
+    // ✅ Transfer funds between balances (POST)
+    Route::post('/transfer-funds', [UserTraderSubscriptionController::class, 'transferFunds'])->name('user.transferFunds');
+});
 
 //Callback route for Deposit
 Route::post('/deposit-callback', [DepositController::class, 'callback'])->name('deposit.callback');
