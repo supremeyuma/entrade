@@ -13,6 +13,7 @@ use App\Http\Controllers\User\DepositController;
 use App\Http\Controllers\PlisioCallbackController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\User\UserTraderSubscriptionController;
+use App\Http\Controllers\Admin\TradeOutcomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -56,6 +57,11 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}/edit-role', [AdminUserController::class, 'editRole'])->name('users.editRole');
     Route::post('/users/{user}/update-role', [AdminUserController::class, 'updateRole'])->name('users.updateRole');
+
+    //Admin Trade Outcome Management Routes
+    Route::get('/trade-outcomes', [TradeOutcomeController::class, 'index'])->name('tradeOutcomes.index');
+    Route::get('/trade-outcomes/create', [TradeOutcomeController::class, 'create'])->name('tradeOutcomes.create');
+    Route::post('/trade-outcomes', [TradeOutcomeController::class, 'store'])->name('tradeOutcomes.store');
 
 });
 
