@@ -14,4 +14,14 @@ class Trader extends Model
         return $this->hasMany(UserTraderSubscription::class);
     }
 
+    public function tradeOutcomes()
+    {
+        return $this->hasMany(TradeOutcome::class);
+    }
+
+    public function latestOutcome()
+    {
+        return $this->hasOne(TradeOutcome::class)->latestOfMany();
+    }
+
 }
