@@ -110,6 +110,10 @@ Route::middleware('auth')->group(function () {
 
     // ✅ Transfer funds between balances (POST)
     Route::post('/transfer-funds', [UserTraderSubscriptionController::class, 'transferFunds'])->name('user.transferFunds');
+    
+    //Trader management routes
+    Route::get('/my-traders', [UserTraderSubscriptionController::class, 'myTraders'])->name('user.myTraders');
+
 });
 
 //Callback route for Deposit

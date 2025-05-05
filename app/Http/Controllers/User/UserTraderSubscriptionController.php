@@ -136,4 +136,17 @@ class UserTraderSubscriptionController extends Controller
 
         return view('user.trade.subscribe', compact('trader', 'subscription'));
     }
+
+    public function myTraders()
+    {
+        $user = auth()->user();
+
+        $subscriptions = UserTraderSubscription::with('trader')
+            ->where('user_id', $user->id)
+            ->get();
+
+        return view('user.trade.my_traders', compact('subscriptions', 'user'));
+    }
+
+
 }
