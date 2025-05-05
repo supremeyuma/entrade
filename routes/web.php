@@ -52,6 +52,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/{id}/edit', [TraderController::class, 'edit'])->name('traders.edit');
     Route::patch('/{id}', [TraderController::class, 'update'])->name('traders.update');
     Route::delete('/{id}', [TraderController::class, 'destroy'])->name('traders.destroy');
+    });
 
     // Admin user management routes
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
@@ -62,9 +63,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/trade-outcomes', [TradeOutcomeController::class, 'index'])->name('tradeOutcomes.index');
     Route::get('/trade-outcomes/create', [TradeOutcomeController::class, 'create'])->name('tradeOutcomes.create');
     Route::post('/trade-outcomes', [TradeOutcomeController::class, 'store'])->name('tradeOutcomes.store');
-
-});
-
     // Admin trade logs
     Route::resource('trade-logs', TradeLogController::class);
     Route::get('trade-logs', [TradeLogController::class, 'index'])->name('trade_logs.index');
