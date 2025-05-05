@@ -83,5 +83,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserTraderSubscription::class);
     }
 
+    public function tradeHistories()
+    {
+        return $this->hasMany(TradeHistory::class);
+    }
+
+
 
 }

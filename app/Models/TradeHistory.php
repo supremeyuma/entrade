@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
+class TradeHistory extends Model
+{
+    protected $fillable = [
+        'user_id',
+        'trader_id',
+        'trade_outcome_id',
+        'previous_balance',
+        'change',
+        'new_balance',
+    ];
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function trader(): BelongsTo
+    {
+        return $this->belongsTo(Trader::class);
+    }
+
+    public function tradeOutcome(): BelongsTo
+    {
+        return $this->belongsTo(TradeOutcome::class);
+    }
+}

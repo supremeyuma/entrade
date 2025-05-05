@@ -24,4 +24,10 @@ class Trader extends Model
         return $this->hasOne(TradeOutcome::class)->latestOfMany();
     }
 
+    public function tradeHistories()
+    {
+        return $this->hasMany(TradeHistory::class);
+    }
+
+
 }
