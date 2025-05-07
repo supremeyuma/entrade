@@ -45,7 +45,7 @@ class TradeOutcomeNotification extends Notification
             'trader_name' => $this->tradeOutcome->trader->name,
             'percentage_change' => $this->tradeOutcome->percentage_change,
             'gain_loss' => $this->gainLossAmount,
-            'url' => route('user.tradeOutcome.show', ['id' => $this->tradeOutcome->id]),
+            'url' => route('user.trade.outcome.show', ['id' => $this->tradeOutcome->id]),
         ];
     }
 

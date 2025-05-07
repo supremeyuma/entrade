@@ -15,7 +15,8 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\User\UserTraderSubscriptionController;
 use App\Http\Controllers\Admin\TradeOutcomeController;
 use App\Http\Controllers\User\TradeHistoryController;
-use App\Http\COntrollers\User\NotificationController;
+use App\Http\Controllers\User\NotificationController;
+use App\Http\Controllers\User\UserTradeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +89,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
 
     //Trade Outcome Routes
     Route::get('/trade-outcome/{id}', [UserTradeOutcomeController::class, 'show'])->name('user.tradeOutcome.show');
+    Route::get('/trade-outcomes/{id}', [UserTradeController::class, 'showOutcome'])->name('user.trade.outcome.show');
 
     
     // User profile routes
