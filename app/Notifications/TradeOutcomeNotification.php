@@ -40,11 +40,13 @@ class TradeOutcomeNotification extends Notification
     public function toDatabase($notifiable)
     {
         return [
+            'trade_outcome_id' => $this->tradeOutcome->id,
+            'trader_id' => $this->tradeOutcome->trader_id,
             'trader_name' => $this->tradeOutcome->trader->name,
             'percentage_change' => $this->tradeOutcome->percentage_change,
-            'gain_loss' => $this->gainLoss,
-            'trader_id' => $this->tradeOutcome->trader_id,
-            'trade_outcome_id' => $this->tradeOutcome->id,
+            'gain_loss' => $this->gainLossAmount,
+            'url' => route('user.tradeOutcome.show', ['id' => $this->tradeOutcome->id]),
         ];
     }
+
 }

@@ -81,4 +81,12 @@ class TradeOutcomeController extends Controller
 
         return redirect()->back()->with('success', 'Trade outcome saved and users updated successfully.');
     }
+
+    public function show($id)
+    {
+        $tradeOutcome = TradeOutcome::findOrFail($id);
+
+        return view('user.trade.outcome_show', compact('tradeOutcome'));
+    }
+
 }

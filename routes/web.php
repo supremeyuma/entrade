@@ -82,9 +82,12 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
     Route::get('/trade-history', [TradeHistoryController::class, 'index'])->name('user.tradeHistory');
 
     //User Notifications Routes
-    Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('user.notifications');
-    Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('user.notifications.read');
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('user.notifications');
+    Route::get('/notification/{id}/redirect', [NotificationController::class, 'redirect'])->name('user.notifications.redirect');
 
+
+    //Trade Outcome Routes
+    Route::get('/trade-outcome/{id}', [UserTradeOutcomeController::class, 'show'])->name('user.tradeOutcome.show');
 
     
     // User profile routes

@@ -14,11 +14,12 @@ class NotificationController extends Controller
         return view('user.notifications.index', compact('notifications'));
     }
 
-    public function markAsRead($id)
+    public function redirect($id)
     {
         $notification = auth()->user()->notifications()->findOrFail($id);
         $notification->markAsRead();
 
-        return redirect()->back()->with('success', 'Notification marked as read.');
+        return redirect($notification->data['url']);
     }
+
 }

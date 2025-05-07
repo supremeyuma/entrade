@@ -13,13 +13,10 @@
     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdown" style="width: 300px;">
         @forelse(auth()->user()->unreadNotifications as $notification)
             <li>
-                <a class="dropdown-item" href="#">
-                    <strong>{{ $notification->data['trader_name'] }}</strong>: 
-                    {{ $notification->data['percentage_change'] }}% => 
-                    {{ number_format($notification->data['gain_loss'], 2) }}
-                    <br>
-                    <small>{{ $notification->created_at->diffForHumans() }}</small>
-                </a>
+            <a class="dropdown-item" href="{{ route('user.notifications.redirect', $notification->id) }}">
+                {{ $notification->data['trader_name'] }}'s trade: {{ $notification->data['percentage_change'] }}%
+            </a>
+
             </li>
         @empty
             <li><span class="dropdown-item">No new notifications</span></li>
