@@ -76,7 +76,7 @@ class TradeOutcomeController extends Controller
             ]);
 
             // Optionally send a notification (if implemented)
-            // $user->notify(new TradeOutcomeNotification($tradeOutcome, $gainLoss));
+            $user->notify(new TradeOutcomeNotification($tradeOutcome, $gainLoss));
         }
 
         return redirect()->back()->with('success', 'Trade outcome saved and users updated successfully.');

@@ -14,6 +14,7 @@ use App\Http\Controllers\PlisioCallbackController;
 use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\User\UserTraderSubscriptionController;
 use App\Http\Controllers\Admin\TradeOutcomeController;
+use App\Http\Controllers\User\TradeHistoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(function () {
     Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     // Add more user routes here
+    //Trade History Route
+    Route::get('/trade-history', [TradeHistoryController::class, 'index'])->name('user.tradeHistory');
+
     
     // User profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.show');
