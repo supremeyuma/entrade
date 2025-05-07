@@ -15,6 +15,7 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\User\UserTraderSubscriptionController;
 use App\Http\Controllers\Admin\TradeOutcomeController;
 use App\Http\Controllers\User\TradeHistoryController;
+use App\Http\COntrollers\User\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +80,11 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
     // Add more user routes here
     //Trade History Route
     Route::get('/trade-history', [TradeHistoryController::class, 'index'])->name('user.tradeHistory');
+
+    //User Notifications Routes
+    Route::get('/notifications', [App\Http\Controllers\NotificationController::class, 'index'])->name('user.notifications');
+    Route::post('/notifications/{id}/read', [App\Http\Controllers\NotificationController::class, 'markAsRead'])->name('user.notifications.read');
+
 
     
     // User profile routes
