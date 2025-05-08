@@ -75,4 +75,11 @@ class TraderController extends Controller
         $trader->delete();
         return redirect()->route('admin.traders.index')->with('success', 'Trader deleted successfully.');
     }
+
+    public function subscribers(Trader $trader)
+    {
+        $subscribers = $trader->subscriptions()->with('user')->paginate(20);
+        return view('admin.traders.subscribers', compact('trader', 'subscribers'));
+    }
+
 }

@@ -37,6 +37,12 @@ Route::get('/', function () {
 //Public Trade Leaderboard Route
 Route::get('/leaderboard', [TraderLeaderboardController::class, 'publicLeaderboard'])->name('leaderboard.public');
 
+// Trader profile
+Route::get('/traders/{trader}', [UserTraderController::class, 'show'])->name('trader.profile');
+
+// Trader trades
+Route::get('/traders/{trader}/trades', [UserTraderController::class, 'trades'])->name('trader.trades');
+
 // Public auth routes
 require __DIR__.'/auth.php';
 
@@ -60,6 +66,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::patch('/{id}', [TraderController::class, 'update'])->name('traders.update');
     Route::delete('/{id}', [TraderController::class, 'destroy'])->name('traders.destroy');
     });
+
+    // Admin view trader subscribers
+    Route::get('/traders/{trader}/subscribers', [TraderController::class, 'subscribers'])->name('trader.subscribers');
 
     // Admin user management routes
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');

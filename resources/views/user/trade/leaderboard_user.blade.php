@@ -37,32 +37,65 @@
         </div>
     </form>
 
-    <table class="table table-bordered">
+    <table class="table">
         <thead>
             <tr>
-                <th>Name</th>
+                <th>Trader Name</th>
                 <th>Trader ID</th>
-                <th>ROI (%)</th>
-                <th>Win Rate (%)</th>
+                <th>ROI</th>
+                <th>Win Rate</th>
                 <th>Subscribers</th>
                 <th>Total Trades</th>
-                <th>Avg Return/Trade</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($traders as $trader)
+            @foreach ($traders as $trader)
                 <tr>
-                    <td>{{ $trader->name }}</td>
-                    <td>{{ $trader->trader_id }}</td>
-                    <td>{{ $trader->roi }}</td>
-                    <td>{{ $trader->win_rate }}</td>
-                    <td>{{ $trader->subscribers }}</td>
-                    <td>{{ $trader->total_trades }}</td>
-                    <td>{{ $trader->avg_return_per_trade }}</td>
+                    <td>
+                        <a href="{{ route('trader.profile', $trader->id) }}">
+                            {{ $trader->name }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('trader.profile', $trader->id) }}">
+                            {{ $trader->trader_id }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('user.leaderboard', ['sort' => 'roi']) }}">
+                            {{ $trader->roi }}%
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('user.leaderboard', ['sort' => 'win_rate']) }}">
+                            {{ $trader->win_rate }}%
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('admin.trader.subscribers', $trader->id) }}">
+                            {{ $trader->subscriptions_count }}
+                        </a>
+                    </td>
+                    <td>
+                        <a href="{{ route('trader.trades', $trader->id) }}">
+                            {{ $trader->trades_count }}
+                        </a>
+                    </td>
+                    <td>
+                        @if(!$user->subscriptions->contains('trader_id', $trader->id))
+                            <a href="{{ route('user.subscribe', $trader->id) }}" class="btn btn-primary">
+                                Copy Trader
+                            </a>
+                        @else
+                            <span class="badge bg-success">Subscribed</span>
+                        @endif
+                    </td>
                 </tr>
             @endforeach
         </tbody>
     </table>
+
 
     {{ $traders->links() }}
 

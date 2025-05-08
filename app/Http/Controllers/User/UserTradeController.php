@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TradeOutcome;
+use App\MOdels\Trader;
 
 class UserTradeController extends Controller
 {
@@ -39,6 +40,17 @@ class UserTradeController extends Controller
             'daysSubscribed',
             'recentOutcomes'
         ));
+    }
+
+    public function show(Trader $trader)
+    {
+        return view('traders.profile', compact('trader'));
+    }
+
+    public function trades(Trader $trader)
+    {
+        $trades = $trader->trades()->latest()->paginate(20);
+        return view('traders.trades', compact('trader', 'trades'));
     }
 
 
