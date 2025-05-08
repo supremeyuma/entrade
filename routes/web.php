@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\TradeOutcomeController;
 use App\Http\Controllers\User\TradeHistoryController;
 use App\Http\Controllers\User\NotificationController;
 use App\Http\Controllers\User\UserTradeController;
+use App\Http\Controllers\TraderLeaderboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +33,9 @@ use App\Http\Controllers\User\UserTradeController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+//Public Trade Leaderboard Route
+Route::get('/leaderboard', [TraderLeaderboardController::class, 'publicLeaderboard'])->name('leaderboard.public');
 
 // Public auth routes
 require __DIR__.'/auth.php';
@@ -90,7 +94,9 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
     //Trade Outcome Routes
     Route::get('/trade-outcome/{id}', [UserTradeOutcomeController::class, 'show'])->name('user.tradeOutcome.show');
     Route::get('/trade-outcomes/{id}', [UserTradeController::class, 'showOutcome'])->name('user.trade.outcome.show');
-
+    
+    //Trade Leaderboard Routes
+    Route::get('/leaderboard', [TraderLeaderboardController::class, 'userLeaderboard'])->name('leaderboard.user');
     
     // User profile routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.show');
