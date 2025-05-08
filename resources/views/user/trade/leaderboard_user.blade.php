@@ -100,5 +100,14 @@
     {{ $traders->links() }}
 
     <a href="{{ route('leaderboard.user', array_merge(request()->query(), ['export' => 1])) }}" class="btn btn-success mt-3">Export CSV</a>
+
+    //LINK TO ADD TO TRADER
+    <form method="POST" action="{{ route('traders.addToCompare', $trader->id) }}">
+        @csrf
+        <button type="submit" class="btn btn-sm btn-secondary">Add to Compare</button>
+    </form>
+
+    <a href="{{ route('traders.compare') }}" class="btn btn-info">Compare Now</a>
+
 </div>
 @endsection

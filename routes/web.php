@@ -18,6 +18,7 @@ use App\Http\Controllers\User\TradeHistoryController;
 use App\Http\Controllers\User\NotificationController;
 use App\Http\Controllers\User\UserTradeController;
 use App\Http\Controllers\TraderLeaderboardController;
+use App\Http\Controllers\TraderCompareController;
 
 /*
 |--------------------------------------------------------------------------
@@ -162,6 +163,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
         return redirect()->route('user.dashboard'); // or admin.dashboard based on your logic
     })->name('dashboard');
 });
+
+//Trader Compare routes
+Route::middleware('auth')->prefix('traders')->group(function () {
+    Route::post('/add-to-compare/{traderId}', [TraderCompareController::class, 'addToCompare'])->name('traders.addToCompare');
+    Route::post('/remove-from-compare/{traderId}', [TraderCompareController::class, 'removeFromCompare'])->name('traders.removeFromCompare');
+    Route::get('/compare', [TraderCompareController::class, 'showCompare'])->name('traders.compare');
+});
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
