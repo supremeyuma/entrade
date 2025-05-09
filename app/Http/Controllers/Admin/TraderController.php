@@ -36,6 +36,9 @@ class TraderController extends Controller
 
         Trader::create($data);
 
+        ActivityLogger::log('add_trader', 'Added new trader: ' . $trader->name . ' (ID: ' . $trader->id . ')', auth()->id());
+
+
         return redirect()->route('admin.traders.index')->with('success', 'Trader created successfully.');
     }
 
@@ -63,6 +66,9 @@ class TraderController extends Controller
         }
 
         $trader->update($data);
+
+        ActivityLogger::log('update_trader', 'Updated trader: ' . $trader->name . ' (ID: ' . $trader->id . ')', auth()->id());
+
 
         return redirect()->route('admin.traders.index')->with('success', 'Trader updated successfully.');
     }

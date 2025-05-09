@@ -79,6 +79,9 @@ class TradeOutcomeController extends Controller
             $user->notify(new TradeOutcomeNotification($tradeOutcome, $gainLoss));
         }
 
+        ActivityLogger::log('create_trade_outcome', 'Created trade outcome for trader: ' . $trader->name . ' (ID: ' . $trader->id . ') with outcome: ' . $request->input('outcome_percentage') . '%', auth()->id());
+
+
         return redirect()->back()->with('success', 'Trade outcome saved and users updated successfully.');
     }
 

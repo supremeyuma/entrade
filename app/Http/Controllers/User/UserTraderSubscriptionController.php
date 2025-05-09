@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Balance;
 use Illuminate\Support\Collection;
+use App\Helpers\ActivityLogger;
 
 class UserTraderSubscriptionController extends Controller
 {
@@ -41,6 +42,9 @@ class UserTraderSubscriptionController extends Controller
         $balance->trade_balance += $request->amount;
         $balance->save();
 
+        ActivityLogger::log('subscribe', 'Subscribed to trader: ' . $trader->name . ' (ID: ' . $trader->id . ')', auth()->id());
+
+
         return redirect()->route('user.dashboard')->with('success', 'Successfully subscribed to trader.');
     }
 
@@ -58,6 +62,9 @@ class UserTraderSubscriptionController extends Controller
         // Mark subscription as inactive
         $subscription->status = 'inactive';
         $subscription->save();
+
+        ActivityLogger::log('unsubscribe', 'Unsubscribed from trader: ' . $subscription->trader->name . ' (ID: ' . $subscription->trader->id . ')', auth()->id());
+
 
         return redirect()->route('user.dashboard')->with('success', 'Unsubscribed from trader.');
     }
@@ -80,6 +87,9 @@ class UserTraderSubscriptionController extends Controller
 
         $subscription->allocated_amount = $request->amount;
         $subscription->save();
+
+        ActivityLogger::log('update_allocation', 'Updated allocation for trader: ' . $subscription->trader->name . ' (ID: ' . $subscription->trader->id . ') to ' . $request->input('allocation_amount'), auth()->id());
+
 
         return redirect()->route('user.dashboard')->with('success', 'Subscription amount updated.');
     }
@@ -107,6 +117,9 @@ class UserTraderSubscriptionController extends Controller
         }
 
         $balance->save();
+
+        ActivityLogger::log('transfer_funds', 'Transferred funds: ' . $request->input('amount') . ' from ' . $request->input('from') . ' to ' . $request->input('to'), auth()->id());
+
 
         return redirect()->route('user.dashboard')->with('success', 'Funds transferred successfully.');
     }
