@@ -128,4 +128,14 @@ return [
         ],
     ],
 
+    //Activity Log
+    'activity_log_enabled' => [
+        'login' => true,
+        'logout' => true,
+        'subscription' => true,
+        'unsubscribe' => true,
+        'trade_outcome_entry' => true,
+        // add more types
+    ],
+
 ];

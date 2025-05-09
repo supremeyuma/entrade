@@ -19,6 +19,8 @@ use App\Http\Controllers\User\NotificationController;
 use App\Http\Controllers\User\UserTradeController;
 use App\Http\Controllers\TraderLeaderboardController;
 use App\Http\Controllers\TraderCompareController;
+use App\Http\Controllers\User\UserActivityLogController;
+use App\Http\Controllers\Admin\AdminActivityLogController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +86,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::resource('trade-logs', TradeLogController::class);
     Route::get('trade-logs', [TradeLogController::class, 'index'])->name('trade_logs.index');
 
+    //Activity Log Routes
+    Route::get('/activity-logs', [AdminActivityLogController::class, 'index'])->name('activityLogs');
+
     //Settings routes
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
@@ -112,6 +117,9 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    //Activity Log Routes
+    Route::get('/activity-logs', [UserActivityLogController::class, 'index'])->name('user.activityLogs');
 });
 
 //User Deposit Routes
