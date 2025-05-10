@@ -88,6 +88,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(TradeHistory::class);
     }
 
+    public function getReferralLinkAttribute()
+    {
+        return url('/register?referral_code=' . $this->referral_code);
+    }
+
+
 
 
 }

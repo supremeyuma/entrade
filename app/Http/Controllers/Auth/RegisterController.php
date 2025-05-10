@@ -63,6 +63,41 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        if (SettingsHelper::isReferralEnabled() && request()->filled('referral_code')) {
+            $referrer = User::where('referral_code', request()->input('referral_code'))->first();
+        
+            if ($referrer) {
+                // Save referral
+                Referral::create([
+                    'referrer_id' => $referrer->id,
+                    'referred_id' => $newUser->id, // the new user just registered
+                ]);
+        
+                // Log referral
+                if (SettingsHelper::get('log_referrals', 'true') === 'true') {
+                    ActivityLogger::log('referral_created', 'Referral created by ' . $referrer->name, $referrer->id);
+                }
+        
+                // Apply bonus if enabled
+                if (SettingsHelper::get('referral_bonus_enabled') === 'true') {
+                    $bonusAmount = floatval(SettingsHelper::get('referral_bonus_amount'));
+                    $bonusType = SettingsHelper::get('referral_bonus_type'); // flat or percentage
+                    $bonusTarget = SettingsHelper::get('referral_bonus_credit_to', 'main'); // main or trading
+        
+                    if ($bonusType === 'percentage') {
+                        $bonusAmount = $newUser->initial_deposit * ($bonusAmount / 100);
+                    }
+        
+                    $referrer->increment("{$bonusTarget}_balance", $bonusAmount);
+        
+                    // Log bonus
+                    if (SettingsHelper::get('log_referral_bonus', 'true') === 'true') {
+                        ActivityLogger::log('referral_bonus', "Referral bonus of {$bonusAmount} credited to {$bonusTarget} balance for referral.", $referrer->id);
+                    }
+                }
+            }
+        }
+        
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
