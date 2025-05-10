@@ -98,6 +98,16 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Referral::class, 'referrer_id');
     }
 
+    public function referralCount()
+    {
+        return $this->referralsMade()->count();
+    }
+
+    public function referralBonusTotal()
+    {
+        return $this->referralsMade()->sum('bonus_amount'); // add this column if bonuses are tracked
+    }
+
 
 
 

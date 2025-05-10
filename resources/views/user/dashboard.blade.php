@@ -24,6 +24,16 @@
             <h2 class="text-lg font-semibold mb-2">Latest Trades</h2>
             <p>No trades yet.</p>
         </div>
+
+        <!--Referral Stats-->
+        <div class="bg-white shadow rounded-lg p-4">
+            <h3>Referral Stats</h3>
+            <ul>
+                <li>Total referrals: {{ auth()->user()->referralCount() }}</li>
+                {{-- <li>Total bonus earned: {{ auth()->user()->referralBonusTotal() }}</li> --}}
+            </ul>
+            <a href="{{ route('user.referrals.index') }}">View my referrals</a>
+        </div>
     </div>
 </div>
 @endsection

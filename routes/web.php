@@ -22,6 +22,8 @@ use App\Http\Controllers\TraderCompareController;
 use App\Http\Controllers\User\UserActivityLogController;
 use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\SiteSettingsController;
+use App\Http\Controllers\User\UserReferralController;
+use App\Http\Controllers\Admin\AdminReferralController;
 
 /*
 |--------------------------------------------------------------------------
@@ -83,6 +85,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/trade-outcomes', [TradeOutcomeController::class, 'index'])->name('tradeOutcomes.index');
     Route::get('/trade-outcomes/create', [TradeOutcomeController::class, 'create'])->name('tradeOutcomes.create');
     Route::post('/trade-outcomes', [TradeOutcomeController::class, 'store'])->name('tradeOutcomes.store');
+    
     // Admin trade logs
     Route::resource('trade-logs', TradeLogController::class);
     Route::get('trade-logs', [TradeLogController::class, 'index'])->name('trade_logs.index');
@@ -95,7 +98,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
     Route::get('/site-settings/referral', [SiteSettingsController::class, 'referralSettings'])->name('site_settings.referral');
-    Route::post('/site-settings/referral', [SiteSettingsController::class, 'updateReferralSettings'])->name('site_settings.referral.update');
+    Route::post('/site-settings/referral', [SiteSettingsControlApp\Http\Controllers\ler::class, 'updateReferralSettings'])->name('site_settings.referral.update');
+
+    //Admin Referral Routes
+    Route::get('/referrals', [AdminReferralController::class, 'index'])->name('referrals.index');
 
 });
 
@@ -125,6 +131,10 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
 
     //Activity Log Routes
     Route::get('/activity-logs', [UserActivityLogController::class, 'index'])->name('user.activityLogs');
+    
+    //Referrals Routes
+    Route::get('/referrals', [UserReferralController::class, 'index'])->name('user.referrals.index');
+
 });
 
 //User Deposit Routes
