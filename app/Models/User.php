@@ -93,6 +93,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return url('/register?referral_code=' . $this->referral_code);
     }
 
+    public function referralsMade()
+    {
+        return $this->hasMany(Referral::class, 'referrer_id');
+    }
+
+
 
 
 
