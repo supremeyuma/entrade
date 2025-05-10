@@ -21,6 +21,7 @@ use App\Http\Controllers\TraderLeaderboardController;
 use App\Http\Controllers\TraderCompareController;
 use App\Http\Controllers\User\UserActivityLogController;
 use App\Http\Controllers\Admin\AdminActivityLogController;
+use App\Http\Controllers\Admin\SiteSettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,6 +93,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     //Settings routes
     Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
+
+    Route::get('/site-settings/referral', [SiteSettingsController::class, 'referralSettings'])->name('site_settings.referral');
+    Route::post('/site-settings/referral', [SiteSettingsController::class, 'updateReferralSettings'])->name('site_settings.referral.update');
+
 });
 
 // User routes
