@@ -7,6 +7,10 @@ use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\SiteSetting;
+use App\Helpers\SettingsHelper;
+use App\Models\Referral;
+use App\Helpers\ActivityLogger;
 
 class RegisterController extends Controller
 {
@@ -72,6 +76,38 @@ class RegisterController extends Controller
                     'referrer_id' => $referrer->id,
                     'referred_id' => $newUser->id, // the new user just registered
                 ]);
+
+                //Referral Bonus Payout
+                $payoutMode = SiteSetting::where('key', 'referral_payout_mode')->value('value');
+
+                switch ($payoutMode) {
+                    case 'auto':
+                        $referral->update([
+                            'status' => 'paid',
+                            'bonus_amount' => 10, // example fixed bonus
+                        ]);
+                
+                        $referral->referrer->increment('balance', 10);
+                
+                        // log activity
+                        ActivityLogger::log('referral_bonus_paid', 'Referral bonus automatically paid to user', $referral->referrer_id);
+                        break;
+                
+                    case 'approval':
+                        $referral->update([
+                            'status' => 'pending',
+                            'bonus_amount' => 10, // pre-set amount but pending approval
+                        ]);
+                
+                        ActivityLogger::log('referral_bonus_pending', 'Referral bonus awaiting admin approval', $referral->referrer_id);
+                        break;
+                
+                    case 'manual':
+                        // no automatic bonus action
+                        ActivityLogger::log('referral_bonus_manual', 'Referral bonus requires manual processing', $referral->referrer_id);
+                        break;
+                }
+                
         
                 // Log referral
                 if (SettingsHelper::get('log_referrals', 'true') === 'true') {
@@ -97,7 +133,7 @@ class RegisterController extends Controller
                 }
             }
         }
-        
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],

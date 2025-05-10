@@ -102,6 +102,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 
     //Admin Referral Routes
     Route::get('/referrals', [AdminReferralController::class, 'index'])->name('referrals.index');
+    Route::post('/referrals/{referral}/approve', [AdminReferralController::class, 'approve'])->name('referrals.approve');
 
 });
 
