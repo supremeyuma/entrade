@@ -24,6 +24,8 @@ use App\Http\Controllers\Admin\AdminActivityLogController;
 use App\Http\Controllers\Admin\SiteSettingsController;
 use App\Http\Controllers\User\UserReferralController;
 use App\Http\Controllers\Admin\AdminReferralController;
+use App\Http\Controllers\Admin\ThemeSettingsController;
+use App\Http\Controllers\User\UserReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -98,11 +100,15 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
 
     Route::get('/site-settings/referral', [SiteSettingsController::class, 'referralSettings'])->name('site_settings.referral');
-    Route::post('/site-settings/referral', [SiteSettingsControlApp\Http\Controllers\ler::class, 'updateReferralSettings'])->name('site_settings.referral.update');
+    Route::post('/site-settings/referral', [SiteSettingsController::class, 'updateReferralSettings'])->name('site_settings.referral.update');
 
     //Admin Referral Routes
     Route::get('/referrals', [AdminReferralController::class, 'index'])->name('referrals.index');
     Route::post('/referrals/{referral}/approve', [AdminReferralController::class, 'approve'])->name('referrals.approve');
+
+    //Theme Settings Routes
+    Route::get('/theme-settings', [ThemeSettingController::class, 'index'])->name('theme.settings');
+    Route::post('/theme-settings', [ThemeSettingController::class, 'update'])->name('theme.settings.update');
 
 });
 
@@ -137,8 +143,8 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
     Route::get('/referrals', [UserReferralController::class, 'index'])->name('user.referrals.index');
 
     //User Report Routes
-    Route::get('reports', [\App\Http\Controllers\User\UserReportController::class, 'showReportOptions'])->name('reports.index');
-    Route::post('reports/generate', [\App\Http\Controllers\User\UserReportController::class, 'generateReport'])->name('reports.generate');
+    Route::get('reports', [UserReportController::class, 'showReportOptions'])->name('reports.index');
+    Route::post('reports/generate', [UserReportController::class, 'generateReport'])->name('reports.generate');
 
 });
 
