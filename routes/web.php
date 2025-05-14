@@ -136,6 +136,10 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(func
     //Referrals Routes
     Route::get('/referrals', [UserReferralController::class, 'index'])->name('user.referrals.index');
 
+    //User Report Routes
+    Route::get('reports', [\App\Http\Controllers\User\UserReportController::class, 'showReportOptions'])->name('reports.index');
+    Route::post('reports/generate', [\App\Http\Controllers\User\UserReportController::class, 'generateReport'])->name('reports.generate');
+
 });
 
 //User Deposit Routes
