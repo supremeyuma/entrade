@@ -1,159 +1,130 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Auth\Events\Registered;
-use App\Http\Controllers\Admin\TraderController;
-use App\Http\Controllers\Admin\TradeLogController;
-use App\Http\Controllers\Admin\AdminUserController;
-use App\Http\Controllers\Admin\AdminProfileController;
-use App\Http\Controllers\User\DepositController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\PlisioCallbackController;
-use App\Http\Controllers\Admin\SettingsController;
-use App\Http\Controllers\User\UserTraderSubscriptionController;
-use App\Http\Controllers\Admin\TradeOutcomeController;
-use App\Http\Controllers\User\TradeHistoryController;
-use App\Http\Controllers\User\NotificationController;
-use App\Http\Controllers\User\UserTradeController;
-use App\Http\Controllers\TraderLeaderboardController;
 use App\Http\Controllers\TraderCompareController;
-use App\Http\Controllers\User\UserActivityLogController;
-use App\Http\Controllers\Admin\AdminActivityLogController;
-use App\Http\Controllers\Admin\SiteSettingsController;
+use App\Http\Controllers\TraderLeaderboardController;
+use App\Http\Controllers\User\UserDashboardController;
+use App\Http\Controllers\User\UserTradeController;
+use App\Http\Controllers\User\UserReportController;
 use App\Http\Controllers\User\UserReferralController;
+use App\Http\Controllers\User\UserActivityLogController;
+use App\Http\Controllers\User\NotificationController;
+use App\Http\Controllers\User\DepositController;
+use App\Http\Controllers\User\TradeHistoryController;
+use App\Http\Controllers\User\UserTraderSubscriptionController;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminProfileController;
+use App\Http\Controllers\Admin\TraderController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\TradeLogController;
+use App\Http\Controllers\Admin\TradeOutcomeController;
+use App\Http\Controllers\Admin\AdminActivityLogController;
+use App\Http\Controllers\Admin\SettingsController;
+use App\Http\Controllers\Admin\SiteSettingsController;
 use App\Http\Controllers\Admin\AdminReferralController;
 use App\Http\Controllers\Admin\ThemeSettingsController;
-use App\Http\Controllers\User\UserReportController;
-use App\Http\Controllers\ThemeController;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
+// Public Routes
+Route::view('/', 'welcome');
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-// Toggle Theme ROute
+// Theme Toggle
 Route::post('/toggle-theme', [ThemeController::class, 'toggle'])->name('toggle.theme');
 
-
-//Public Trade Leaderboard Route
+// Public Leaderboard & Trader Profile
 Route::get('/leaderboard', [TraderLeaderboardController::class, 'publicLeaderboard'])->name('leaderboard.public');
+Route::get('/traders/{trader}', [UserTradeController::class, 'profile'])->name('trader.profile');
+Route::get('/traders/{trader}/trades', [UserTradeController::class, 'trades'])->name('trader.trades');
 
-// Trader profile
-Route::get('/traders/{trader}', [UserTraderController::class, 'show'])->name('trader.profile');
+// Auth Routes
+require __DIR__ . '/auth.php';
 
-// Trader trades
-Route::get('/traders/{trader}/trades', [UserTraderController::class, 'trades'])->name('trader.trades');
-
-// Public auth routes
-require __DIR__.'/auth.php';
-
-// Admin routes
+// ------------------------
+// Admin Routes
+// ------------------------
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-    // Add more admin routes here
-    
-    // Admin Profile Routes
+
+    // Profile
     Route::get('/profile', [AdminProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [AdminProfileController::class, 'update'])->name('profile.update');
 
-
+    // Trader Management
     Route::resource('traders', TraderController::class);
-    // Admin trader management
-    Route::prefix('traders')->group(function () {
-    Route::get('/', [TraderController::class, 'index'])->name('traders.index');
-    Route::get('/create', [TraderController::class, 'create'])->name('traders.create');
-    Route::post('/', [TraderController::class, 'store'])->name('traders.store');
-    Route::get('/{id}/edit', [TraderController::class, 'edit'])->name('traders.edit');
-    Route::patch('/{id}', [TraderController::class, 'update'])->name('traders.update');
-    Route::delete('/{id}', [TraderController::class, 'destroy'])->name('traders.destroy');
-    });
+    Route::get('traders/{trader}/subscribers', [TraderController::class, 'subscribers'])->name('trader.subscribers');
 
-    // Admin view trader subscribers
-    Route::get('/traders/{trader}/subscribers', [TraderController::class, 'subscribers'])->name('trader.subscribers');
+    // Users
+    Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('users/{user}/edit-role', [AdminUserController::class, 'editRole'])->name('users.editRole');
+    Route::post('users/{user}/update-role', [AdminUserController::class, 'updateRole'])->name('users.updateRole');
 
-    // Admin user management routes
-    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
-    Route::get('/users/{user}/edit-role', [AdminUserController::class, 'editRole'])->name('users.editRole');
-    Route::post('/users/{user}/update-role', [AdminUserController::class, 'updateRole'])->name('users.updateRole');
+    // Trade Outcomes
+    Route::resource('trade-outcomes', TradeOutcomeController::class)->only(['index', 'create', 'store']);
 
-    //Admin Trade Outcome Management Routes
-    Route::get('/trade-outcomes', [TradeOutcomeController::class, 'index'])->name('tradeOutcomes.index');
-    Route::get('/trade-outcomes/create', [TradeOutcomeController::class, 'create'])->name('tradeOutcomes.create');
-    Route::post('/trade-outcomes', [TradeOutcomeController::class, 'store'])->name('tradeOutcomes.store');
-    
-    // Admin trade logs
-    Route::resource('trade-logs', TradeLogController::class);
-    Route::get('trade-logs', [TradeLogController::class, 'index'])->name('trade_logs.index');
+    // Trade Logs
+    Route::resource('trade-logs', TradeLogController::class)->only(['index', 'store', 'create', 'show']);
 
-    //Activity Log Routes
-    Route::get('/activity-logs', [AdminActivityLogController::class, 'index'])->name('activityLogs');
+    // Activity Logs
+    Route::get('activity-logs', [AdminActivityLogController::class, 'index'])->name('activityLogs');
 
-    //Settings routes
-    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
-    Route::post('/settings', [SettingsController::class, 'update'])->name('settings.update');
+    // Settings
+    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
 
-    Route::get('/site-settings/referral', [SiteSettingsController::class, 'referralSettings'])->name('site_settings.referral');
-    Route::post('/site-settings/referral', [SiteSettingsController::class, 'updateReferralSettings'])->name('site_settings.referral.update');
+    Route::get('site-settings/referral', [SiteSettingsController::class, 'referralSettings'])->name('site_settings.referral');
+    Route::post('site-settings/referral', [SiteSettingsController::class, 'updateReferralSettings'])->name('site_settings.referral.update');
 
-    //Admin Referral Routes
-    Route::get('/referrals', [AdminReferralController::class, 'index'])->name('referrals.index');
-    Route::post('/referrals/{referral}/approve', [AdminReferralController::class, 'approve'])->name('referrals.approve');
+    // Referrals
+    Route::get('referrals', [AdminReferralController::class, 'index'])->name('referrals.index');
+    Route::post('referrals/{referral}/approve', [AdminReferralController::class, 'approve'])->name('referrals.approve');
 
-    //Theme Settings Routes
-    Route::get('/theme-settings', [ThemeSettingController::class, 'index'])->name('theme.settings');
-    Route::post('/theme-settings', [ThemeSettingController::class, 'update'])->name('theme.settings.update');
-
+    // Theme Settings
+    Route::get('theme-settings', [ThemeSettingsController::class, 'index'])->name('theme.settings');
+    Route::post('theme-settings', [ThemeSettingsController::class, 'update'])->name('theme.settings.update');
 });
 
-// User routes
-Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->group(function () {
-    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
-    // Add more user routes here
-    //Trade History Route
-    Route::get('/trade-history', [TradeHistoryController::class, 'index'])->name('user.tradeHistory');
+// ------------------------
+// User Routes
+// ------------------------
+Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user.')->group(function () {
+    Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
 
-    //User Notifications Routes
-    Route::get('/notifications', [NotificationController::class, 'index'])->name('user.notifications');
-    Route::get('/notification/{id}/redirect', [NotificationController::class, 'redirect'])->name('user.notifications.redirect');
+    // Trade
+    Route::get('/trade-history', [TradeHistoryController::class, 'index'])->name('tradeHistory');
+    Route::get('/trade-outcomes/{id}', [UserTradeController::class, 'showOutcome'])->name('trade.outcome.show');
 
+    // Leaderboard
+    Route::get('/leaderboard', [UserTradeController::class, 'leaderboard'])->name('leaderboard');
 
-    //Trade Outcome Routes
-    Route::get('/trade-outcome/{id}', [UserTradeOutcomeController::class, 'show'])->name('user.tradeOutcome.show');
-    Route::get('/trade-outcomes/{id}', [UserTradeController::class, 'showOutcome'])->name('user.trade.outcome.show');
-    
-    //Trade Leaderboard Routes
-    Route::get('/leaderboard', [TraderLeaderboardController::class, 'userLeaderboard'])->name('leaderboard.user');
-    
-    // User profile routes
+    // Trader Compare
+    Route::get('/traders/compare', [UserTradeController::class, 'compare'])->name('traders.compare');
+    Route::post('/trader/{trader}/add-to-compare', [UserTradeController::class, 'addToCompare'])->name('traders.addToCompare');
+
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    //Activity Log Routes
-    Route::get('/activity-logs', [UserActivityLogController::class, 'index'])->name('user.activityLogs');
-    
-    //Referrals Routes
-    Route::get('/referrals', [UserReferralController::class, 'index'])->name('user.referrals.index');
+    // Notifications
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications');
+    Route::get('/notification/{id}/redirect', [NotificationController::class, 'redirect'])->name('notifications.redirect');
 
-    //User Report Routes
+    // Activity Logs
+    Route::get('/activity-logs', [UserActivityLogController::class, 'index'])->name('activityLogs');
+
+    // Referrals
+    Route::get('/referrals', [UserReferralController::class, 'index'])->name('referrals.index');
+
+    // Reports
     Route::get('reports', [UserReportController::class, 'showReportOptions'])->name('reports.index');
     Route::post('reports/generate', [UserReportController::class, 'generateReport'])->name('reports.generate');
-
 });
 
-//User Deposit Routes
+// ------------------------
+// Deposits
+// ------------------------
 Route::middleware(['auth', 'role:user'])->prefix('deposit')->name('user.deposit.')->group(function () {
     Route::get('/create', [DepositController::class, 'showForm'])->name('create');
     Route::post('/create', [DepositController::class, 'create'])->name('store');
@@ -162,54 +133,43 @@ Route::middleware(['auth', 'role:user'])->prefix('deposit')->name('user.deposit.
     Route::get('/history', [DepositController::class, 'history'])->name('history');
 });
 
-// Webhook route (no auth)
+// ------------------------
+// Trader Subscription (Authenticated)
+// ------------------------
+Route::middleware('auth')->group(function () {
+    Route::get('/trade/search', [UserTraderSubscriptionController::class, 'searchForm'])->name('user.trade.search');
+    Route::get('/trade/{trader}/subscribe', [UserTraderSubscriptionController::class, 'showSubscribeForm'])->name('user.trade.showSubscribeForm');
+    Route::post('/subscribe/{traderId}', [UserTraderSubscriptionController::class, 'subscribe'])->name('user.subscribe');
+    Route::post('/unsubscribe/{subscriptionId}', [UserTraderSubscriptionController::class, 'unsubscribe'])->name('user.unsubscribe');
+    Route::post('/update-allocation/{subscriptionId}', [UserTraderSubscriptionController::class, 'updateAllocation'])->name('user.updateAllocation');
+    Route::post('/transfer-funds', [UserTraderSubscriptionController::class, 'transferFunds'])->name('user.transferFunds');
+    Route::get('/my-traders', [UserTraderSubscriptionController::class, 'myTraders'])->name('user.myTraders');
+});
+
+// ------------------------
+// Trader Comparison (Authenticated)
+// ------------------------
+Route::middleware('auth')->prefix('traders')->name('traders.')->group(function () {
+    Route::post('/add-to-compare/{traderId}', [TraderCompareController::class, 'addToCompare'])->name('addToCompare');
+    Route::post('/remove-from-compare/{traderId}', [TraderCompareController::class, 'removeFromCompare'])->name('removeFromCompare');
+    Route::get('/compare', [TraderCompareController::class, 'showCompare'])->name('compare');
+});
+
+// ------------------------
+// Miscellaneous
+// ------------------------
+
+// Plisio Webhook
 Route::post('/plisio/callback', [PlisioCallbackController::class, 'handle'])->name('plisio.callback');
 
-// User Trader Subscription routes
-Route::middleware('auth')->group(function () {
-    // ✅ Search traders (GET) — shows search form and results
-    Route::get('/trade/search', [UserTraderSubscriptionController::class, 'searchForm'])->name('user.trade.search');
-
-    // ✅ Show subscribe form for a trader (GET)
-    Route::get('/trade/{trader}/subscribe', [UserTraderSubscriptionController::class, 'showSubscribeForm'])->name('user.trade.showSubscribeForm');
-
-    // ✅ Subscribe to trader (POST)
-    Route::post('/subscribe/{traderId}', [UserTraderSubscriptionController::class, 'subscribe'])->name('user.subscribe');
-
-    // ✅ Unsubscribe (POST)
-    Route::post('/unsubscribe/{subscriptionId}', [UserTraderSubscriptionController::class, 'unsubscribe'])->name('user.unsubscribe');
-
-    // ✅ Update allocation (POST)
-    Route::post('/update-allocation/{subscriptionId}', [UserTraderSubscriptionController::class, 'updateAllocation'])->name('user.updateAllocation');
-
-    // ✅ Transfer funds between balances (POST)
-    Route::post('/transfer-funds', [UserTraderSubscriptionController::class, 'transferFunds'])->name('user.transferFunds');
-    
-    //Trader management routes
-    Route::get('/my-traders', [UserTraderSubscriptionController::class, 'myTraders'])->name('user.myTraders');
-
-});
-
-//Callback route for Deposit
+// Deposit Callback
 Route::post('/deposit-callback', [DepositController::class, 'callback'])->name('deposit.callback');
 
+// Authenticated fallback
+Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
+    return redirect()->route('user.dashboard');
+})->name('dashboard');
 
-// Fallback for authenticated users without specific role (optional)
-Route::middleware(['auth', 'verified'])->group(function () {
-    // This can serve as a catch-all for authenticated users who don't have a specific role
-    // Or you can redirect them to a role assignment page
-    Route::get('/dashboard', function () {
-        return redirect()->route('user.dashboard'); // or admin.dashboard based on your logic
-    })->name('dashboard');
-});
-
-//Trader Compare routes
-Route::middleware('auth')->prefix('traders')->group(function () {
-    Route::post('/add-to-compare/{traderId}', [TraderCompareController::class, 'addToCompare'])->name('traders.addToCompare');
-    Route::post('/remove-from-compare/{traderId}', [TraderCompareController::class, 'removeFromCompare'])->name('traders.removeFromCompare');
-    Route::get('/compare', [TraderCompareController::class, 'showCompare'])->name('traders.compare');
-});
-
+// Laravel auth fallback
 Auth::routes();
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
