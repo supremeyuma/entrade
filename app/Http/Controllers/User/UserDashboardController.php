@@ -4,6 +4,8 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Referral;
+use App\Models\TradeOutcome;
 
 class UserDashboardController extends Controller
 {
@@ -11,18 +13,38 @@ class UserDashboardController extends Controller
     {
         $user = Auth::user();
 
-        // Placeholder data - replace with real logic later
-        $balance = 1000; // Assume $1000 balance for now
-        $activeTrades = [
-            ['trader' => 'Trader Alpha', 'status' => 'Active', 'profit' => '5%'],
-            ['trader' => 'Trader Beta', 'status' => 'Paused', 'profit' => '2%'],
-        ];
+        $balance = $user->wallet_balance;
+
+        $referrals = Referral::where('referrer_id', $user->id)->get();
+
+        $activeTrades = TradeOutcome::with('trader')
+            ->whereIn('trader_id', $user->copiedTraders()->pluck('trader_id'))
+            ->latest()->take(3)
+            ->get();
+
+        $recentTrades = TradeOutcome::with('trader')
+            ->whereIn('trader_id', $user->copiedTraders()->pluck('trader_id'))
+            ->latest()->take(5)
+            ->get();
+
+        // Calculate portfolio stats
+        $totalReturns = $user->tradeOutcomes()->sum('pnl');
+        $totalInvested = $user->copiedTraders()->sum('amount');
+        $netProfit = $totalReturns;
+
         $portfolioSummary = [
-            'total_invested' => 2000,
-            'total_returns' => 2200,
-            'net_profit' => 200,
+            'total_invested' => $totalInvested,
+            'total_returns' => $totalReturns,
+            'net_profit' => $netProfit,
         ];
 
-        return view('user.dashboard', compact('user', 'balance', 'activeTrades', 'portfolioSummary'));
+        return view('user.dashboard', compact(
+            'user',
+            'balance',
+            'referrals',
+            'activeTrades',
+            'recentTrades',
+            'portfolioSummary'
+        ));
     }
 }
