@@ -26,6 +26,7 @@ use App\Http\Controllers\User\UserReferralController;
 use App\Http\Controllers\Admin\AdminReferralController;
 use App\Http\Controllers\Admin\ThemeSettingsController;
 use App\Http\Controllers\User\UserReportController;
+use App\Http\Controllers\ThemeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,6 +42,10 @@ use App\Http\Controllers\User\UserReportController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Toggle Theme ROute
+Route::post('/toggle-theme', [ThemeController::class, 'toggle'])->name('toggle.theme');
+
 
 //Public Trade Leaderboard Route
 Route::get('/leaderboard', [TraderLeaderboardController::class, 'publicLeaderboard'])->name('leaderboard.public');
