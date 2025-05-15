@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'Entrade') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    <!--Script for theme change-->
+    <script type="module">
+        import { setTheme } from '/resources/js/theme.js';
+
+        @if (auth()->check())
+            setTheme('{{ auth()->user()->theme_preference ?? 'light' }}');
+        @endif
+    </script>
+    <!--End of script for theme change-->
+
+
+
 </head>
 <body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100">
     <header class="bg-white dark:bg-gray-800 shadow">
