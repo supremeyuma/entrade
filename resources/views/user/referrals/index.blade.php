@@ -1,4 +1,4 @@
-@extends('user.layout')
+@extends('layouts.user')
 
 @section('content')
     <h2>My Referrals</h2>

@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layouts.admin')
 
 @section('content')
     <h1 class="text-2xl font-bold mb-6">Admin Dashboard</h1>
@@ -10,7 +10,7 @@
         </div>
 
         <div class="p-4 bg-white rounded shadow">
-            <h2 class="text-lg font-semibold">Admins</h2>
+            <h2 class="text-lg font-semibold">Adminss</h2>
             <p class="mt-2 text-3xl">{{ $admins }}</p>
         </div>
 
