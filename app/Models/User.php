@@ -12,6 +12,7 @@ use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Trader;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -108,6 +109,25 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->referralsMade()->sum('bonus_amount'); // add this column if bonuses are tracked
     }
 
+
+    public function copiedTraders()
+    {
+        return $this->belongsToMany(Trader::class, 'user_trader_subscriptions', 'user_id', 'trader_id')
+                    ->withTimestamps()
+                    ->withPivot(['amount_allocated', 'status']);
+    }
+
+    public function tradeOutcomes()
+    {
+        return $this->hasManyThrough(
+            TradeOutcome::class,    // Final model
+            Trader::class,          // Intermediate model
+            'id',                   // Foreign key on Trader: Trader.id
+            'trader_id',            // Foreign key on TradeOutcome: TradeOutcome.trader_id
+            'id',                   // Local key on User: User.id
+            'id'                    // Local key on Trader: Trader.id (customize if needed)
+        )->whereIn('trader_id', $this->copiedTraders()->pluck('traders.id'));
+    }
 
 
 

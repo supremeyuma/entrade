@@ -52,7 +52,7 @@
             </a>
         @endif
 
-        <a href="{{ route('profile.show') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
+        <a href="{{ route('user.profile.show') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
             Profile
         </a>
         <form method="POST" action="{{ route('logout') }}">
