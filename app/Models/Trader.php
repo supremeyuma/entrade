@@ -4,6 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Trade;
+use App\Models\UserTraderSubscription;
+use App\Models\TradeOutcome;
+use App\Models\User;
+use App\Models\TradeHistory;
 
 class Trader extends Model
 {

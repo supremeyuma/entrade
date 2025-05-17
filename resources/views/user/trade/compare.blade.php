@@ -6,7 +6,7 @@
 
     @if($traders->isEmpty())
         <p>No traders selected for comparison.</p>
-        <a href="{{ route('leaderboard.user') }}" class="btn btn-primary mt-4">Back to Leaderboard</a>
+        <a href="{{ route('user.leaderboard') }}" class="btn btn-primary mt-4">Back to Leaderboard</a>
     @else
         <div class="overflow-x-auto">
             <table class="table w-full border-collapse border border-gray-300">
