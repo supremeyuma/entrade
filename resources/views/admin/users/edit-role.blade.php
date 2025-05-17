@@ -1,4 +1,4 @@
-@extends('admin.layout')
+@extends('layouts.admin')
 
 @section('content')
     <h1 class="text-xl font-bold mb-4">Edit Role for {{ $user->name }}</h1>

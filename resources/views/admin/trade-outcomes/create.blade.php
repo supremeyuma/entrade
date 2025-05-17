@@ -4,7 +4,7 @@
 <div class="container">
     <h1 class="mb-4">Add Trade Outcome</h1>
 
-    <form action="{{ route('admin.tradeOutcomes.store') }}" method="POST">
+    <form action="{{ route('admin.trade-outcomes.store') }}" method="POST">
         @csrf
 
         <div class="form-group mb-3">

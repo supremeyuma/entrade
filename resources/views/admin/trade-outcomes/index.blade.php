@@ -23,7 +23,7 @@
         <button class="btn btn-primary mt-2">Filter</button>
     </form>
 
-    <a href="{{ route('admin.tradeOutcomes.create') }}" class="btn btn-success mb-3">Add New Trade Outcome</a>
+    <a href="{{ route('admin.trade-outcomes.create') }}" class="btn btn-success mb-3">Add New Trade Outcome</a>
 
     <table class="table table-bordered">
         <thead>

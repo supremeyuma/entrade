@@ -12,13 +12,13 @@ class TradeLogController extends Controller
     public function index()
     {
         $tradeLogs = TradeLog::with('trader')->latest()->get();
-        return view('admin.trade_logs.index', compact('tradeLogs'));
+        return view('admin.trade-logs.index', compact('tradeLogs'));
     }
 
     public function create()
     {
         $traders = Trader::all();
-        return view('admin.trade_logs.create', compact('traders'));
+        return view('admin.trade-logs.create', compact('traders'));
     }
 
     public function store(Request $request)
@@ -39,7 +39,7 @@ class TradeLogController extends Controller
     public function edit(TradeLog $tradeLog)
     {
         $traders = Trader::all();
-        return view('admin.trade_logs.edit', compact('tradeLog', 'traders'));
+        return view('admin.trade-logs.edit', compact('tradeLog', 'traders'));
     }
 
     public function update(Request $request, TradeLog $tradeLog)
