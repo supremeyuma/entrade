@@ -28,15 +28,18 @@ use App\Http\Controllers\Admin\AdminReferralController;
 use App\Http\Controllers\Admin\ThemeSettingsController;
 
 // Public Routes
-Route::view('/', 'welcome');
-
 // Theme Toggle
 Route::post('/toggle-theme', [ThemeController::class, 'toggle'])->name('toggle.theme');
 
+Route::view('/', 'guests.home')->name('home');
+Route::view('/about', 'guests.about')->name('about');
+Route::view('/faq', 'guests.faq')->name('faq');
+
 // Public Leaderboard & Trader Profile
 Route::get('/leaderboard', [TraderLeaderboardController::class, 'publicLeaderboard'])->name('leaderboard.public');
-Route::get('/traders/{trader}', [UserTradeController::class, 'profile'])->name('trader.profile');
-Route::get('/traders/{trader}/trades', [UserTradeController::class, 'trades'])->name('trader.trades');
+Route::get('/traders/{trader}', [UserTradeController::class, 'profile'])->name('guests.trader-profile');
+Route::get('/traders/{trader}/trades', [UserTradeController::class, 'trades'])->name('guests.trader-trades');
+
 
 // Auth Routes
 require __DIR__ . '/auth.php';

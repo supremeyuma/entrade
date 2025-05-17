@@ -14,7 +14,7 @@ class TraderLeaderboardController extends Controller
             ->limit(5)
             ->get();
 
-        return view('user.trade.leaderboard_public', compact('traders'));
+        return view('guests.leaderboard', compact('traders'));
     }
 
     public function userLeaderboard(Request $request)

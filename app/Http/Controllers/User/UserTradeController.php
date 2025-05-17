@@ -52,7 +52,7 @@ class UserTradeController extends Controller
     public function trades(Trader $trader)
     {
         $trades = $trader->trades()->latest()->paginate(20);
-        return view('traders.trades', compact('trader', 'trades'));
+        return view('guests.trader-trades', compact('trader', 'trades'));
     }
 
     // Show user leaderboard page
@@ -111,7 +111,10 @@ class UserTradeController extends Controller
         // Append to trader model for view
         $trader->roiHistory = $roiHistory;
 
-        return view('user.trade.profile', compact('trader', 'user'));
+        //New conline for guests blade
+        $recentTrades = $trader->trades()->latest()->take(5)->get();
+
+        return view('guests.trader-profile', compact('trader', 'user', 'recentTrades'));
     }
 
     // Add trader to comparison list (session-based)
