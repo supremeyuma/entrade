@@ -84,7 +84,9 @@
             @yield('content')
         </main>
     </div>
+    
 </div>
+@include('components.footer.guest-footer')
 
 @livewireScripts
 
@@ -115,5 +117,7 @@
         }
     });
 </script>
+
+        
 </body>
 </html>
