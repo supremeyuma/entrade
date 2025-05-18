@@ -6,6 +6,7 @@ use App\Http\Controllers\ThemeController;
 use App\Http\Controllers\PlisioCallbackController;
 use App\Http\Controllers\TraderCompareController;
 use App\Http\Controllers\TraderLeaderboardController;
+use App\Http\Controllers\GuestPageController;
 use App\Http\Controllers\User\UserDashboardController;
 use App\Http\Controllers\User\UserTradeController;
 use App\Http\Controllers\User\UserReportController;
@@ -27,11 +28,12 @@ use App\Http\Controllers\Admin\SiteSettingsController;
 use App\Http\Controllers\Admin\AdminReferralController;
 use App\Http\Controllers\Admin\ThemeSettingsController;
 
+
 // Public Routes
 // Theme Toggle
 Route::post('/toggle-theme', [ThemeController::class, 'toggle'])->name('toggle.theme');
 
-Route::view('/', 'guests.home')->name('home');
+Route::get('/', [GuestPageController::class, 'home'])->name('home');
 Route::view('/about', 'guests.about')->name('about');
 Route::view('/faq', 'guests.faq')->name('faq');
 
