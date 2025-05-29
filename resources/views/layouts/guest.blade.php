@@ -119,7 +119,11 @@
 
     <!-- Page Content -->
     <main class="flex-1 overflow-y-auto pt-20 md:pt-24 p-6 bg-gray-100 dark:bg-gray-900">
-        @yield('content')
+        @if (isset($slot))
+        {{ $slot }}
+        @else
+            @yield('content')
+        @endif
         @include('components.footer.guest-footer')
     </main>
 </div>
