@@ -45,7 +45,7 @@
                 <div x-show="userMenuOpen" class="ml-4 space-y-1">
                     <a href="{{ route('user.tradeHistory') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade History</a>
                     <a href="{{ route('user.leaderboard') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Leaderboard</a>
-                    <a href="{{ route('trader.profile', ['trader' => 1]) }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">View Trader Profile</a>
+                    <a href="{{ route('guests.trader-profile', ['trader' => 1]) }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">View Trader Profile</a>
                     <a href="{{ route('user.traders.compare') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Compare Traders</a>
                     <a href="{{ route('user.myTraders') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">My Traders</a>
                     <a href="{{ route('user.trade.search') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Search Traders</a>

@@ -47,7 +47,7 @@
             </table>
         </div>
 
-        <a href="{{ route('leaderboard.user') }}" class="btn btn-secondary mt-6">Back to Leaderboard</a>
+        <a href="{{ route('user.leaderboard') }}" class="btn btn-secondary mt-6">Back to Leaderboard</a>
     @endif
 </div>
 @endsection

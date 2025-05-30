@@ -38,23 +38,6 @@
     <!-- Header -->
     <header class="bg-white dark:bg-gray-800 shadow">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <!--<div class="flex items-center space-x-4">
-            <button class=" text-gray-600 dark:text-gray-300" @click="sidebarOpen = !sidebarOpen" aria-label="Toggle sidebar">
-                <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-                    <path d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
-            </button>
-                <a href="{{ url('/home') }}" class="text-xl font-bold">Entrade</a>
-            </div>
-
-            <div>
-                <form action="{{ route('toggle.theme') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="px-4 py-2 rounded bg-indigo-600 text-white">
-                        {{ session('theme') === 'dark' ? 'Light Mode' : 'Dark Mode' }}
-                    </button>
-                </form>
-            </div>-->
             @include('components.topbar')
         </div>
     </header>

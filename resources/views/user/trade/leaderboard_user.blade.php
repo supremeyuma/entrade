@@ -34,7 +34,7 @@
         </div>
         <div>
             <button type="submit" class="btn btn-primary w-full">Filter & Sort</button>
-            <a href="{{ route('leaderboard.user') }}" class="btn btn-secondary w-full mt-2 md:mt-0">Reset</a>
+            <a href="{{ route('user.leaderboard') }}" class="btn btn-secondary w-full mt-2 md:mt-0">Reset</a>
         </div>
     </form>
 
@@ -55,12 +55,12 @@
                 @forelse ($traders as $trader)
                     <tr class="hover:bg-gray-50">
                         <td class="border border-gray-300 px-3 py-2">
-                            <a href="{{ route('user.trader.profile', $trader->id) }}" class="text-blue-600 hover:underline">
+                            <a href="{{ route('guests.trader-profile', $trader->id) }}" class="text-blue-600 hover:underline">
                                 {{ $trader->name }}
                             </a>
                         </td>
                         <td class="border border-gray-300 px-3 py-2">
-                            <a href="{{ route('user.trader.profile', $trader->id) }}" class="text-blue-600 hover:underline">
+                            <a href="{{ route('guests.trader-profile', $trader->id) }}" class="text-blue-600 hover:underline">
                                 {{ $trader->trader_id }}
                             </a>
                         </td>
@@ -96,7 +96,7 @@
         {{ $traders->links() }}
     </div>
 
-    <a href="{{ route('leaderboard.user', array_merge(request()->query(), ['export' => 1])) }}" class="btn btn-success mt-4">
+    <a href="{{ route('user.leaderboard', array_merge(request()->query(), ['export' => 1])) }}" class="btn btn-success mt-4">
         Export CSV
     </a>
 
