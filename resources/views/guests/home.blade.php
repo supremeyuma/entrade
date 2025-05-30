@@ -1,7 +1,4 @@
-@extends('layouts.guest')
-
-@section('content')
-
+<x-layouts.guest>
 <!-- HERO SECTION -->
 <section class="py-12 md:py-16 px-4 md:px-6 bg-white dark:bg-gray-800 transition-colors duration-500">
   <!-- Text Above Video -->
@@ -304,5 +301,4 @@
     }
   });
 </script>
-
-@endsection
+</x-layouts.guest>

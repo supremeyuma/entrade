@@ -1,7 +1,5 @@
-@extends('layouts.admin')
-
-@section('content')
-    <h1 class="text-xl font-bold mb-4">All Users</h1>
+<x-layouts/admin>
+<h1 class="text-xl font-bold mb-4">All Users</h1>
 
     @if(session('success'))
         <div class="p-2 bg-green-200 text-green-800 rounded mb-4">
@@ -39,4 +37,4 @@
     <div class="mt-4">
         {{ $users->links() }}
     </div>
-@endsection
+</x-layouts/admin>

@@ -1,7 +1,5 @@
-@extends('layouts.app')
-
-@section('content')
-    <h1>{{ $trader->name }} ({{ $trader->trader_id }})</h1>
+<x-layouts/app>
+<h1>{{ $trader->name }} ({{ $trader->trader_id }})</h1>
     <p>ROI: {{ $trader->roi }}%</p>
     <p>Win Rate: {{ $trader->win_rate }}%</p>
     <p>Total Subscribers: {{ $trader->subscriptions_count }}</p>
@@ -15,5 +13,4 @@
     </form>
 
     <a href="{{ route('traders.compare') }}" class="btn btn-info">Compare Now</a>
-
-@endsection
+</x-layouts/app>

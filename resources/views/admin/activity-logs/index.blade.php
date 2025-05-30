@@ -1,7 +1,5 @@
-@extends('layouts.admin')
-
-@section('content')
-    <h1>Activity Logs</h1>
+<x-layouts/admin>
+<h1>Activity Logs</h1>
 
     <form method="GET">
         <input type="text" name="user_id" placeholder="User ID" value="{{ request('user_id') }}">
@@ -30,4 +28,4 @@
     </table>
 
     {{ $logs->links() }}
-@endsection
+</x-layouts/admin>

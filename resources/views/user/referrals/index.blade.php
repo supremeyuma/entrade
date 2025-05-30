@@ -1,7 +1,5 @@
-@extends('layouts.user')
-
-@section('content')
-    <h2>My Referrals</h2>
+<x-layouts/user>
+<h2>My Referrals</h2>
     
     <p>Share your referral link: 
         <strong>{{ route('register', ['referral_code' => auth()->id()]) }}</strong>
@@ -29,4 +27,4 @@
     @else
         <p>You have not referred anyone yet.</p>
     @endif
-@endsection
+</x-layouts/user>

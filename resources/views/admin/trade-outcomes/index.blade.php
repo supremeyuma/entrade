@@ -1,6 +1,4 @@
-@extends('layouts.admin')
-
-@section('content')
+<x-layouts/admin>
 <div class="container">
     <h1 class="mb-4">Trade Outcomes</h1>
 
@@ -52,4 +50,4 @@
 
     {{ $tradeOutcomes->withQueryString()->links() }}
 </div>
-@endsection
+</x-layouts/admin>

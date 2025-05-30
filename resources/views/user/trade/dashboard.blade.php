@@ -1,7 +1,5 @@
-@extends('layouts.user')
-
-@section('content')
-    <div class="container">
+<x-layouts/user>
+<div class="container">
         <h1>Your Trader Subscriptions</h1>
 
         @if(session('success'))
@@ -49,4 +47,4 @@
             <button type="submit" class="btn btn-success">Transfer Funds</button>
         </form>
     </div>
-@endsection
+</x-layouts/user>

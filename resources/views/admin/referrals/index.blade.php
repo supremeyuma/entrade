@@ -1,7 +1,5 @@
-@extends('layouts.admin')
-
-@section('content')
-    <h2>All Referrals</h2>
+<x-layouts/admin>
+<h2>All Referrals</h2>
 
     <table>
         <thead>
@@ -39,4 +37,4 @@
 
 
     {{ $referrals->links() }}
-@endsection
+</x-layouts/admin>

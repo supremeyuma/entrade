@@ -1,7 +1,5 @@
-@extends('layouts.guest')
-
-@section('content')
-    <div class="max-w-3xl mx-auto">
+<x-layouts.guest>
+<div class="max-w-3xl mx-auto">
         <h1 class="text-3xl font-bold mb-4">Frequently Asked Questions</h1>
 
         <div class="mb-6">
@@ -25,4 +23,4 @@
             </p>
         </div>
     </div>
-@endsection
+</x-layouts.guest>

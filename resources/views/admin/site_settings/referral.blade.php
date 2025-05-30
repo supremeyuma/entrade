@@ -1,7 +1,5 @@
-@extends('admin.layout')
-
-@section('content')
-    <h1>Referral Settings</h1>
+<x-admin/layout>
+<h1>Referral Settings</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -19,4 +17,4 @@
 
         <button type="submit" class="btn btn-primary">Save Settings</button>
     </form>
-@endsection
+</x-admin/layout>

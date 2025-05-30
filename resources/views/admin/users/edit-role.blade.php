@@ -1,7 +1,5 @@
-@extends('layouts.admin')
-
-@section('content')
-    <h1 class="text-xl font-bold mb-4">Edit Role for {{ $user->name }}</h1>
+<x-layouts/admin>
+<h1 class="text-xl font-bold mb-4">Edit Role for {{ $user->name }}</h1>
 
     <form method="POST" action="{{ route('admin.users.updateRole', $user) }}">
         @csrf
@@ -22,4 +20,4 @@
 
         <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Update Role</button>
     </form>
-@endsection
+</x-layouts/admin>

@@ -1,7 +1,5 @@
-@extends('layouts.guest')
-
-@section('title', 'Trader Leaderboard')
-
+<x-layouts/guest>
+<x-slot name="title', 'Trader Leaderboard">
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Top Traders Leaderboard</h1>
 
@@ -35,4 +33,5 @@
     </table>
   </div>
 @endif
-@endsection
+</x-slot>
+</x-layouts/guest>

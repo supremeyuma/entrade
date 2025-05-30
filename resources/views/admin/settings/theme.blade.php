@@ -1,6 +1,4 @@
-@extends('layouts.admin')
-
-@section('content')
+<x-layouts/admin>
 <div class="container">
     <h2>Theme Settings</h2>
 
@@ -31,4 +29,4 @@
         <button class="btn btn-primary mt-3" type="submit">Save Settings</button>
     </form>
 </div>
-@endsection
+</x-layouts/admin>

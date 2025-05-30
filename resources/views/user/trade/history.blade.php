@@ -1,6 +1,4 @@
-@extends('layouts.user')
-
-@section('content')
+<x-layouts.app>
 <div class="container">
     <h1>Trade History</h1>
 
@@ -35,4 +33,4 @@
         <p>You have no trade history yet.</p>
     @endif
 </div>
-@endsection
+</x-layouts.app>

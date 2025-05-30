@@ -1,6 +1,4 @@
-@extends('layouts.user')
-
-@section('content')
+<x-layouts/user>
 <div class="container mt-4">
     <h4 class="mb-3">Generate Report</h4>
 
@@ -31,4 +29,4 @@
         </div>
     </form>
 </div>
-@endsection
+</x-layouts/user>

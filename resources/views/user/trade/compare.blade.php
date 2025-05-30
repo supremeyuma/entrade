@@ -1,6 +1,4 @@
-@extends('layouts.user')
-
-@section('content')
+<x-layouts.app>
 <div class="container mx-auto px-4 py-6 max-w-6xl">
     <h1 class="text-3xl font-bold mb-6">Trader Comparison</h1>
 
@@ -50,4 +48,4 @@
         <a href="{{ route('user.leaderboard') }}" class="btn btn-secondary mt-6">Back to Leaderboard</a>
     @endif
 </div>
-@endsection
+</x-layouts.app>

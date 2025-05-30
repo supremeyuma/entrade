@@ -1,6 +1,4 @@
-@extends('layouts.user')
-
-@section('content')
+<x-layouts.app>
 <div class="max-w-4xl mx-auto bg-white p-6 rounded shadow">
     <h2 class="text-2xl font-bold mb-4">My Deposits</h2>
 
@@ -31,4 +29,4 @@
         </table>
     @endif
 </div>
-@endsection
+</x-layouts.app>

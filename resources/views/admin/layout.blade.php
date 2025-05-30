@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - @yield('title', 'Dashboard')</title>
+    <title>Admin - {{ $title', 'Dashboard }}</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.0.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -14,7 +14,7 @@
             <a href="{{ route('admin.profile.edit') }}" class="text-gray-900 hover:text-gray-700">Profile</a>
         </nav>
 
-        @yield('content')
+        {{ $content }}
     </div>
 </body>
 </html>

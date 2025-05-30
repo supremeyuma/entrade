@@ -1,0 +1,10 @@
+<x-layouts.app>
+<div class="container mx-auto mt-8">
+        <!--@include('user.partials.navbar')-->
+        <main class="mt-4">
+        
+            {{ $slot }}
+        
+        </main>
+    </div>
+</x-layouts.app>

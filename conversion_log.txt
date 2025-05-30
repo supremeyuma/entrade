@@ -1,0 +1,345 @@
+Blade Conversion Log - 2025-05-30 02:09:22
+
+Starting Blade conversion...
+No layout in navigation-menu.blade.php
+Converted view: navigation-menu.blade.php
+No layout in policy.blade.php
+Converted view: policy.blade.php
+No layout in dashboard.blade.php
+Converted view: dashboard.blade.php
+Detected layout 'layouts.app' in home.blade.php
+Converted section 'content' to slot in home.blade.php
+Converted view: home.blade.php
+No layout in terms.blade.php
+Converted view: terms.blade.php
+No layout in welcome.blade.php
+Converted view: welcome.blade.php
+Detected layout 'layouts.user' in user/dashboard.blade.php
+Converted section 'content' to slot in user/dashboard.blade.php
+Converted view: user/dashboard.blade.php
+Detected layout 'layouts.user' in user/trade/compare.blade.php
+Converted section 'content' to slot in user/trade/compare.blade.php
+Converted view: user/trade/compare.blade.php
+Detected layout 'layouts.app' in user/trade/leaderboard_public.blade.php
+Converted section 'content' to slot in user/trade/leaderboard_public.blade.php
+Converted view: user/trade/leaderboard_public.blade.php
+Detected layout 'layouts.app' in user/trade/subscribe.blade.php
+Converted section 'content' to slot in user/trade/subscribe.blade.php
+Converted view: user/trade/subscribe.blade.php
+Detected layout 'layouts.user' in user/trade/dashboard.blade.php
+Converted section 'content' to slot in user/trade/dashboard.blade.php
+Converted view: user/trade/dashboard.blade.php
+Detected layout 'layouts.user' in user/trade/search.blade.php
+Converted section 'content' to slot in user/trade/search.blade.php
+Converted view: user/trade/search.blade.php
+Detected layout 'layouts.user' in user/trade/history.blade.php
+Converted section 'content' to slot in user/trade/history.blade.php
+Converted view: user/trade/history.blade.php
+Detected layout 'layouts.user' in user/trade/leaderboard_user.blade.php
+Converted section 'content' to slot in user/trade/leaderboard_user.blade.php
+Converted view: user/trade/leaderboard_user.blade.php
+Detected layout 'layouts.user' in user/trade/my_traders.blade.php
+Converted section 'content' to slot in user/trade/my_traders.blade.php
+Converted view: user/trade/my_traders.blade.php
+Detected layout 'layouts.user' in user/trade/profile.blade.php
+Converted section 'content' to slot in user/trade/profile.blade.php
+Converted section 'scripts' to slot in user/trade/profile.blade.php
+Converted view: user/trade/profile.blade.php
+Detected layout 'layouts.user' in user/trade/outcome_show.blade.php
+Converted section 'content' to slot in user/trade/outcome_show.blade.php
+Converted view: user/trade/outcome_show.blade.php
+Detected layout 'layouts.user' in user/deposits/create.blade.php
+Converted section 'content' to slot in user/deposits/create.blade.php
+Converted view: user/deposits/create.blade.php
+Detected layout 'layouts.user' in user/deposits/index.blade.php
+Converted section 'content' to slot in user/deposits/index.blade.php
+Converted view: user/deposits/index.blade.php
+Detected layout 'layouts.user' in user/deposits/history.blade.php
+Converted section 'content' to slot in user/deposits/history.blade.php
+Converted view: user/deposits/history.blade.php
+Detected layout 'layouts.user' in user/reports/index.blade.php
+Converted section 'content' to slot in user/reports/index.blade.php
+Converted view: user/reports/index.blade.php
+No layout in user/reports/pdf.blade.php
+Converted view: user/reports/pdf.blade.php
+No layout in user/partials/navbar.blade.php
+Converted view: user/partials/navbar.blade.php
+Detected layout 'layouts.user' in user/referrals/index.blade.php
+Converted section 'content' to slot in user/referrals/index.blade.php
+Converted view: user/referrals/index.blade.php
+No layout in teams/create.blade.php
+Converted view: teams/create.blade.php
+No layout in teams/create-team-form.blade.php
+Converted view: teams/create-team-form.blade.php
+No layout in teams/show.blade.php
+Converted view: teams/show.blade.php
+No layout in teams/update-team-name-form.blade.php
+Converted view: teams/update-team-name-form.blade.php
+No layout in teams/team-member-manager.blade.php
+Converted view: teams/team-member-manager.blade.php
+No layout in teams/delete-team-form.blade.php
+Converted view: teams/delete-team-form.blade.php
+Detected layout 'layouts.app' in trade/compare.blade.php
+Converted section 'content' to slot in trade/compare.blade.php
+Converted section 'scripts' to slot in trade/compare.blade.php
+Converted view: trade/compare.blade.php
+Detected layout 'layouts.app' in trade/compare-empty.blade.php
+Converted section 'content' to slot in trade/compare-empty.blade.php
+Converted view: trade/compare-empty.blade.php
+Detected layout 'layouts.app' in traders/trades.blade.php
+Converted section 'content' to slot in traders/trades.blade.php
+Converted view: traders/trades.blade.php
+Detected layout 'layouts.app' in traders/profile.blade.php
+Converted section 'content' to slot in traders/profile.blade.php
+Converted view: traders/profile.blade.php
+Detected layout 'layouts.admin' in admin/create.blade.php
+Converted section 'title', 'Create Trader' to slot in admin/create.blade.php
+Converted view: admin/create.blade.php
+Detected layout 'layouts.admin' in admin/dashboard.blade.php
+Converted section 'content' to slot in admin/dashboard.blade.php
+Converted view: admin/dashboard.blade.php
+No layout in admin/layout.blade.php
+Converted view: admin/layout.blade.php
+Detected layout 'layouts.admin' in admin/traders/create.blade.php
+Converted section 'content' to slot in admin/traders/create.blade.php
+Converted view: admin/traders/create.blade.php
+Detected layout 'layouts.admin' in admin/traders/index.blade.php
+Converted section 'content' to slot in admin/traders/index.blade.php
+Converted view: admin/traders/index.blade.php
+Detected layout 'layouts.admin' in admin/traders/edit.blade.php
+Converted section 'content' to slot in admin/traders/edit.blade.php
+Converted view: admin/traders/edit.blade.php
+Detected layout 'layouts.app' in admin/traders/subscribers.blade.php
+Converted section 'content' to slot in admin/traders/subscribers.blade.php
+Converted view: admin/traders/subscribers.blade.php
+Detected layout 'layouts.admin' in admin/trade-logs/create.blade.php
+Converted section 'content' to slot in admin/trade-logs/create.blade.php
+Converted view: admin/trade-logs/create.blade.php
+Detected layout 'layouts.admin' in admin/trade-logs/index.blade.php
+Converted section 'content' to slot in admin/trade-logs/index.blade.php
+Converted view: admin/trade-logs/index.blade.php
+Detected layout 'layouts.admin' in admin/trade-logs/edit.blade.php
+Converted section 'content' to slot in admin/trade-logs/edit.blade.php
+Converted view: admin/trade-logs/edit.blade.php
+Detected layout 'layouts.admin' in admin/users/edit-role.blade.php
+Converted section 'content' to slot in admin/users/edit-role.blade.php
+Converted view: admin/users/edit-role.blade.php
+Detected layout 'layouts.admin' in admin/users/index.blade.php
+Converted section 'content' to slot in admin/users/index.blade.php
+Converted view: admin/users/index.blade.php
+Detected layout 'layouts.admin' in admin/trade-outcomes/create.blade.php
+Converted section 'content' to slot in admin/trade-outcomes/create.blade.php
+Converted view: admin/trade-outcomes/create.blade.php
+Detected layout 'layouts.admin' in admin/trade-outcomes/index.blade.php
+Converted section 'content' to slot in admin/trade-outcomes/index.blade.php
+Converted view: admin/trade-outcomes/index.blade.php
+Detected layout 'admin.layout' in admin/site_settings/referral.blade.php
+Converted section 'content' to slot in admin/site_settings/referral.blade.php
+Converted view: admin/site_settings/referral.blade.php
+Detected layout 'layouts.admin' in admin/activity-logs/index.blade.php
+Converted section 'content' to slot in admin/activity-logs/index.blade.php
+Converted view: admin/activity-logs/index.blade.php
+Detected layout 'admin.layout' in admin/profile/edit.blade.php
+Converted section 'content' to slot in admin/profile/edit.blade.php
+Converted view: admin/profile/edit.blade.php
+Detected layout 'layouts.admin' in admin/settings/theme.blade.php
+Converted section 'content' to slot in admin/settings/theme.blade.php
+Converted view: admin/settings/theme.blade.php
+Detected layout 'layouts.admin' in admin/settings/index.blade.php
+Converted section 'content' to slot in admin/settings/index.blade.php
+Converted view: admin/settings/index.blade.php
+Detected layout 'layouts.admin' in admin/referrals/index.blade.php
+Converted section 'content' to slot in admin/referrals/index.blade.php
+Converted view: admin/referrals/index.blade.php
+Detected layout 'layouts.guest' in guests/trader-profile.blade.php
+Converted section 'title', 'Trader Profile' to slot in guests/trader-profile.blade.php
+Converted view: guests/trader-profile.blade.php
+Detected layout 'layouts.guest' in guests/leaderboard.blade.php
+Converted section 'title', 'Trader Leaderboard' to slot in guests/leaderboard.blade.php
+Converted view: guests/leaderboard.blade.php
+Detected layout 'layouts.guest' in guests/home.blade.php
+Converted section 'content' to slot in guests/home.blade.php
+Converted view: guests/home.blade.php
+Detected layout 'layouts.guest' in guests/about.blade.php
+Converted section 'content' to slot in guests/about.blade.php
+Converted view: guests/about.blade.php
+Detected layout 'layouts.guest' in guests/trader-trades.blade.php
+Converted section 'title', 'Trader Trade History' to slot in guests/trader-trades.blade.php
+Converted view: guests/trader-trades.blade.php
+Detected layout 'layouts.guest' in guests/faq.blade.php
+Converted section 'content' to slot in guests/faq.blade.php
+Converted view: guests/faq.blade.php
+No layout in guests/about-sections/brokers.blade.php
+Converted view: guests/about-sections/brokers.blade.php
+No layout in guests/about-sections/careers.blade.php
+Converted view: guests/about-sections/careers.blade.php
+No layout in guests/about-sections/about.blade.php
+Converted view: guests/about-sections/about.blade.php
+No layout in guests/about-sections/timeline.blade.php
+Converted view: guests/about-sections/timeline.blade.php
+No layout in guests/about-sections/awards.blade.php
+Converted view: guests/about-sections/awards.blade.php
+Detected layout 'layouts.app' in layouts/user.blade.php
+Converted section 'content' to slot in layouts/user.blade.php
+Converted view: layouts/user.blade.php
+No layout in layouts/guest.blade.php
+Converted view: layouts/guest.blade.php
+No layout in layouts/app.blade.php
+Converted view: layouts/app.blade.php
+Detected layout 'layouts.app' in layouts/admin.blade.php
+Converted section 'content' to slot in layouts/admin.blade.php
+Converted view: layouts/admin.blade.php
+No layout in layouts/navigation.blade.php
+Converted view: layouts/navigation.blade.php
+No layout in emails/team-invitation.blade.php
+Converted view: emails/team-invitation.blade.php
+No layout in api/index.blade.php
+Converted view: api/index.blade.php
+No layout in api/api-token-manager.blade.php
+Converted view: api/api-token-manager.blade.php
+No layout in auth/register.blade.php
+Converted view: auth/register.blade.php
+No layout in auth/login.blade.php
+Converted view: auth/login.blade.php
+No layout in auth/reset-password.blade.php
+Converted view: auth/reset-password.blade.php
+No layout in auth/verify-email.blade.php
+Converted view: auth/verify-email.blade.php
+Detected layout 'layouts.app' in auth/verify.blade.php
+Converted section 'content' to slot in auth/verify.blade.php
+Converted view: auth/verify.blade.php
+No layout in auth/confirm-password.blade.php
+Converted view: auth/confirm-password.blade.php
+No layout in auth/forgot-password.blade.php
+Converted view: auth/forgot-password.blade.php
+No layout in auth/two-factor-challenge.blade.php
+Converted view: auth/two-factor-challenge.blade.php
+Detected layout 'layouts.app' in auth/passwords/email.blade.php
+Converted section 'content' to slot in auth/passwords/email.blade.php
+Converted view: auth/passwords/email.blade.php
+Detected layout 'layouts.app' in auth/passwords/confirm.blade.php
+Converted section 'content' to slot in auth/passwords/confirm.blade.php
+Converted view: auth/passwords/confirm.blade.php
+Detected layout 'layouts.app' in auth/passwords/reset.blade.php
+Converted section 'content' to slot in auth/passwords/reset.blade.php
+Converted view: auth/passwords/reset.blade.php
+No layout in profile/update-password-form.blade.php
+Converted view: profile/update-password-form.blade.php
+No layout in profile/show.blade.php
+Converted view: profile/show.blade.php
+No layout in profile/delete-user-form.blade.php
+Converted view: profile/delete-user-form.blade.php
+No layout in profile/update-profile-information-form.blade.php
+Converted view: profile/update-profile-information-form.blade.php
+No layout in profile/logout-other-browser-sessions-form.blade.php
+Converted view: profile/logout-other-browser-sessions-form.blade.php
+No layout in profile/edit.blade.php
+Converted view: profile/edit.blade.php
+No layout in profile/two-factor-authentication-form.blade.php
+Converted view: profile/two-factor-authentication-form.blade.php
+No layout in profile/partials/update-password-form.blade.php
+Converted view: profile/partials/update-password-form.blade.php
+No layout in profile/partials/delete-user-form.blade.php
+Converted view: profile/partials/delete-user-form.blade.php
+No layout in profile/partials/update-profile-information-form.blade.php
+Converted view: profile/partials/update-profile-information-form.blade.php
+No layout in components/secondary-button.blade.php
+Converted view: components/secondary-button.blade.php
+No layout in components/authentication-card.blade.php
+Converted view: components/authentication-card.blade.php
+No layout in components/dropdown-link.blade.php
+Converted view: components/dropdown-link.blade.php
+No layout in components/validation-errors.blade.php
+Converted view: components/validation-errors.blade.php
+No layout in components/form-section.blade.php
+Converted view: components/form-section.blade.php
+No layout in components/confirmation-modal.blade.php
+Converted view: components/confirmation-modal.blade.php
+No layout in components/application-logo.blade.php
+Converted view: components/application-logo.blade.php
+No layout in components/section-border.blade.php
+Converted view: components/section-border.blade.php
+No layout in components/dropdown.blade.php
+Converted view: components/dropdown.blade.php
+No layout in components/responsive-nav-link.blade.php
+Converted view: components/responsive-nav-link.blade.php
+No layout in components/section-title.blade.php
+Converted view: components/section-title.blade.php
+No layout in components/topbar.blade.php
+Converted view: components/topbar.blade.php
+No layout in components/input-error.blade.php
+Converted view: components/input-error.blade.php
+No layout in components/button.blade.php
+Converted view: components/button.blade.php
+No layout in components/nav-link.blade.php
+Converted view: components/nav-link.blade.php
+No layout in components/input.blade.php
+Converted view: components/input.blade.php
+No layout in components/banner.blade.php
+Converted view: components/banner.blade.php
+No layout in components/confirms-password.blade.php
+Converted view: components/confirms-password.blade.php
+No layout in components/auth-session-status.blade.php
+Converted view: components/auth-session-status.blade.php
+No layout in components/danger-button.blade.php
+Converted view: components/danger-button.blade.php
+No layout in components/application-mark.blade.php
+Converted view: components/application-mark.blade.php
+No layout in components/primary-button.blade.php
+Converted view: components/primary-button.blade.php
+No layout in components/authentication-card-logo.blade.php
+Converted view: components/authentication-card-logo.blade.php
+No layout in components/action-message.blade.php
+Converted view: components/action-message.blade.php
+No layout in components/checkbox.blade.php
+Converted view: components/checkbox.blade.php
+No layout in components/switchable-team.blade.php
+Converted view: components/switchable-team.blade.php
+No layout in components/modal.blade.php
+Converted view: components/modal.blade.php
+No layout in components/label.blade.php
+Converted view: components/label.blade.php
+No layout in components/action-section.blade.php
+Converted view: components/action-section.blade.php
+No layout in components/input-label.blade.php
+Converted view: components/input-label.blade.php
+No layout in components/sidebar.blade.php
+Converted view: components/sidebar.blade.php
+No layout in components/dialog-modal.blade.php
+Converted view: components/dialog-modal.blade.php
+No layout in components/text-input.blade.php
+Converted view: components/text-input.blade.php
+No layout in components/welcome.blade.php
+Converted view: components/welcome.blade.php
+No layout in components/guests/footer.blade.php
+Converted view: components/guests/footer.blade.php
+No layout in components/ui/button.blade.php
+Converted view: components/ui/button.blade.php
+No layout in components/ui/input.blade.php
+Converted view: components/ui/input.blade.php
+No layout in components/ui/alert.blade.php
+Converted view: components/ui/alert.blade.php
+No layout in components/ui/notification-dropdown.blade.php
+Converted view: components/ui/notification-dropdown.blade.php
+No layout in components/footer/guest-footer.blade.php
+Converted view: components/footer/guest-footer.blade.php
+No layout in components/navigation/admin-navigation.blade.php
+Converted view: components/navigation/admin-navigation.blade.php
+No layout in components/navigation/user-navigation.blade.php
+Converted view: components/navigation/user-navigation.blade.php
+Generated full layout component: components/layouts/app.blade.php
+Generated full layout component: components/layouts/user.blade.php
+Generated full layout component: components/layouts/guest.blade.php
+Generated full layout component: components/layouts/admin.blade.php
+Generated full layout component: components/admin/layout.blade.php
+Created stub for missing partial component: components/profile/update-profile-information-form.blade.php
+Created stub for missing partial component: components/profile/logout-other-browser-sessions-form.blade.php
+Created stub for missing partial component: components/profile/partials/delete-user-form.blade.php
+Created stub for missing partial component: components/components/footer/guest-footer.blade.php
+Created stub for missing partial component: components/profile/partials/update-profile-information-form.blade.php
+Created stub for missing partial component: components/profile/update-password-form.blade.php
+Created stub for missing partial component: components/profile/delete-user-form.blade.php
+Created stub for missing partial component: components/components/topbar.blade.php
+Created stub for missing partial component: components/profile/partials/update-password-form.blade.php
+Created stub for missing partial component: components/profile/two-factor-authentication-form.blade.php
+Conversion complete.

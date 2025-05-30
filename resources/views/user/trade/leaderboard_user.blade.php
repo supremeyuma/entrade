@@ -1,6 +1,4 @@
-@extends('layouts.user')
-
-@section('content')
+<x-layouts.app>
 <div class="container mx-auto px-4 py-6">
     <h1 class="text-3xl font-bold mb-6">Trader Leaderboard</h1>
 
@@ -104,4 +102,4 @@
         Compare Selected Traders
     </a>
 </div>
-@endsection
+</x-layouts.app>

@@ -1,6 +1,4 @@
-@extends('layouts.user')
-
-@section('content')
+<x-layouts/user>
 <div class="container">
     <h1>Trade Outcome Details</h1>
 
@@ -68,4 +66,4 @@
         </div>
     </div>
 </div>
-@endsection
+</x-layouts/user>

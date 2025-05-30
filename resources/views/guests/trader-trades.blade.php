@@ -1,7 +1,5 @@
-@extends('layouts.guest')
-
-@section('title', 'Trader Trade History')
-
+<x-layouts.guest>
+<x-slot name="title', 'Trader Trade History">
 @section('content')
 <h1 class="text-3xl font-bold mb-6">Trade History - {{ $trader->name }}</h1>
 
@@ -39,4 +37,5 @@
     {{ $trades->links() }}
   </div>
 @endif
-@endsection
+</x-slot>
+</x-layouts.guest>

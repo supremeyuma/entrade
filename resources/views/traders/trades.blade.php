@@ -1,7 +1,5 @@
-@extends('layouts.app')
-
-@section('content')
-    <h1>Trades for {{ $trader->name }}</h1>
+<x-layouts/app>
+<h1>Trades for {{ $trader->name }}</h1>
 
     <table class="table">
         <thead>
@@ -19,4 +17,4 @@
     </table>
 
     {{ $trades->links() }}
-@endsection
+</x-layouts/app>

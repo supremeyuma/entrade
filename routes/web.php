@@ -29,6 +29,15 @@ use App\Http\Controllers\Admin\AdminReferralController;
 use App\Http\Controllers\Admin\ThemeSettingsController;
 
 
+
+Route::get('/test-render', function () {
+    return response()->make(
+        view('layouts.app', ['slot' => 'FORCED CONTENT'])->render()
+    );
+
+    
+});
+
 // Public Routes
 // Theme Toggle
 Route::post('/toggle-theme', [ThemeController::class, 'toggle'])->name('toggle.theme');

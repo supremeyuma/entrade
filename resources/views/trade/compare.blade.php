@@ -1,6 +1,4 @@
-@extends('layouts.app')
-
-@section('content')
+<x-layouts/app>
 <div class="container">
     <h1>Trader Comparison</h1>
 
@@ -28,9 +26,7 @@
     <h3>Performance Comparison Chart</h3>
     <canvas id="compareChart" width="400" height="200"></canvas>
 </div>
-@endsection
-
-@section('scripts')
+<x-slot name="scripts">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 const ctx = document.getElementById('compareChart').getContext('2d');
@@ -54,4 +50,5 @@ const compareChart = new Chart(ctx, {
     }
 });
 </script>
-@endsection
+</x-slot>
+</x-layouts/app>

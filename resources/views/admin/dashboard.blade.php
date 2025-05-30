@@ -1,7 +1,5 @@
-@extends('layouts.admin')
-
-@section('content')
-    <h1 class="text-2xl font-bold mb-6">Admin Dashboard</h1>
+<x-layouts/admin>
+<h1 class="text-2xl font-bold mb-6">Admin Dashboard</h1>
 
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div class="p-4 bg-white rounded shadow">
@@ -25,4 +23,4 @@
             Manage Users
         </a>
     </div>
-@endsection
+</x-layouts/admin>

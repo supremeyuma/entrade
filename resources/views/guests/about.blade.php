@@ -1,6 +1,4 @@
-@extends('layouts.guest')
-
-@section('content')
+<x-layouts.guest>
 <section class="bg-white dark:bg-gray-900 py-10">
     <div class="container">
         <div class="text-center mb-8">
@@ -54,4 +52,4 @@
         </div>
     </div>
 </section>
-@endsection
+</x-layouts.guest>

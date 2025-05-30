@@ -1,7 +1,5 @@
-@extends('layouts.admin')
-
-@section('content')
-    <h1 class="text-2xl mb-4">{{ isset($tradeLog) ? 'Edit' : 'Add' }} Trade Log</h1>
+<x-layouts/admin>
+<h1 class="text-2xl mb-4">{{ isset($tradeLog) ? 'Edit' : 'Add' }} Trade Log</h1>
 
     <form action="{{ isset($tradeLog) ? route('admin.trade-logs.update', $tradeLog) : route('admin.trade-logs.store') }}" method="POST">
         @csrf
@@ -46,4 +44,4 @@
 
         <button class="btn btn-primary">{{ isset($tradeLog) ? 'Update' : 'Create' }}</button>
     </form>
-@endsection
+</x-layouts/admin>

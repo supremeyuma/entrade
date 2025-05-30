@@ -126,6 +126,7 @@ class UserTraderSubscriptionController extends Controller
 
     public function searchForm(Request $request)
     {
+        $user = auth()->user();
         $query = $request->input('search');
 
         $traders = collect();
@@ -136,7 +137,7 @@ class UserTraderSubscriptionController extends Controller
                 ->get();
         }
 
-        return view('user.trade.search', compact('traders', 'query'));
+        return view('user.trade.search', compact('traders', 'query', 'user'));
     }
 
     public function showSubscribeForm($traderId)

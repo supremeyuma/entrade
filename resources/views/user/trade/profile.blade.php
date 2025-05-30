@@ -1,6 +1,4 @@
-@extends('layouts.user')
-
-@section('content')
+<x-layouts/user>
 <div class="container mx-auto px-4 py-6 max-w-4xl">
     <h1 class="text-3xl font-bold mb-4">{{ $trader->name }} (ID: {{ $trader->trader_id }})</h1>
 
@@ -32,9 +30,7 @@
         @endif
     </div>
 </div>
-@endsection
-
-@section('scripts')
+<x-slot name="scripts">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     const ctx = document.getElementById('roiChart').getContext('2d');
@@ -73,4 +69,5 @@
         }
     });
 </script>
-@endsection
+</x-slot>
+</x-layouts/user>

@@ -1,7 +1,5 @@
-@extends('layouts.guest')
-
-@section('title', 'Trader Profile')
-
+<x-layouts/guest>
+<x-slot name="title', 'Trader Profile">
 @section('content')
 <div class="max-w-4xl mx-auto space-y-6">
 
@@ -47,4 +45,5 @@
   </section>
 
 </div>
-@endsection
+</x-slot>
+</x-layouts/guest>

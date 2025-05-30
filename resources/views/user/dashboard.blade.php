@@ -1,6 +1,4 @@
-@extends('layouts.user')
-
-@section('content')
+<x-app-layout>
 <div class="container mx-auto px-4 space-y-6">
     <h1 class="text-2xl font-bold mb-4">Welcome to Your Dashboard</h1>
 
@@ -82,4 +80,4 @@
         @endif
     </div>
 </div>
-@endsection
+</x-app-layout>
