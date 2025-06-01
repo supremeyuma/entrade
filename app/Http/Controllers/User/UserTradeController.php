@@ -114,7 +114,8 @@ class UserTradeController extends Controller
         //New conline for guests blade
         $recentTrades = $trader->trades()->latest()->take(5)->get();
 
-        return view('guests.trader-profile', compact('trader', 'user', 'recentTrades'));
+        //dd($trader);
+        return view('user.trade.profile', compact('trader', 'user', 'recentTrades'));
     }
 
     // Add trader to comparison list (session-based)

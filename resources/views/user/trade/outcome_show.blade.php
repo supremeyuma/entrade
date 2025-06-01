@@ -1,4 +1,4 @@
-<x-layouts/user>
+<x-layouts.app>
 <div class="container">
     <h1>Trade Outcome Details</h1>
 
@@ -66,4 +66,4 @@
         </div>
     </div>
 </div>
-</x-layouts/user>
+</x-layouts.app>

@@ -21,7 +21,7 @@ class UserTraderSubscriptionController extends Controller
 
         // Check if the user has enough balance
         $balance = $user->balance;
-        if ($balance->main_balance < $request->amount) {
+        if ($balance->trade_balance < $request->amount) {
             return back()->with('error', 'Insufficient funds.');
         }
 

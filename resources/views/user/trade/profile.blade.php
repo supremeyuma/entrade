@@ -1,7 +1,8 @@
-<x-layouts/user>
+<x-layouts.app>
 <div class="container mx-auto px-4 py-6 max-w-4xl">
     <h1 class="text-3xl font-bold mb-4">{{ $trader->name }} (ID: {{ $trader->trader_id }})</h1>
 
+    
     <div class="mb-6">
         <p class="mb-2"><strong>Bio:</strong> {{ $trader->bio ?? 'No bio available.' }}</p>
         <p><strong>Total Trades:</strong> {{ $trader->trades_count }}</p>
@@ -20,7 +21,11 @@
 
     <div>
         @if(!$isSubscribed)
-            <a href="{{ route('user.subscribe', $trader->id) }}" class="btn btn-primary">Copy This Trader</a>
+        <form action="{{ route('user.subscribe', $trader->id) }}" method="POST" class="inline">
+            @csrf
+            <button type="submit" class="btn btn-primary">Copy This Trader</button>
+        </form>
+
         @else
             <form method="POST" action="{{ route('user.unsubscribe', $trader->id) }}">
                 @csrf
@@ -70,4 +75,4 @@
     });
 </script>
 </x-slot>
-</x-layouts/user>
+</x-layouts.app>

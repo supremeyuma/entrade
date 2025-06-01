@@ -35,7 +35,7 @@ Route::get('/test-render', function () {
         view('layouts.app', ['slot' => 'FORCED CONTENT'])->render()
     );
 
-    
+
 });
 
 // Public Routes
@@ -109,6 +109,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
     // Trade
     Route::get('/trade-history', [TradeHistoryController::class, 'index'])->name('tradeHistory');
     Route::get('/trade-outcomes/{id}', [UserTradeController::class, 'showOutcome'])->name('trade.outcome.show');
+    Route::get('/trader-profile/{trader}', [UserTradeController::class, 'profile'])->name('trader-profile');
 
     // Leaderboard
     Route::get('/leaderboard', [UserTradeController::class, 'leaderboard'])->name('leaderboard');
@@ -154,7 +155,7 @@ Route::middleware(['auth', 'role:user'])->prefix('deposit')->name('user.deposit.
 Route::middleware('auth')->group(function () {
     Route::get('/trade/search', [UserTraderSubscriptionController::class, 'searchForm'])->name('user.trade.search');
     Route::get('/trade/{trader}/subscribe', [UserTraderSubscriptionController::class, 'showSubscribeForm'])->name('user.trade.showSubscribeForm');
-    Route::post('/subscribe/{traderId}', [UserTraderSubscriptionController::class, 'subscribe'])->name('user.subscribe');
+    Route::post('/subscribe/{trader}', [UserTraderSubscriptionController::class, 'subscribe'])->name('user.subscribe');
     Route::post('/unsubscribe/{subscriptionId}', [UserTraderSubscriptionController::class, 'unsubscribe'])->name('user.unsubscribe');
     Route::post('/update-allocation/{subscriptionId}', [UserTraderSubscriptionController::class, 'updateAllocation'])->name('user.updateAllocation');
     Route::post('/transfer-funds', [UserTraderSubscriptionController::class, 'transferFunds'])->name('user.transferFunds');
@@ -188,3 +189,5 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
 // Laravel auth fallback
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+

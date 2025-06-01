@@ -7,12 +7,20 @@ use Illuminate\Http\Request;
 use App\Models\{User, Deposit, Withdrawal, Trade, Referral};
 use PDF;
 use Auth;
+use App\Services\SiteSettingsService;
 
 class UserReportController extends Controller
-{
+{   
+    protected SiteSettingsService $settingsService;
+
+    public function __construct(SiteSettingsService $settingsService)
+    {
+        $this->settingsService = $settingsService;
+    }
+
     public function showReportOptions()
     {
-        $settings = site_settings([
+        $settings = $this->settingsService->get([
             'user_reports_enable_deposits',
             'user_reports_enable_withdrawals',
             'user_reports_enable_trades',

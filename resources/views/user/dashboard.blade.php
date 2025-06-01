@@ -6,7 +6,8 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4">
             <h2 class="text-lg font-semibold mb-2">Account Summary</h2>
-            <p>Balance: <strong>${{ number_format($balance, 2) }}</strong></p>
+            <p>Main Balance: <strong>${{ number_format($main_balance, 2) }}</strong></p>
+            <p>Trade Balance: <strong>${{ number_format($trade_balance, 2) }}</strong></p>
             <p>Country: {{ $user->country ?? 'N/A' }}</p>
             <p>Phone: {{ $user->phone_number ?? 'N/A' }}</p>
         </div>

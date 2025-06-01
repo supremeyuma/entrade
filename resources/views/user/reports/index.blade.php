@@ -1,4 +1,4 @@
-<x-layouts/user>
+<x-layouts.app>
 <div class="container mt-4">
     <h4 class="mb-3">Generate Report</h4>
 
@@ -29,4 +29,4 @@
         </div>
     </form>
 </div>
-</x-layouts/user>
+</x-layouts.app>

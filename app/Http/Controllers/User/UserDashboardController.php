@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Referral;
 use App\Models\TradeOutcome;
 use Illuminate\Support\Facades\DB;
+use App\Models\Balance;
 
 
 class UserDashboardController extends Controller
@@ -14,8 +15,11 @@ class UserDashboardController extends Controller
     public function index()
     {
         $user = Auth::user();
+        //dd($user->balance);
+        //dd(Balance::where('user_id', $user->id)->first());
+        $main_balance = $user->balance->main_balance;
 
-        $balance = $user->wallet_balance;
+        $trade_balance = $user->balance->trade_balance;
 
         $referrals = Referral::where('referrer_id', $user->id)->get();
 
@@ -52,7 +56,8 @@ class UserDashboardController extends Controller
 
         return view('user.dashboard', compact(
             'user',
-            'balance',
+            'main_balance',
+            'trade_balance',
             'referrals',
             'activeTrades',
             'recentTrades',

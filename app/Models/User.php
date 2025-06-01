@@ -74,9 +74,9 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(UserTraderSubscription::class);
     }
 
-    public function balances()
+    public function balance()
     {
-        return $this->hasOne(Balance::class);
+        return $this->hasOne(Balance::class, 'user_id');
     }
 
     public function subscriptions()
