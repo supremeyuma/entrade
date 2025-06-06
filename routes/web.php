@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ThemeController;
@@ -45,6 +46,7 @@ Route::post('/toggle-theme', [ThemeController::class, 'toggle'])->name('toggle.t
 Route::get('/', [GuestPageController::class, 'home'])->name('home');
 Route::view('/about', 'guests.about')->name('about');
 Route::view('/faq', 'guests.faq')->name('faq');
+Route::get('/tools', function () { return view('guests.tools');})->name('tools');
 
 // Public Leaderboard & Trader Profile
 Route::get('/leaderboard', [TraderLeaderboardController::class, 'publicLeaderboard'])->name('leaderboard.public');
@@ -160,6 +162,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/update-allocation/{subscriptionId}', [UserTraderSubscriptionController::class, 'updateAllocation'])->name('user.updateAllocation');
     Route::post('/transfer-funds', [UserTraderSubscriptionController::class, 'transferFunds'])->name('user.transferFunds');
     Route::get('/my-traders', [UserTraderSubscriptionController::class, 'myTraders'])->name('user.myTraders');
+    Route::get('/subscribe/{trader}/allocate', [UserTraderSubscriptionController::class, 'showAllocationForm'])->name('user.subscribe.allocate');
 });
 
 // ------------------------
@@ -190,4 +193,11 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
 Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//FCS API ROUTE
 
+Route::get('/api/calendar', function () {
+    $res = Http::get('https://fcsapi.com/api-v3/forex/economy_cal?access_key=' . config('services.fcsapi.key'));
+    $json = $res->json();
+
+    return isset($json['response']) ? response()->json($json['response']) : response()->json($json);
+});

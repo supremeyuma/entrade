@@ -31,4 +31,19 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'fcsapi' => [
+        'key' => env('FCSAPI_KEY'),
+    ],
+
+    'twelvedata' => [
+        'key' => env('TWELVE_DATA_API_KEY'),
+    ],
+    'finnhub' => [
+        'key' => env('FINNHUB_API_KEY'),
+    ],
+    'tokenmetrics' => [
+        'key' => env('TOKENMETRICS_API_KEY'),
+    ],
+
+
 ];
