@@ -58,12 +58,39 @@
         <a href="{{ url('/') }}" class="text-lg font-semibold text-gray-800 dark:text-white">Entrade</a>
 
         <!-- Navigation Links -->
-        <nav class="flex space-x-6 text-sm font-medium text-gray-700 dark:text-gray-300">
-            <a href="{{ url('/') }}" class="hover:underline">Home</a>
-            <a href="{{ route('leaderboard.public') }}" class="hover:underline">Leaders</a>
-            <a href="{{ url('/about') }}" class="hover:underline">About</a>
-            <a href="{{ url('/faq') }}" class="hover:underline">Help Center</a>
-        </nav>
+        <!-- Navigation Links -->
+    <nav class="flex space-x-6 text-sm font-medium text-gray-700 dark:text-gray-300 relative" x-data="{ toolsOpen: false }">
+        <a href="{{ url('/') }}" class="hover:underline">Home</a>
+        <a href="{{ route('leaderboard.public') }}" class="hover:underline">Leaders</a>
+
+        <!-- Tools Dropdown -->
+        <div class="relative" @mouseenter="toolsOpen = true" @mouseleave="toolsOpen = false">
+            <button class="hover:underline focus:outline-none">Tools</button>
+            <div
+                x-show="toolsOpen"
+                x-transition
+                class="absolute z-50 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
+            >
+                <div class="py-1 text-sm text-gray-700 dark:text-gray-200">
+                    <a href="{{ url('/tools?section=economic-calendar') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Economic Calendar</a>
+                    <a href="{{ url('/tools?section=market-news') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Market News</a>
+                    <a href="{{ url('/tools?section=trading-signals') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Trading Signals</a>
+                    <a href="{{ url('/tools?section=pip-calculator') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Pip Calculator</a>
+                    <a href="{{ url('/tools?section=copy-guide') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Copy Guide</a>
+                    <a href="{{ url('/tools?section=trading-hours') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Trading Hours</a>
+                    <a href="{{ url('/tools?section=risk-tips') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Risk Tips</a>
+                    <a href="{{ url('/tools?section=currency-converter') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Currency Converter</a>
+                    <a href="{{ url('/tools?section=margin-calculator') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Margin Calculator</a>
+                    <a href="{{ url('/tools?section=live-charts') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Live Charts</a>
+                </div>
+            </div>
+        </div>
+
+
+        <a href="{{ url('/about') }}" class="hover:underline">About</a>
+        <a href="{{ url('/faq') }}" class="hover:underline">Help Center</a>
+    </nav>
+
 
         <!-- Right Side Actions -->
         <div class="flex items-center space-x-4">
