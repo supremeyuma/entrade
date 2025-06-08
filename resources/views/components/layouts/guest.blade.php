@@ -8,7 +8,7 @@
     <title>Entrade</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @livewireStyles
+    
 
     <style>
         header {
@@ -27,27 +27,53 @@
 <div class="flex flex-col h-screen" x-data>
     <!-- Mobile Sidebar -->
     <aside x-show="sidebarOpen"
-           @click.away="sidebarOpen = false"
-           class="fixed inset-0 z-40 bg-white dark:bg-gray-800 w-64 p-4 shadow-lg md:hidden transform transition-transform duration-300 ease-in-out"
-           x-transition:enter="transform transition ease-in-out duration-300"
-           x-transition:enter-start="-translate-x-full"
-           x-transition:enter-end="translate-x-0"
-           x-transition:leave="transform transition ease-in-out duration-300"
-           x-transition:leave-start="translate-x-0"
-           x-transition:leave-end="-translate-x-full"
-           x-cloak>
+        @click.away="sidebarOpen = false"
+        class="fixed inset-0 z-40 bg-white dark:bg-gray-800 w-64 p-4 shadow-lg md:hidden transform transition-transform duration-300 ease-in-out"
+        x-transition:enter="transform transition ease-in-out duration-300"
+        x-transition:enter-start="-translate-x-full"
+        x-transition:enter-end="translate-x-0"
+        x-transition:leave="transform transition ease-in-out duration-300"
+        x-transition:leave-start="translate-x-0"
+        x-transition:leave-end="-translate-x-full"
+        x-cloak>
+        
         <div class="text-lg font-semibold text-gray-700 dark:text-white border-b border-gray-200 dark:border-gray-700 mb-4">
             <a href="{{ url('/') }}">Entrade</a>
         </div>
-        <nav class="space-y-2">
+
+        <nav class="space-y-2" x-data="{ toolsOpen: false }">
             <a href="{{ url('/') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Home</a>
             <a href="{{ route('leaderboard.public') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Leaders</a>
+            
+            <!-- Tools Dropdown Trigger -->
+            <button @click="toolsOpen = !toolsOpen"
+                    class="w-full text-left px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none">
+                Tools
+            </button>
+
+            <!-- Tools Dropdown Menu -->
+            <div x-show="toolsOpen" x-transition class="pl-4">
+                <div class="grid grid-cols-2 gap-1 text-sm mt-2 text-gray-700 dark:text-gray-200">
+                    <a href="{{ url('/tools?section=economic-calendar') }}" class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Economic Calendar</a>
+                    <a href="{{ url('/tools?section=market-news') }}" class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Market News</a>
+                    <a href="{{ url('/tools?section=trading-signals') }}" class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Trading Signals</a>
+                    <a href="{{ url('/tools?section=pip-calculator') }}" class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Pip Calculator</a>
+                    <a href="{{ url('/tools?section=copy-guide') }}" class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Copy Guide</a>
+                    <a href="{{ url('/tools?section=trading-hours') }}" class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Trading Hours</a>
+                    <a href="{{ url('/tools?section=risk-tips') }}" class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Risk Tips</a>
+                    <a href="{{ url('/tools?section=currency-converter') }}" class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Currency Converter</a>
+                    <a href="{{ url('/tools?section=margin-calculator') }}" class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Margin Calculator</a>
+                    {{-- <a href="{{ url('/tools?section=live-charts') }}" class="block px-2 py-1 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Live Charts</a> --}}
+                </div>
+            </div>
+
             <a href="{{ url('/about') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">About</a>
             <a href="{{ url('/faq') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Help Center</a>
             <a href="{{ route('login') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Login</a>
             <a href="{{ route('register') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Register</a>
         </nav>
     </aside>
+
 
     <!-- Topbar (desktop) -->
     <!-- Topbar (desktop) -->
@@ -160,7 +186,6 @@
     </main>
 </div>
 
-@livewireScripts
 
 <script>
     document.addEventListener('alpine:init', () => {
