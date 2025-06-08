@@ -64,27 +64,32 @@
         <a href="{{ route('leaderboard.public') }}" class="hover:underline">Leaders</a>
 
         <!-- Tools Dropdown -->
-        <div class="relative" @mouseenter="toolsOpen = true" @mouseleave="toolsOpen = false">
-            <button class="hover:underline focus:outline-none">Tools</button>
+        <div class="relative" x-data="{ toolsOpen: false }">
+            <button @click="toolsOpen = !toolsOpen" class="hover:underline focus:outline-none">
+                Tools
+            </button>
+
             <div
                 x-show="toolsOpen"
                 x-transition
-                class="absolute z-50 mt-2 w-56 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
+                @click.away="toolsOpen = false"
+                class="absolute z-50 mt-2 w-96 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5"
             >
-                <div class="py-1 text-sm text-gray-700 dark:text-gray-200">
-                    <a href="{{ url('/tools?section=economic-calendar') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Economic Calendar</a>
-                    <a href="{{ url('/tools?section=market-news') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Market News</a>
-                    <a href="{{ url('/tools?section=trading-signals') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Trading Signals</a>
-                    <a href="{{ url('/tools?section=pip-calculator') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Pip Calculator</a>
-                    <a href="{{ url('/tools?section=copy-guide') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Copy Guide</a>
-                    <a href="{{ url('/tools?section=trading-hours') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Trading Hours</a>
-                    <a href="{{ url('/tools?section=risk-tips') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Risk Tips</a>
-                    <a href="{{ url('/tools?section=currency-converter') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Currency Converter</a>
-                    <a href="{{ url('/tools?section=margin-calculator') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Margin Calculator</a>
-                    <a href="{{ url('/tools?section=live-charts') }}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700">Live Charts</a>
+                <div class="py-4 px-4 grid grid-cols-2 gap-2 text-sm text-gray-700 dark:text-gray-200">
+                    <a href="{{ url('/tools?section=economic-calendar') }}" class="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Economic Calendar</a>
+                    <a href="{{ url('/tools?section=market-news') }}" class="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Market News</a>
+                    <a href="{{ url('/tools?section=trading-signals') }}" class="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Trading Signals</a>
+                    <a href="{{ url('/tools?section=pip-calculator') }}" class="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Pip Calculator</a>
+                    <a href="{{ url('/tools?section=copy-guide') }}" class="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Copy Guide</a>
+                    <a href="{{ url('/tools?section=trading-hours') }}" class="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Trading Hours</a>
+                    <a href="{{ url('/tools?section=risk-tips') }}" class="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Risk Tips</a>
+                    <a href="{{ url('/tools?section=currency-converter') }}" class="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Currency Converter</a>
+                    <a href="{{ url('/tools?section=margin-calculator') }}" class="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Margin Calculator</a>
+                    <a href="{{ url('/tools?section=live-charts') }}" class="block px-2 py-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded">Live Charts</a>
                 </div>
             </div>
         </div>
+
 
 
         <a href="{{ url('/about') }}" class="hover:underline">About</a>
