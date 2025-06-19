@@ -29,17 +29,19 @@
         <div class="container mx-auto px-4">
             <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 @foreach([
-                    ['title' => 'Getting Started', 'desc' => ['short' => 'Start using Entrade.', 'long' => 'Learn how to set up your Entrade account and begin trading.'], 'icon' => '🚀'],
-                    ['title' => 'Account & Settings', 'desc' => ['short' => 'Manage your profile.', 'long' => 'Manage your personal info, preferences, and login credentials.'], 'icon' => '⚙️'],
-                    ['title' => 'Copy Trading', 'desc' => ['short' => 'Copy top traders.', 'long' => 'Understand how copy trading works and how to follow top traders.'], 'icon' => '📈'],
-                    ['title' => 'Trader Info', 'desc' => ['short' => 'For signal providers.', 'long' => 'Info for signal providers, leaderboards, and trader stats.'], 'icon' => '👤'],
-                    ['title' => 'Security', 'desc' => ['short' => 'Your data is safe.', 'long' => 'Your data and funds are safe. Learn more about our security.'], 'icon' => '🔒'],
-                    ['title' => 'Legal', 'desc' => ['short' => 'Terms & policies.', 'long' => 'Review our terms, disclaimers, and compliance policies.'], 'icon' => '📜'],
-                    ['title' => 'Payments', 'desc' => ['short' => 'Deposits & withdrawals.', 'long' => 'Deposit, withdrawal, and transaction-related FAQs.'], 'icon' => '💳'],
-                    ['title' => 'Referrals', 'desc' => ['short' => 'Earn by inviting.', 'long' => 'Invite friends and earn rewards with our referral system.'], 'icon' => '🎁'],
-                    ['title' => 'Tech Support', 'desc' => ['short' => 'Fix issues fast.', 'long' => 'Having issues? Here’s how to resolve technical problems.'], 'icon' => '🛠️'],
+                    ['slug' => 'getting-started', 'title' => 'Getting Started', 'desc' => ['short' => 'Start using Entrade.', 'long' => 'Learn how to set up your Entrade account and begin trading.'], 'icon' => '🚀'],
+                    ['slug' => 'account-settings', 'title' => 'Account & Settings', 'desc' => ['short' => 'Manage your profile.', 'long' => 'Manage your personal info, preferences, and login credentials.'], 'icon' => '⚙️'],
+                    ['slug' => 'copy-trading', 'title' => 'Copy Trading', 'desc' => ['short' => 'Copy top traders.', 'long' => 'Understand how copy trading works and how to follow top traders.'], 'icon' => '📈'],
+                    ['slug' => 'trader-info', 'title' => 'Trader Info', 'desc' => ['short' => 'For signal providers.', 'long' => 'Info for signal providers, leaderboards, and trader stats.'], 'icon' => '👤'],
+                    ['slug' => 'security', 'title' => 'Security', 'desc' => ['short' => 'Your data is safe.', 'long' => 'Your data and funds are safe. Learn more about our security.'], 'icon' => '🔒'],
+                    ['slug' => 'legal', 'title' => 'Legal', 'desc' => ['short' => 'Terms & policies.', 'long' => 'Review our terms, disclaimers, and compliance policies.'], 'icon' => '📜'],
+                    ['slug' => 'payments', 'title' => 'Payments', 'desc' => ['short' => 'Deposits & withdrawals.', 'long' => 'Deposit, withdrawal, and transaction-related FAQs.'], 'icon' => '💳'],
+                    ['slug' => 'referrals', 'title' => 'Referrals', 'desc' => ['short' => 'Earn by inviting.', 'long' => 'Invite friends and earn rewards with our referral system.'], 'icon' => '🎁'],
+                    ['slug' => 'technical-support', 'title' => 'Tech Support', 'desc' => ['short' => 'Fix issues fast.', 'long' => 'Having issues? Here’s how to resolve technical problems.'], 'icon' => '🛠️'],
                 ] as $category)
-                    <a href="#" class="group border border-gray-200 dark:border-gray-700 rounded-xl p-4 md:p-6 hover:shadow-lg transition">
+                <a href="{{ route('help.category', ['category' => $category['slug']]) }}"
+                    class="group border border-gray-200 dark:border-gray-700 rounded-xl p-4 md:p-6 hover:shadow-lg transition">
+
                         <div class="text-2xl md:text-4xl mb-2 md:mb-4">{{ $category['icon'] }}</div>
                         <h3 class="text-base md:text-xl font-semibold text-gray-900 dark:text-white group-hover:text-indigo-600">
                             {{ $category['title'] }}

@@ -28,6 +28,8 @@ use App\Http\Controllers\Admin\SettingsController;
 use App\Http\Controllers\Admin\SiteSettingsController;
 use App\Http\Controllers\Admin\AdminReferralController;
 use App\Http\Controllers\Admin\ThemeSettingsController;
+use App\Http\Controllers\Guest\MarketController;
+use App\Http\Controllers\Guest\HelpCenterController;
 
 
 
@@ -47,6 +49,11 @@ Route::get('/', [GuestPageController::class, 'home'])->name('home');
 Route::view('/about', 'guests.about')->name('about');
 Route::view('/faq', 'guests.faq')->name('faq');
 Route::get('/tools', function () { return view('guests.tools');})->name('tools');
+Route::get('/markets', [MarketController::class, 'index'])->name('guests.markets');
+
+Route::get('/help/{category}', [HelpCenterController::class, 'show'])->name('help.category');
+
+
 
 // Public Leaderboard & Trader Profile
 Route::get('/leaderboard', [TraderLeaderboardController::class, 'publicLeaderboard'])->name('leaderboard.public');
