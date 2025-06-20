@@ -42,7 +42,8 @@
         </div>
     </section>
 
-    <section class="bg-gray-50 dark:bg-gray-900 py-10 md:py-12">
+    
+    <!--<section class="bg-gray-50 dark:bg-gray-900 py-10 md:py-12">
         <div class="container mx-auto px-4">
             <h2 class="text-lg md:text-2xl font-bold text-gray-900 dark:text-white mb-4 md:mb-6">Popular Questions</h2>
             <ul class="space-y-3 md:space-y-4 text-sm md:text-base">
@@ -61,7 +62,7 @@
                 @endforeach
             </ul>
         </div>
-    </section>
+    </section>-->
 
     <section class="bg-white dark:bg-gray-800 py-10 md:py-12">
         <div class="container mx-auto px-4 text-center">

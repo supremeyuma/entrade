@@ -3,6 +3,10 @@
 <div
     x-data="{
         search: '',
+        hasInput: false,
+        get visibleResults() {
+            return this.hasInput && this.$refs.resultsContainer.querySelectorAll('[x-show=\'true\']').length;
+        },
         normalize(text) {
             return text.toLowerCase();
         },
@@ -20,8 +24,9 @@
             <input
                 type="text"
                 x-model="search"
+                @input="hasInput = search.length > 0"
                 class="w-full rounded-full border border-gray-300 dark:border-gray-700 px-5 md:px-6 py-2.5 md:py-3 pl-11 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-indigo-500 dark:bg-gray-800 dark:text-white"
-                placeholder="Search..."
+                placeholder="   Search..."
             >
             <div class="absolute left-4 top-2.5 md:top-3 text-gray-400 dark:text-gray-500">
                 <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" stroke-width="2"
@@ -34,10 +39,15 @@
     </div>
 
     <!-- Accordion FAQ List -->
-    <div class="space-y-4">
+    <div class="space-y-4" x-ref="resultsContainer">
+        <!-- Show message when no input -->
+        <!--<div x-show="!hasInput" class="text-center py-8 text-gray-500 dark:text-gray-400">
+            Type in the search bar above to find FAQs
+        </div>-->
+
         @foreach($faqs as $index => $faq)
             <div
-                x-show="search === '' || normalize(`{{ $faq['q'] }} {{ $faq['a'] }}`).includes(normalize(search))"
+                x-show="hasInput && normalize(`{{ $faq['q'] }} {{ $faq['a'] }}`).includes(normalize(search))"
                 class="border border-gray-200 dark:border-gray-700 rounded-md shadow-sm p-4"
                 x-data="{ open: false }"
             >
@@ -63,11 +73,13 @@
                 </div>
             </div>
         @endforeach
-    </div>
 
-    <!-- No Results -->
-    <div x-show="search !== '' && !document.querySelectorAll('[x-show]').length"
-         class="text-center text-gray-600 dark:text-gray-400 mt-10">
-        No results found.
+        <!-- Show message when no results found -->
+        <div 
+            x-show="hasInput && !visibleResults"
+            class="text-center py-8 text-gray-500 dark:text-gray-400"
+        >
+            No results found for "<span x-text="search"></span>"
+        </div>
     </div>
 </div>

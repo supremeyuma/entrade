@@ -119,7 +119,7 @@
 
 
         <a href="{{ url('/about') }}" class="hover:underline">About</a>
-        <a href="{{ url('/faq') }}" class="hover:underline">Help Center</a>
+        <a href="{{ url('/help-center') }}" class="hover:underline">Help Center</a>
     </nav>
 
 

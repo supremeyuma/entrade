@@ -30,6 +30,8 @@ use App\Http\Controllers\Admin\AdminReferralController;
 use App\Http\Controllers\Admin\ThemeSettingsController;
 use App\Http\Controllers\Guest\MarketController;
 use App\Http\Controllers\Guest\HelpCenterController;
+use App\Http\Controllers\Admin\FaqCategoryController;
+use App\Http\Controllers\Admin\FaqController;
 
 
 
@@ -107,6 +109,11 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     // Theme Settings
     Route::get('theme-settings', [ThemeSettingsController::class, 'index'])->name('theme.settings');
     Route::post('theme-settings', [ThemeSettingsController::class, 'update'])->name('theme.settings.update');
+
+    //Faq Routes
+    Route::resource('faqs', FaqController::class);
+    Route::resource('faq-categories', FaqCategoryController::class);
+
 });
 
 // ------------------------
