@@ -68,7 +68,7 @@
             </div>
 
             <a href="{{ url('/about') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">About</a>
-            <a href="{{ url('/faq') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Help Center</a>
+            <a href="{{ url('/help-center') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Help Center</a>
             <a href="{{ route('login') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Login</a>
             <a href="{{ route('register') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Register</a>
         </nav>

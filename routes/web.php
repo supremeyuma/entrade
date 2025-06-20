@@ -47,7 +47,7 @@ Route::post('/toggle-theme', [ThemeController::class, 'toggle'])->name('toggle.t
 
 Route::get('/', [GuestPageController::class, 'home'])->name('home');
 Route::view('/about', 'guests.about')->name('about');
-Route::view('/faq', 'guests.faq')->name('faq');
+Route::get('/help-center', [HelpCenterController::class, 'index'])->name('faq');
 Route::get('/tools', function () { return view('guests.tools');})->name('tools');
 Route::get('/markets', [MarketController::class, 'index'])->name('guests.markets');
 

@@ -21,6 +21,21 @@ class HelpCenterController extends Controller
         'technical-support' => 'Technical Support',
     ];
 
+
+    public function index()
+    {
+        $faqs = [
+            ['q' => 'How do I start copy trading on Entrade?', 'a' => 'Go to your dashboard, select a trader, and click "Copy".'],
+            ['q' => 'How do I withdraw my earnings?', 'a' => 'Navigate to Wallet > Withdraw and follow the prompts.'],
+            ['q' => 'What are the risks of copy trading?', 'a' => 'While traders are vetted, all trading involves risk. Use risk management tools.'],
+            ['q' => 'How can I become a signal provider?', 'a' => 'Apply from your dashboard. Approval is based on your trading history.'],
+            ['q' => 'Where can I view my trading performance?', 'a' => 'Visit the Performance tab in your user dashboard.'],
+        ];
+
+        return view("guests.faq", compact('faqs'));
+    }
+
+
     public function show(string $category): View
     {
         if (!array_key_exists($category, $this->categories)) {

@@ -6,22 +6,8 @@
                 <span class="block md:hidden">Find answers fast.</span>
                 <span class="hidden md:block">Find answers to frequently asked questions or get in touch with us.</span>
             </p>
-            <div class="max-w-2xl mx-auto">
-                <div class="relative">
-                    <input
-                        type="text"
-                        class="w-full rounded-full border border-gray-300 dark:border-gray-700 px-5 md:px-6 py-2.5 md:py-3 pl-11 text-sm md:text-base focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                        placeholder="Search..."
-                    >
-                    <div class="absolute left-4 top-2.5 md:top-3 text-gray-400 dark:text-gray-500">
-                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" stroke-width="2"
-                             viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16z"/>
-                        </svg>
-                    </div>
-                </div>
-            </div>
+            
+            <x-faq.search-panel :faqs="$faqs" />
         </div>
     </section>
 
