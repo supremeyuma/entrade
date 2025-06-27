@@ -35,10 +35,10 @@
             <div class="space-y-4">
                 @foreach($faqs as $index => $faq)
                     <div
-                        x-show="search === '' || normalize(`{{ $faq['q'] }} {{ $faq['a'] }}`).includes(normalize(search))"
+                        x-show="search === '' || normalize(`{{ $faq['question'] }} {{ $faq['answer'] }}`).includes(normalize(search))"
                         class="border border-gray-200 dark:border-gray-700 rounded-md shadow-sm p-4"
                         x-init="$watch('search', val => {
-                            const current = normalize(`{{ $faq['q'] }} {{ $faq['a'] }}`);
+                            const current = normalize(`{{ $faq['question'] }} {{ $faq['answer'] }}`);
                             if (!current.includes(normalize(val))) selected = null;
                         })"
                     >
@@ -46,7 +46,7 @@
                             @click="selected === {{ $index }} ? selected = null : selected = {{ $index }}"
                             class="flex justify-between items-center w-full text-left text-gray-900 dark:text-white font-medium text-base md:text-lg focus:outline-none"
                         >
-                            <span x-html="match(`{!! e($faq['q']) !!}`, search)"></span>
+                            <span x-html="match(`{!! e($faq['question']) !!}`, search)"></span>
                             <svg
                                 :class="{ 'rotate-180': selected === {{ $index }} }"
                                 class="w-5 h-5 transform transition-transform duration-200 text-gray-500 dark:text-gray-300"
@@ -64,7 +64,7 @@
                             x-collapse
                             class="mt-3 text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed"
                         >
-                            <span x-html="match(`{!! e($faq['a']) !!}`, search)"></span>
+                            <span x-html="match(`{!! e($faq['answer']) !!}`, search)"></span>
                         </div>
                     </div>
                 @endforeach

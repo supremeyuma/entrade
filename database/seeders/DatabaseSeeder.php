@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             SiteSettingsSeeder::class,
+            FaqCategorySeeder::class,
+            FaqSeeder::class,
         ]);
     }
 }

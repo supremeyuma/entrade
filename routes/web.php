@@ -35,21 +35,14 @@ use App\Http\Controllers\Admin\FaqController;
 
 
 
-Route::get('/test-render', function () {
-    return response()->make(
-        view('layouts.app', ['slot' => 'FORCED CONTENT'])->render()
-    );
-
-
-});
-
 // Public Routes
 // Theme Toggle
 Route::post('/toggle-theme', [ThemeController::class, 'toggle'])->name('toggle.theme');
 
 Route::get('/', [GuestPageController::class, 'home'])->name('home');
 Route::view('/about', 'guests.about')->name('about');
-Route::get('/help-center', [HelpCenterController::class, 'index'])->name('faq');
+Route::get('/help-center', [HelpCenterController::class, 'index'])->name('faq.index');
+Route::get('/help-center/{slug}', [HelpCenterController::class, 'category'])->name('faq.category');
 Route::get('/tools', function () { return view('guests.tools');})->name('tools');
 Route::get('/markets', [MarketController::class, 'index'])->name('guests.markets');
 

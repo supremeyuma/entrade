@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Guest;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
+use App\Models\FaqCategory;
+use App\Models\Faq;
 use App\Http\Controllers\Controller;
 
 class HelpCenterController extends Controller
@@ -24,15 +26,30 @@ class HelpCenterController extends Controller
 
     public function index()
     {
-        $faqs = [
-            ['q' => 'How do I start copy trading on Entrade?', 'a' => 'Go to your dashboard, select a trader, and click "Copy".'],
-            ['q' => 'How do I withdraw my earnings?', 'a' => 'Navigate to Wallet > Withdraw and follow the prompts.'],
-            ['q' => 'What are the risks of copy trading?', 'a' => 'While traders are vetted, all trading involves risk. Use risk management tools.'],
-            ['q' => 'How can I become a signal provider?', 'a' => 'Apply from your dashboard. Approval is based on your trading history.'],
-            ['q' => 'Where can I view my trading performance?', 'a' => 'Visit the Performance tab in your user dashboard.'],
+        $faqs = Faq::where('id', '!=', 0)->get();
+        $questions = $faqs->pluck('question');
+        $categories = FaqCategory::withCount('faqs')->get();
+        $hardcodedData = [
+            'getting-started' => ['short' => 'Start using Entrade.', 'long' => 'Learn how to set up your Entrade account and begin trading.', 'icon' => '🚀'],
+            'account-settings' => ['short' => 'Manage your profile.', 'long' => 'Manage your personal info, preferences, and login credentials.', 'icon' => '⚙️'],
+            'copy-trading' => ['short' => 'Copy top traders.', 'long' => 'Understand how copy trading works and how to follow top traders.', 'icon' => '📈'],
+            'trader-info' => ['short' => 'For signal providers.', 'long' => 'Info for signal providers, leaderboards, and trader stats.', 'icon' => '👤'],
+            'security' => ['short' => 'Your data is safe.', 'long' => 'Your data and funds are safe. Learn more about our security.', 'icon' => '🔒'],
+            'legal' => ['short' => 'Terms & policies.', 'long' => 'Review our terms, disclaimers, and compliance policies.', 'icon' => '📜'],
+            'payments' => ['short' => 'Deposits & withdrawals.', 'long' => 'Deposit, withdrawal, and transaction-related FAQs.', 'icon' => '💳'],
+            'referrals' => ['short' => 'Earn by inviting.', 'long' => 'Invite friends and earn rewards with our referral system.', 'icon' => '🎁'],
+            'technical-support' => ['short' => 'Fix issues fast.', 'long' => 'Having issues? Here is how to resolve technical problems.', 'icon' => '🛠️'],
         ];
 
-        return view("guests.faq", compact('faqs'));
+        $categories->each(function ($category) use ($hardcodedData) {
+            $category->description = $hardcodedData[$category->slug] ?? [
+                'short' => '',
+                'long' => '',
+                'icon' => ''
+            ];
+        });
+
+        return view("guests.faq.index", compact('faqs', 'categories', 'questions'));
     }
 
 
@@ -52,5 +69,13 @@ class HelpCenterController extends Controller
         ];
 
         return view("guests.help.$category", compact('title', 'faqs'));
+    }
+
+    public function category($slug)
+    {
+        $category = FaqCategory::where('slug', $slug)->with('faqs')->firstOrFail();
+        $faqs = $category->faqs;
+        $title = $category->title;
+        return view("guests.help.{$slug}", compact('category', 'faqs', 'title'));
     }
 }
