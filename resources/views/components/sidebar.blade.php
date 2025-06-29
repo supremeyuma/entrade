@@ -3,12 +3,6 @@
 @endphp
 
 <!-- Sidebar -->
-<aside
-    class="fixed inset-y-0 left-0 z-30 w-64 bg-white dark:bg-gray-800 shadow-lg transform transition-transform duration-200 ease-in-out md:translate-x-0"
-    :class="{'translate-x-0': sidebarOpen, '-translate-x-full': !sidebarOpen}"
-    x-show="sidebarOpen"
-    @click.away="sidebarOpen = false"
->
     <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700">
         <a href="{{ url('/home') }}" class="text-lg font-bold text-indigo-600 dark:text-indigo-400">Entrade</a>
         <button class="md:hidden text-gray-600 dark:text-gray-300" @click="sidebarOpen = false" aria-label="Close sidebar">
@@ -127,4 +121,3 @@
             </button>
         </form>
     </nav>
-</aside>

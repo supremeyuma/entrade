@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-layouts.app>
 <div class="container mx-auto px-4 space-y-6">
     <h1 class="text-2xl font-bold mb-4">Welcome to Your Dashboard</h1>
 
@@ -15,11 +15,16 @@
         <!-- Portfolio Summary -->
         <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4">
             <h2 class="text-lg font-semibold mb-2">Portfolio Summary</h2>
-            <p>Total Invested: <strong>${{ number_format($portfolioSummary['total_invested'], 2) }}</strong></p>
-            <p>Total Returns: <strong>${{ number_format($portfolioSummary['total_returns'], 2) }}</strong></p>
+            <p>Total Invested: <strong>${{ number_format($totalInvested, 2) }}</strong></p>
+            <p>Total Returns: <strong>${{ number_format($totalReturns, 2) }}</strong></p>
             <p>Net Profit: 
-                <strong class="{{ $portfolioSummary['net_profit'] >= 0 ? 'text-green-600' : 'text-red-600' }}">
-                    ${{ number_format($portfolioSummary['net_profit'], 2) }}
+                <strong class="{{ $netProfit >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                    ${{ number_format($netProfit, 2) }}
+                </strong>
+            </p>
+            <p>Average ROI: 
+                <strong class="{{ $netProfit >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                    {{ number_format($averageRoi, 2) }}%
                 </strong>
             </p>
         </div>

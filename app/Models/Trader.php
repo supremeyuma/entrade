@@ -39,5 +39,10 @@ class Trader extends Model
         return $this->hasMany(Trade::class);
     }
 
+    public function tradeLogs()
+    {
+        return $this->hasMany(TradeLog::class);
+    }
+
 
 }

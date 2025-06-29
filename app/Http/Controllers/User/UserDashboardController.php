@@ -8,6 +8,8 @@ use App\Models\Referral;
 use App\Models\TradeOutcome;
 use Illuminate\Support\Facades\DB;
 use App\Models\Balance;
+use App\Models\TradeLog;
+use App\Models\TradeHistory;
 
 
 class UserDashboardController extends Controller
@@ -44,15 +46,21 @@ class UserDashboardController extends Controller
             ->get();
 
         // Calculate portfolio stats
-        $totalReturns = $user->tradeOutcomes()->sum('pnl');
-        $totalInvested = $user->copiedTraders()->sum('allocated_amount');
-        $netProfit = $totalReturns;
+        
+        // Calculate total returns (sum of outputs for user's trades)
+        $totalReturns = TradeHistory::where('user_id', $user->id)
+            ->sum('output');
 
-        $portfolioSummary = [
-            'total_invested' => $totalInvested,
-            'total_returns' => $totalReturns,
-            'net_profit' => $netProfit,
-        ];
+        // Calculate total invested (sum of inputs for user's trades)
+        $totalInvested = TradeHistory::where('user_id', $user->id)
+            ->sum('input');
+
+        // Calculate net profit (total returns minus total invested)
+        $netProfit = $totalReturns - $totalInvested;
+
+        // Calculate ROI percentage (if you want to show performance)
+        $averageRoi = TradeHistory::where('user_id', $user->id)
+        ->average('roi');
 
         return view('user.dashboard', compact(
             'user',
@@ -61,7 +69,10 @@ class UserDashboardController extends Controller
             'referrals',
             'activeTrades',
             'recentTrades',
-            'portfolioSummary'
+            'totalReturns',
+            'totalInvested',
+            'netProfit',
+            'averageRoi',
         ));
     }
 }

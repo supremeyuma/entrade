@@ -105,8 +105,8 @@ class FaqSeeder extends Seeder
             foreach ($categoryData['faqs'] as $faq) {
                 Faq::create([
                     'faq_category_id' => $category->id,
-                    'question' => $faq['q'],
-                    'answer'   => $faq['a'],
+                    'question' => $faq['question'],
+                    'answer'   => $faq['answer'],
                 ]);
             }
         }

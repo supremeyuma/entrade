@@ -129,6 +129,11 @@ class User extends Authenticatable implements MustVerifyEmail
         )->whereIn('trader_id', $this->copiedTraders()->pluck('traders.id'));
     }
 
+    public function subscribedTraders()
+    {
+        return $this->belongsToMany(Trader::class, 'user_trader_subscriptions', 'user_id', 'trader_id');
+    }
+
 
 
 

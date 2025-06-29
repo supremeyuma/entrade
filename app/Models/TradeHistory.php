@@ -11,9 +11,9 @@ class TradeHistory extends Model
         'user_id',
         'trader_id',
         'trade_outcome_id',
-        'previous_balance',
-        'change',
-        'new_balance',
+        'input',
+        'roi',
+        'output',
     ];
 
     public function user(): BelongsTo
