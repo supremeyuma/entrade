@@ -32,6 +32,9 @@ use App\Http\Controllers\Guest\MarketController;
 use App\Http\Controllers\Guest\HelpCenterController;
 use App\Http\Controllers\Admin\FaqCategoryController;
 use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\Admin\AdminWalletController;
+use App\Http\Controllers\User\UserWalletController;
+use App\Http\Controllers\QrCodeController;
 
 
 
@@ -54,6 +57,10 @@ Route::get('/help/{category}', [HelpCenterController::class, 'show'])->name('hel
 Route::get('/leaderboard', [TraderLeaderboardController::class, 'publicLeaderboard'])->name('leaderboard.public');
 Route::get('/traders/{trader}', [UserTradeController::class, 'profile'])->name('guests.trader-profile');
 Route::get('/traders/{trader}/trades', [UserTradeController::class, 'trades'])->name('guests.trader-trades');
+
+//QR CODE
+Route::get('/qr-code', [QrCodeController::class, 'show'])->name('qr.generate');
+
 
 
 // Auth Routes
@@ -107,6 +114,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::resource('faqs', FaqController::class);
     Route::resource('faq-categories', FaqCategoryController::class);
 
+    //User Wallets
+    Route::get('admin/user-wallets', [AdminWalletController::class, 'index'])->name('admin.wallets.index');
+
+
 });
 
 // ------------------------
@@ -141,6 +152,12 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
 
     // Referrals
     Route::get('/referrals', [UserReferralController::class, 'index'])->name('referrals.index');
+
+    //Wallets
+    Route::get('wallets', [UserWalletController::class, 'index'])->name('wallets.index');
+    Route::post('wallets', [UserWalletController::class, 'store'])->name('wallets.store');
+    Route::put('wallets/{wallet}', [UserWalletController::class, 'update'])->name('wallets.update');
+    Route::delete('wallets/{wallet}', [UserWalletController::class, 'destroy'])->name('wallets.destroy');
 
     // Reports
     Route::get('reports', [UserReportController::class, 'showReportOptions'])->name('reports.index');

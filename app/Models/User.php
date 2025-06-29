@@ -134,6 +134,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Trader::class, 'user_trader_subscriptions', 'user_id', 'trader_id');
     }
 
+    public function wallets() {
+        return $this->hasMany(UserWallet::class);
+    }
+    
+
 
 
 
