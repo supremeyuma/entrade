@@ -33,7 +33,9 @@ use App\Http\Controllers\Guest\HelpCenterController;
 use App\Http\Controllers\Admin\FaqCategoryController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\AdminWalletController;
+use App\Http\Controllers\Admin\AdminWithdrawalController;
 use App\Http\Controllers\User\UserWalletController;
+use App\Http\Controllers\User\UserWithdrawalController;
 use App\Http\Controllers\QrCodeController;
 
 
@@ -117,7 +119,12 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     //User Wallets
     Route::get('admin/user-wallets', [AdminWalletController::class, 'index'])->name('admin.wallets.index');
 
+    //Withdrawals
+    Route::get('/withdrawals', [AdminWithdrawalController::class, 'index'])->name('admin.withdrawals.index');
+    Route::put('/withdrawals/{withdrawal}', [AdminWithdrawalController::class, 'update'])->name('admin.withdrawals.update');
 
+    Route::get('/withdrawal-settings', [AdminWithdrawalSettingsController::class, 'index'])->name('admin.withdrawal-settings.index');
+    Route::post('/withdrawal-settings', [AdminWithdrawalSettingsController::class, 'store'])->name('admin.withdrawal-settings.store');
 });
 
 // ------------------------
@@ -162,6 +169,12 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
     // Reports
     Route::get('reports', [UserReportController::class, 'showReportOptions'])->name('reports.index');
     Route::post('reports/generate', [UserReportController::class, 'generateReport'])->name('reports.generate');
+
+    //Withdrawals
+    Route::get('/withdrawals', [UserWithdrawalController::class, 'index'])->name('withdrawals.index');
+    Route::post('/withdrawals', [UserWithdrawalController::class, 'store'])->name('withdrawals.store');
+    Route::get('/user/withdrawals/confirm/{token}', [UserWithdrawalController::class, 'confirm'])->name('withdrawals.confirm');
+    Route::post('/user/withdrawals/confirm', [UserWithdrawalController::class, 'processConfirmation'])->name('withdrawals.confirm.process');
 });
 
 // ------------------------
