@@ -17,9 +17,8 @@ use App\Mail\WithdrawalConfirmationMail;
 
 class UserWithdrawalController extends Controller
 {
-    public function index()
+    public function create()
     {
-        $withdrawals = auth()->user()->withdrawals()->latest()->get();
         $wallets = auth()->user()->wallets;
 
         // feeSettings: ['BTC' => ['fixed' => 0.0005, 'percent' => 1.5], ...]
@@ -27,7 +26,13 @@ class UserWithdrawalController extends Controller
             return ['fixed' => $item->fixed_fee, 'percent' => $item->percent_fee];
         });
 
-        return view('user.withdrawals.index', compact('withdrawals', 'wallets', 'feeSettings'));
+        return view('user.withdrawals.create', compact('wallets', 'feeSettings'));
+    }
+
+    public function history()
+    {
+        $withdrawals = auth()->user()->withdrawals()->latest()->get();
+        return view('user.withdrawals.history', compact('withdrawals'));
     }
 
 

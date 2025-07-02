@@ -29,6 +29,13 @@
                 </svg>
                 Deposit Funds
             </a>
+            <a href="{{ route('user.withdrawals.create') }}" class="flex items-center gap-2 px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path d="M20 12H4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+
+                Withdraw Funds
+            </a>
 
             <div x-data="{ tradingMenuOpen: false }"> 
                 <button @click="tradingMenuOpen = !tradingMenuOpen" class="flex items-center justify-between w-full px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
@@ -66,15 +73,15 @@
                     </svg>
                 </button>
                 <div x-show="accountMenuOpen" class="ml-4 space-y-1">
-                    <a href="{{ route('user.tradeHistory') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Deposit History</a>
-                    <a href="{{ route('user.withdrawals.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Withdrawal History</a>
+                    <a href="{{ route('user.deposit.history') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Deposit History</a>
+                    <a href="{{ route('user.withdrawals.history') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Withdrawal History</a>
                     <a href="{{ route('user.wallets.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Wallets</a>
                     <a href="{{ route('user.reports.index', ['trader' => 1]) }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Statements</a>
                 </div>
             </div>
 
             <a href="{{ route('user.profile.show') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Accounts</a>
-            <a href="{{ route('user.deposit.history') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Deposit History</a>
+            
             <a href="{{ route('user.profile.show') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Profile</a>
         @endif
 
