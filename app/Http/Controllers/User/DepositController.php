@@ -62,11 +62,31 @@ class DepositController extends Controller
         }
     }
 
-    public function history()
-        {
-            $user = Auth::user();
-            $deposits = Deposit::where('user_id', $user->id)->orderByDesc('created_at')->get();
+    public function history(Request $request)
+    {
+        $query = auth()->user()->deposits();
 
-            return view('user.deposits.history', compact('deposits'));
+        if ($request->filled('from')) {
+            $query->whereDate('created_at', '>=', $request->from);
         }
+
+        if ($request->filled('to')) {
+            $query->whereDate('created_at', '<=', $request->to);
+        }
+
+        if ($request->sort === 'amount_asc') {
+            $query->orderBy('amount');
+        } elseif ($request->sort === 'amount_desc') {
+            $query->orderByDesc('amount');
+        } elseif ($request->sort === 'date_asc') {
+            $query->orderBy('created_at');
+        } else {
+            $query->orderByDesc('created_at');
+        }
+
+        $deposits = $query->get();
+
+        return view('user.deposits.history', compact('deposits'));
+    }
+
 }

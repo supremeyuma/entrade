@@ -29,11 +29,33 @@ class UserWithdrawalController extends Controller
         return view('user.withdrawals.create', compact('wallets', 'feeSettings'));
     }
 
-    public function history()
+    public function history(Request $request)
     {
-        $withdrawals = auth()->user()->withdrawals()->latest()->get();
+        $query = auth()->user()->withdrawals();
+
+        if ($request->filled('from')) {
+            $query->whereDate('created_at', '>=', $request->from);
+        }
+
+        if ($request->filled('to')) {
+            $query->whereDate('created_at', '<=', $request->to);
+        }
+
+        if ($request->sort === 'amount_asc') {
+            $query->orderBy('amount');
+        } elseif ($request->sort === 'amount_desc') {
+            $query->orderByDesc('amount');
+        } elseif ($request->sort === 'date_asc') {
+            $query->orderBy('created_at');
+        } else {
+            $query->orderByDesc('created_at');
+        }
+
+        $withdrawals = $query->get();
+
         return view('user.withdrawals.history', compact('withdrawals'));
     }
+
 
 
 

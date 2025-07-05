@@ -178,6 +178,10 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
     Route::post('/user/withdrawals/confirm', [UserWithdrawalController::class, 'processConfirmation'])->name('withdrawals.confirm.process');
 });
 
+// Accounts-Sections Routes
+Route::put('/account/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
+
+
 // ------------------------
 // Deposits
 // ------------------------
