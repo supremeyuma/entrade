@@ -176,10 +176,18 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
     Route::post('/withdrawals', [UserWithdrawalController::class, 'store'])->name('withdrawals.store');
     Route::get('/user/withdrawals/confirm/{token}', [UserWithdrawalController::class, 'confirm'])->name('withdrawals.confirm');
     Route::post('/user/withdrawals/confirm', [UserWithdrawalController::class, 'processConfirmation'])->name('withdrawals.confirm.process');
+
+
+    // Accounts-Sections Routes
+    Route::put('/account/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
+
+    Route::put('/account/security/password', [UserSecurityController::class, 'changePassword'])->name('security.change-password');
+    Route::post('/account/security/enable-2fa', [UserSecurityController::class, 'enable2FA'])->name('security.enable-2fa');
+    Route::delete('/account/security/disable-2fa', [UserSecurityController::class, 'disable2FA'])->name('security.disable-2fa');
+
 });
 
-// Accounts-Sections Routes
-Route::put('/account/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
+
 
 
 // ------------------------

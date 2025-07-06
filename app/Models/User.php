@@ -143,6 +143,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Withdrawal::class);
     }
 
+    public function settings()
+    {
+        return $this->hasOne(UserAccountSetting::class);
+    }
+
+
 
 
 
