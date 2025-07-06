@@ -56,6 +56,32 @@
             </label>
         </div>
 
+        {{-- Additional Notification Toggles --}}
+        <div class="space-y-2">
+            <label class="inline-flex items-center space-x-2">
+                <input type="checkbox" name="notify_on_trade_activity" value="1"
+                    {{ $settings?->notify_on_trade_activity ? 'checked' : '' }}
+                    class="form-checkbox h-5 w-5 text-blue-600">
+                <span>Notify me on trade activity</span>
+            </label>
+
+            <label class="inline-flex items-center space-x-2">
+                <input type="checkbox" name="notify_on_withdrawal" value="1"
+                    {{ $settings?->notify_on_withdrawal ? 'checked' : '' }}
+                    class="form-checkbox h-5 w-5 text-blue-600">
+                <span>Notify me on withdrawals</span>
+            </label>
+
+            <label class="inline-flex items-center space-x-2">
+                <input type="checkbox" name="notify_on_referral" value="1"
+                    {{ $settings?->notify_on_referral ? 'checked' : '' }}
+                    class="form-checkbox h-5 w-5 text-blue-600">
+                <span>Notify me on referral activity</span>
+            </label>
+        </div>
+
+
+
         <div>
             <button type="submit"
                     class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">

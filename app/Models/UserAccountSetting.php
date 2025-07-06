@@ -15,6 +15,9 @@ class UserAccountSetting extends Model
         'language',
         'timezone',
         'email_notifications',
+        'notify_on_trade_activity',
+        'notify_on_withdrawal',
+        'notify_on_referral',
     ];
 
     // Relationship to User
