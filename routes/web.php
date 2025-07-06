@@ -41,6 +41,7 @@ use App\Http\Controllers\User\UserKycController;
 use App\Http\Controllers\User\UserSecurityController;
 use App\Http\Controllers\Admin\AdminKycController;
 use App\Http\Controllers\User\UserPreferencesController;
+use App\Http\Controllers\User\UserAccountController;
 
 
 
@@ -198,6 +199,9 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
 
     Route::post('/account/kyc/submit', [UserKycController::class, 'submit'])->name('kyc.submit');
     Route::put('/account/preferences', [UserPreferencesController::class, 'update'])->name('preferences.update');
+
+    Route::delete('/account/delete', [UserAccountController::class, 'destroy'])->name('account.destroy');
+
 
 });
 
