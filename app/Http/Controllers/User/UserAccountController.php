@@ -2,11 +2,26 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class UserAccountController extends Controller
-{
+{   
+    public function index()
+    {
+        $user = auth()->user();
+    
+        // Preload user-specific data needed across account sections
+        $notifications = $user->notifications()->latest()->paginate(10); // Optional preview
+        $referrals = $user->referralsMade()->with('referred')->latest('referred_at')->take(5)->get();
+        $kyc = $user->kycVerification;
+        $settings = $user->accountSetting;
+    
+        return view('user.accounts', compact('user', 'notifications', 'referrals', 'kyc', 'settings'));
+    }
+
+    
     public function notifications()
     {
         $notifications = auth()->user()

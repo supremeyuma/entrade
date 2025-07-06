@@ -190,6 +190,8 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
 
 
     // Accounts-Sections Routes
+    Route::get('/account', [UserAccountController::class, 'index'])->name('account.index');
+
     Route::put('/account/profile', [UserProfileController::class, 'update'])->name('profile.update');
 
     Route::put('/account/security/password', [UserSecurityController::class, 'changePassword'])->name('security.change-password');
@@ -200,7 +202,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
     Route::post('/account/kyc/submit', [UserKycController::class, 'submit'])->name('kyc.submit');
     Route::put('/account/preferences', [UserPreferencesController::class, 'update'])->name('preferences.update');
 
-    Route::get('/account/notifications', [UserAccountController::class, 'notifications'])->name('user.account.notifications');
+    Route::get('/account/notifications', [UserAccountController::class, 'notifications'])->name('account.notifications');
 
     Route::delete('/account/delete', [UserAccountController::class, 'destroy'])->name('account.destroy');
 

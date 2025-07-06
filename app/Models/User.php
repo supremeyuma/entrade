@@ -13,6 +13,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Trader;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\KycVerification;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -148,6 +150,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(UserAccountSetting::class);
     }
+
+    public function kycVerification()
+    {
+        return $this->hasOne(KycVerification::class);
+    }
+
 
 
 
