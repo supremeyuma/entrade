@@ -40,6 +40,7 @@ use App\Http\Controllers\QrCodeController;
 use App\Http\Controllers\User\UserKycController;
 use App\Http\Controllers\User\UserSecurityController;
 use App\Http\Controllers\Admin\AdminKycController;
+use App\Http\Controllers\User\UserPreferencesController;
 
 
 
@@ -196,6 +197,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
 
 
     Route::post('/account/kyc/submit', [UserKycController::class, 'submit'])->name('kyc.submit');
+    Route::put('/account/preferences', [UserPreferencesController::class, 'update'])->name('preferences.update');
 
 });
 
