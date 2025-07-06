@@ -17,8 +17,9 @@ class UserAccountController extends Controller
         $referrals = $user->referralsMade()->with('referred')->latest('referred_at')->take(5)->get();
         $kyc = $user->kycVerification;
         $settings = $user->accountSetting;
+        $logs = $user->activityLogs()->latest()->paginate(15);
     
-        return view('user.accounts', compact('user', 'notifications', 'referrals', 'kyc', 'settings'));
+        return view('user.accounts', compact('user', 'notifications', 'referrals', 'kyc', 'settings', 'logs'));
     }
 
     
@@ -31,6 +32,17 @@ class UserAccountController extends Controller
 
         return view('user.account-sections.notifications', compact('notifications'));
     }
+
+    public function activityLog()
+    {
+        $logs = auth()->user()
+            ->activityLogs()
+            ->latest()
+            ->paginate(15);
+
+        return view('user.account-sections.activity-log', compact('logs'));
+    }
+
 
 
     public function destroy(Request $request)

@@ -204,6 +204,8 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
 
     Route::get('/account/notifications', [UserAccountController::class, 'notifications'])->name('account.notifications');
 
+    Route::get('/account/activity-log', [UserAccountController::class, 'activityLog'])->name('user.account.activity-log');
+
     Route::delete('/account/delete', [UserAccountController::class, 'destroy'])->name('account.destroy');
 
 
