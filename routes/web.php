@@ -200,6 +200,8 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
     Route::post('/account/kyc/submit', [UserKycController::class, 'submit'])->name('kyc.submit');
     Route::put('/account/preferences', [UserPreferencesController::class, 'update'])->name('preferences.update');
 
+    Route::get('/account/notifications', [UserAccountController::class, 'notifications'])->name('user.account.notifications');
+
     Route::delete('/account/delete', [UserAccountController::class, 'destroy'])->name('account.destroy');
 
 

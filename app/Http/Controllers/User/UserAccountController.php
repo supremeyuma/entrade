@@ -7,6 +7,17 @@ use Illuminate\Validation\ValidationException;
 
 class UserAccountController extends Controller
 {
+    public function notifications()
+    {
+        $notifications = auth()->user()
+            ->notifications()
+            ->latest()
+            ->paginate(10);
+
+        return view('user.account-sections.notifications', compact('notifications'));
+    }
+
+
     public function destroy(Request $request)
     {
         $request->validate([
