@@ -32,7 +32,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/login';
 
     /**
      * Create a new controller instance.
@@ -67,17 +67,36 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // Generate unique referral code
+        do {
+            $referralCode = strtoupper(\Str::random(8));
+        } while (User::where('referral_code', $referralCode)->exists());
+
+        $newUser = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'password' => \Hash::make($data['password']),
+            'referral_code' => $referralCode,
+        ]);
+
+        $newUser->assignRole('user');
+
+        //Creating User Account Settings Table
+        $newUser->settings()->create();
+
+        event(new \Illuminate\Auth\Events\Registered($newUser));
+
         if (SettingsHelper::isReferralEnabled() && request()->filled('referral_code')) {
             $referrer = User::where('referral_code', request()->input('referral_code'))->first();
-        
+
             if ($referrer) {
-                // Save referral
-                Referral::create([
+                $referral = Referral::create([
                     'referrer_id' => $referrer->id,
-                    'referred_id' => $newUser->id, // the new user just registered
+                    'referred_id' => $newUser->id,
+                    'referred_at' => now(),
                 ]);
 
-                //Referral Bonus Payout
+                // Handle payout mode
                 $payoutMode = SiteSetting::where('key', 'referral_payout_mode')->value('value');
 
                 switch ($payoutMode) {
@@ -86,58 +105,47 @@ class RegisterController extends Controller
                             'status' => 'paid',
                             'bonus_amount' => 10, // example fixed bonus
                         ]);
-                
-                        $referral->referrer->increment('balance', 10);
-                
-                        // log activity
-                        ActivityLogger::log('referral_bonus_paid', 'Referral bonus automatically paid to user', $referral->referrer_id);
+                        $referrer->increment('balance', 10);
+                        ActivityLogger::log('referral_bonus_paid', 'Referral bonus automatically paid', $referrer->id);
                         break;
-                
+
                     case 'approval':
                         $referral->update([
                             'status' => 'pending',
                             'bonus_amount' => 10, // pre-set amount but pending approval
                         ]);
-                
-                        ActivityLogger::log('referral_bonus_pending', 'Referral bonus awaiting admin approval', $referral->referrer_id);
+                        ActivityLogger::log('referral_bonus_pending', 'Referral bonus pending approval', $referrer->id);
                         break;
-                
+
                     case 'manual':
-                        // no automatic bonus action
-                        ActivityLogger::log('referral_bonus_manual', 'Referral bonus requires manual processing', $referral->referrer_id);
-                        break;
+                        ActivityLogger::log('referral_bonus_manual', 'Manual referral bonus processing required', $referrer->id);
+                        break; // no automatic bonus action
                 }
-                
-        
-                // Log referral
+                //Log Referral
                 if (SettingsHelper::get('log_referrals', 'true') === 'true') {
-                    ActivityLogger::log('referral_created', 'Referral created by ' . $referrer->name, $referrer->id);
+                    ActivityLogger::log('referral_created', 'Referral by ' . $referrer->name, $referrer->id);
                 }
-        
-                // Apply bonus if enabled
+
+                // Optional bonus payout
                 if (SettingsHelper::get('referral_bonus_enabled') === 'true') {
                     $bonusAmount = floatval(SettingsHelper::get('referral_bonus_amount'));
-                    $bonusType = SettingsHelper::get('referral_bonus_type'); // flat or percentage
-                    $bonusTarget = SettingsHelper::get('referral_bonus_credit_to', 'main'); // main or trading
-        
+                    $bonusType = SettingsHelper::get('referral_bonus_type');//flat or percentage;
+                    $bonusTarget = SettingsHelper::get('referral_bonus_credit_to', 'main'); //main or trading;
+
                     if ($bonusType === 'percentage') {
                         $bonusAmount = $newUser->initial_deposit * ($bonusAmount / 100);
                     }
-        
+
                     $referrer->increment("{$bonusTarget}_balance", $bonusAmount);
-        
-                    // Log bonus
+
                     if (SettingsHelper::get('log_referral_bonus', 'true') === 'true') {
-                        ActivityLogger::log('referral_bonus', "Referral bonus of {$bonusAmount} credited to {$bonusTarget} balance for referral.", $referrer->id);
+                        ActivityLogger::log('referral_bonus', "Bonus of {$bonusAmount} credited to {$bonusTarget}", $referrer->id);
                     }
                 }
             }
         }
 
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        return $newUser;
     }
+
 }
