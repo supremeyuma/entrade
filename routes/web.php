@@ -37,6 +37,9 @@ use App\Http\Controllers\Admin\AdminWithdrawalController;
 use App\Http\Controllers\User\UserWalletController;
 use App\Http\Controllers\User\UserWithdrawalController;
 use App\Http\Controllers\QrCodeController;
+use App\Http\Controllers\User\UserKycController;
+use App\Http\Controllers\User\UserSecurityController;
+use App\Http\Controllers\Admin\AdminKycController;
 
 
 
@@ -117,14 +120,20 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::resource('faq-categories', FaqCategoryController::class);
 
     //User Wallets
-    Route::get('admin/user-wallets', [AdminWalletController::class, 'index'])->name('admin.wallets.index');
+    Route::get('admin/user-wallets', [AdminWalletController::class, 'index'])->name('wallets.index');
 
     //Withdrawals
-    Route::get('/withdrawals', [AdminWithdrawalController::class, 'index'])->name('admin.withdrawals.index');
-    Route::put('/withdrawals/{withdrawal}', [AdminWithdrawalController::class, 'update'])->name('admin.withdrawals.update');
+    Route::get('/withdrawals', [AdminWithdrawalController::class, 'index'])->name('withdrawals.index');
+    Route::put('/withdrawals/{withdrawal}', [AdminWithdrawalController::class, 'update'])->name('withdrawals.update');
 
-    Route::get('/withdrawal-settings', [AdminWithdrawalSettingsController::class, 'index'])->name('admin.withdrawal-settings.index');
-    Route::post('/withdrawal-settings', [AdminWithdrawalSettingsController::class, 'store'])->name('admin.withdrawal-settings.store');
+    Route::get('/withdrawal-settings', [AdminWithdrawalSettingsController::class, 'index'])->name('withdrawal-settings.index');
+    Route::post('/withdrawal-settings', [AdminWithdrawalSettingsController::class, 'store'])->name('withdrawal-settings.store');
+
+    //KYC Routes
+    Route::get('/kyc', [AdminKycController::class, 'index'])->name('kyc.index');
+    Route::get('/kyc/{kyc}', [AdminKycController::class, 'show'])->name('kyc.show');
+    Route::post('/kyc/{kyc}/approve', [AdminKycController::class, 'approve'])->name('kyc.approve');
+    Route::post('/kyc/{kyc}/reject', [AdminKycController::class, 'reject'])->name('kyc.reject');
 });
 
 // ------------------------
@@ -179,11 +188,14 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
 
 
     // Accounts-Sections Routes
-    Route::put('/account/profile', [UserProfileController::class, 'update'])->name('user.profile.update');
+    Route::put('/account/profile', [UserProfileController::class, 'update'])->name('profile.update');
 
     Route::put('/account/security/password', [UserSecurityController::class, 'changePassword'])->name('security.change-password');
     Route::post('/account/security/enable-2fa', [UserSecurityController::class, 'enable2FA'])->name('security.enable-2fa');
     Route::delete('/account/security/disable-2fa', [UserSecurityController::class, 'disable2FA'])->name('security.disable-2fa');
+
+
+    Route::post('/account/kyc/submit', [UserKycController::class, 'submit'])->name('kyc.submit');
 
 });
 
