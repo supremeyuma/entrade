@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
+use App\Models\Trader;
+use App\Models\Trade;
+use App\Models\Withdrawal;
 
 class AdminDashboardController extends Controller
 {
@@ -12,8 +15,10 @@ class AdminDashboardController extends Controller
     {
         $totalUsers = User::count();
         $admins = Role::where('name', 'admin')->first()?->users->count() ?? 0;
-        $traders = Role::where('name', 'trader')->first()?->users->count() ?? 0;
+        $traders = Trader::count();
+        $pendingWithdrawals = Withdrawal::where('status', 'pending')->count();
+        $recentTrades = Trade::with('trader')->latest()->take(5)->get();
         
-        return view('admin.dashboard', compact('totalUsers', 'admins', 'traders'));
+        return view('admin.dashboard', compact('totalUsers', 'admins', 'traders', 'pendingWithdrawals', 'recentTrades'));
     }
 }

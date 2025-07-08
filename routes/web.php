@@ -94,6 +94,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 
     // Trade Outcomes
     Route::resource('trade-outcomes', TradeOutcomeController::class)->only(['index', 'create', 'store']);
+    Route::get('trades', [TradeOutcomeController::class, 'create'])->name('trades.create');
 
     // Trade Logs
     Route::resource('trade-logs', TradeLogController::class)->only(['index', 'store', 'create', 'show']);

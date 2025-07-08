@@ -1,7 +1,7 @@
-<x-layouts/app>
+<x-layouts.app>
 <div class="min-h-screen flex flex-col">
-        <!-- Navbar 
-        <nav class="bg-white border-b shadow-sm px-4 py-3 flex justify-between items-center">
+        <!--Navbar--> 
+        <!--<nav class="bg-white border-b shadow-sm px-4 py-3 flex justify-between items-center">
             <div>
                 <a href="{{ route('admin.dashboard') }}" class="text-lg font-semibold text-gray-800">Admion Dashboard</a>
             </div>
@@ -13,11 +13,15 @@
                     <button type="submit" class="text-sm text-gray-600 hover:text-gray-900">Logout</button>
                 </form>
             </div>
-        </nav>--->
-S
+        </nav>-->
         <!-- Page Content -->
-        <main class="flex-1 md:ml-64">
-            @yield('content')
-        </main>
+        <div class="container mx-auto mt-8">
+    
+            <main class="mt-4">
+            
+                {{ $slot }}
+            
+            </main>
+</div>
     </div>
-</x-layouts/app>
+</x-layouts.app>
