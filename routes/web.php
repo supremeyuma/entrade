@@ -89,7 +89,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('traders/{trader}/subscribers', [TraderController::class, 'subscribers'])->name('trader.subscribers');
 
     // Users
-    Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
     Route::get('users/{user}/edit-role', [AdminUserController::class, 'editRole'])->name('users.editRole');
     Route::post('users/{user}/update-role', [AdminUserController::class, 'updateRole'])->name('users.updateRole');
     Route::post('/users/{user}/funds', [UserFundsController::class, 'store'])->name('users.funds.store');

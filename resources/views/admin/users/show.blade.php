@@ -1,81 +1,48 @@
 <x-layouts.admin>
-    <div class="px-4 py-6 max-w-3xl mx-auto">
-        <h1 class="text-2xl font-bold mb-6">User: {{ $user->name }}</h1>
+    <div class="px-4 py-6">
+        <h1 class="text-2xl font-bold mb-4">User Profile</h1>
 
-        {{-- Wallets --}}
-        <div class="mb-6">
-            <h2 class="text-lg font-semibold mb-2">Wallets</h2>
-            <ul class="space-y-2">
-                @foreach ($user->wallets as $wallet)
-                    <li class="p-4 bg-white dark:bg-gray-800 rounded shadow">
-                        <strong>{{ strtoupper($wallet->currency) }}</strong> —
-                        {{ $wallet->balance }} {{ strtoupper($wallet->currency) }}
-                    </li>
-                @endforeach
-            </ul>
+        <div class="bg-white dark:bg-gray-800 p-6 rounded shadow space-y-4">
+            <p><strong>Name:</strong> {{ $user->name }}</p>
+            <p><strong>Email:</strong> {{ $user->email }}</p>
+            <p><strong>Role:</strong> {{ ucfirst($user->role) }}</p>
+            <p><strong>Status:</strong> {{ $user->status ?? 'active' }}</p>
+            <p><strong>Main Balance:</strong> ${{ number_format($user->balance->main_balance, 2) }}</p>
+            <p><strong>Trading Balance:</strong> ${{ number_format($user->balance->trading_balance, 2) }}</p>
         </div>
 
-        {{-- Fund Management --}}
-        <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
-            <h2 class="text-lg font-semibold mb-4">Adjust Funds</h2>
-
-            <form action="{{ route('admin.funds.update', $user) }}" method="POST">
-                @csrf
-                @method('POST')
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Wallet</label>
-                        <select name="wallet_id" required class="w-full p-2 rounded border dark:bg-gray-900">
-                            @foreach ($user->wallets as $wallet)
-                                <option value="{{ $wallet->id }}">
-                                    {{ strtoupper($wallet->currency) }} – Balance: {{ $wallet->balance }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Amount</label>
-                        <input type="number" name="amount" step="0.01" required class="w-full p-2 rounded border dark:bg-gray-900" />
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Type</label>
-                        <select name="type" required class="w-full p-2 rounded border dark:bg-gray-900">
-                            <option value="credit">Credit (Add)</option>
-                            <option value="debit">Debit (Subtract)</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Category</label>
-                        <select name="category" required class="w-full p-2 rounded border dark:bg-gray-900">
-                            <option value="deposit">Deposit</option>
-                            <option value="withdrawal">Withdrawal</option>
-                            <option value="bonus">Bonus</option>
-                            <option value="trade">Trade</option>
-                            <option value="correction">Correction</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="mt-4">
-                    <label class="block text-sm font-medium mb-1">Note (Visible to User)</label>
-                    <textarea name="note_user" rows="2" class="w-full p-2 rounded border dark:bg-gray-900"></textarea>
-                </div>
-
-                <div class="mt-4">
-                    <label class="block text-sm font-medium mb-1">Internal Note (Admin Only)</label>
-                    <textarea name="note_admin" rows="2" class="w-full p-2 rounded border dark:bg-gray-900"></textarea>
-                </div>
-
-                <div class="mt-6">
-                    <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                        Submit Adjustment
-                    </button>
-                </div>
-            </form>
+        <div class="mt-8">
+            <h2 class="text-xl font-semibold mb-4">Transaction History</h2>
+            <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded shadow">
+                <table class="w-full table-auto text-left text-sm">
+                    <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase">
+                        <tr>
+                            <th class="px-4 py-2">Type</th>
+                            <th class="px-4 py-2">Balance</th>
+                            <th class="px-4 py-2">Category</th>
+                            <th class="px-4 py-2">Amount</th>
+                            <th class="px-4 py-2">User Note</th>
+                            <th class="px-4 py-2">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse ($transactions as $tx)
+                            <tr class="border-t dark:border-gray-700">
+                                <td class="px-4 py-2">{{ ucfirst($tx->type) }}</td>
+                                <td class="px-4 py-2">{{ ucfirst($tx->balance_type) }}</td>
+                                <td class="px-4 py-2">{{ ucfirst($tx->category) }}</td>
+                                <td class="px-4 py-2 {{ $tx->type === 'credit' ? 'text-green-600' : 'text-red-600' }}">
+                                    ${{ number_format($tx->amount, 2) }}
+                                </td>
+                                <td class="px-4 py-2">{{ $tx->user_note ?? '-' }}</td>
+                                <td class="px-4 py-2">{{ $tx->created_at->format('d M, Y H:i') }}</td>
+                            </tr>
+                        @empty
+                            <tr><td colspan="6" class="px-4 py-4 text-center text-gray-500">No transactions yet.</td></tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </x-layouts.admin>

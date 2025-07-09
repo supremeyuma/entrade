@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Trader;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\KycVerification;
+use App\Models\Transaction;
 
 
 class User extends Authenticatable implements MustVerifyEmail
@@ -158,6 +159,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function activityLogs()
     {
         return $this->hasMany(ActivityLog::class);
+    }
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 
 

@@ -6,14 +6,23 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;   
+use Illuminate\Support\Facades\Auth;
+use App\Models\Transaction;   
 
 class AdminUserController extends Controller
 {
     public function index()
     {
-        $users = User::with('roles')->paginate(10);
+        $users = User::latest()->get();
         return view('admin.users.index', compact('users'));
+    }
+
+    public function show(User $user)
+    {
+        $user->load('balance'); // assuming Balance relationship exists
+        $transactions = $user->transactions()->latest()->get();
+
+        return view('admin.users.show', compact('user', 'transactions'));
     }
 
     public function editRole(User $user)
