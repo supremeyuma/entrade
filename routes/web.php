@@ -91,6 +91,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     // Users
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+    Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
     Route::get('users/{user}/edit-role', [AdminUserController::class, 'editRole'])->name('users.editRole');
     Route::post('users/{user}/update-role', [AdminUserController::class, 'updateRole'])->name('users.updateRole');
     Route::post('/users/{user}/funds', [UserFundsController::class, 'store'])->name('users.funds.store');

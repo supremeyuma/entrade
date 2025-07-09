@@ -24,6 +24,26 @@ class AdminUserController extends Controller
 
         return view('admin.users.show', compact('user', 'transactions'));
     }
+    
+    public function edit(User $user)
+    {
+        return view('admin.users.edit', compact('user'));
+    }
+
+    public function update(Request $request, User $user)
+    {
+        $validated = $request->validate([
+            'name'   => 'required|string|max:255',
+            'email'  => 'required|email|max:255|unique:users,email,' . $user->id,
+            'role'   => 'required|in:user,trader,admin',
+            'status' => 'nullable|string|max:50',
+        ]);
+
+        $user->update($validated);
+
+        return redirect()->route('admin.users.show', $user)->with('success', 'User updated successfully.');
+    }
+
 
     public function editRole(User $user)
     {

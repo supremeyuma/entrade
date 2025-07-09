@@ -18,7 +18,7 @@
                         <tr class="border-t dark:border-gray-700">
                             <td class="px-4 py-2">{{ $user->name }}</td>
                             <td class="px-4 py-2">{{ $user->email }}</td>
-                            <td class="px-4 py-2 capitalize">{{ $user->role }}</td>
+                            <td class="px-4 py-2 capitalize">{{ $user->roles->pluck('name')->implode(', ') ?: 'No role' }}</td>
                             <td class="px-4 py-2">
                                 <span class="text-xs px-2 py-1 rounded bg-gray-200 dark:bg-gray-700">
                                     {{ $user->status ?? 'active' }}
@@ -123,3 +123,4 @@
         </div>
     </div>
 </x-layouts.admin>
+{{ $user->roles->pluck('name')->implode(', ') ?: 'No role' }}
