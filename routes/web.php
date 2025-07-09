@@ -42,6 +42,7 @@ use App\Http\Controllers\User\UserSecurityController;
 use App\Http\Controllers\Admin\AdminKycController;
 use App\Http\Controllers\User\UserPreferencesController;
 use App\Http\Controllers\User\UserAccountController;
+use App\Http\Controllers\Admin\UserFundsController;
 
 
 
@@ -91,6 +92,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('users/{user}/edit-role', [AdminUserController::class, 'editRole'])->name('users.editRole');
     Route::post('users/{user}/update-role', [AdminUserController::class, 'updateRole'])->name('users.updateRole');
+    Route::post('/users/{user}/funds', [UserFundsController::class, 'store'])->name('users.funds.store');
 
     // Trade Outcomes
     Route::resource('trade-outcomes', TradeOutcomeController::class)->only(['index', 'create', 'store']);
