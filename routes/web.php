@@ -87,12 +87,14 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     // Trader Management
     Route::resource('traders', TraderController::class);
     Route::get('traders/{trader}/subscribers', [TraderController::class, 'subscribers'])->name('trader.subscribers');
+    Route::resource('traders.trades', TradeController::class)->only(['create', 'store']);
+    Route::get('/traders/{trader}', [TraderController::class, 'show'])->name('traders.show');
 
     // Users
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
     Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
-Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
     Route::get('users/{user}/edit-role', [AdminUserController::class, 'editRole'])->name('users.editRole');
     Route::post('users/{user}/update-role', [AdminUserController::class, 'updateRole'])->name('users.updateRole');
     Route::post('/users/{user}/funds', [UserFundsController::class, 'store'])->name('users.funds.store');

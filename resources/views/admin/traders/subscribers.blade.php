@@ -1,4 +1,4 @@
-<x-layouts/app>
+<x-layouts.app>
 <h1>Subscribers for {{ $trader->name }}</h1>
 
     <table class="table">
@@ -17,4 +17,4 @@
     </table>
 
     {{ $subscribers->links() }}
-</x-layouts/app>
+</x-layouts.app>

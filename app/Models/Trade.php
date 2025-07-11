@@ -12,13 +12,20 @@ class Trade extends Model
     protected $fillable = [
         'trader_id',
         'asset',
-        'trade_type', // buy/sell or long/short etc.
+        'pair',
+        'trade_type',
         'entry_price',
         'exit_price',
+        'lot_size',
+        'stop_loss',
+        'take_profit',
         'profit_loss',
-        'status', // pending, closed, etc.
+        'status',
         'executed_at',
+        'opened_at',
+        'closed_at',
     ];
+
 
     public function trader()
     {

@@ -1,4 +1,4 @@
-<x-layouts/admin>
+<x-layouts.admin>
 <h1 class="text-2xl mb-4">Traders</h1>
 
     <a href="{{ route('admin.traders.create') }}" class="btn btn-primary mb-4">Add Trader</a>
@@ -37,4 +37,4 @@
             @endforeach
         </tbody>
     </table>
-</x-layouts/admin>
+</x-layouts.admin>
