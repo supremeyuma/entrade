@@ -43,26 +43,31 @@ class TraderController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'bio' => 'nullable|string',
-            'performance_metrics' => 'nullable|json',
             'profile_photo' => 'nullable|image|max:2048',
+            'performance' => 'nullable|array',
         ]);
 
-        $data = $request->only('name', 'bio', 'performance_metrics');
-
         if ($request->hasFile('profile_photo')) {
-            $data['profile_photo'] = $request->file('profile_photo')->store('traders', 'public');
+            $validated['profile_photo'] = $request->file('profile_photo')->store('traders', 'public');
         }
 
-        Trader::create($data);
+        $validated['performance_metrics'] = $validated['performance'] ?? [];
+        unset($validated['performance']);
 
-        ActivityLogger::log('add_trader', 'Added new trader: ' . $trader->name . ' (ID: ' . $trader->id . ')', auth()->id());
+        $trader = Trader::create($validated);
 
+        ActivityLogger::log(
+            'add_trader',
+            'Added new trader: ' . $trader->name . ' (ID: ' . $trader->id . ')',
+            auth()->id()
+        );
 
         return redirect()->route('admin.traders.index')->with('success', 'Trader created successfully.');
     }
+
 
     public function edit(Trader $trader)
     {
@@ -71,29 +76,34 @@ class TraderController extends Controller
 
     public function update(Request $request, Trader $trader)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
             'bio' => 'nullable|string',
-            'performance_metrics' => 'nullable|json',
             'profile_photo' => 'nullable|image|max:2048',
+            'performance' => 'nullable|array',
         ]);
-
-        $data = $request->only('name', 'bio', 'performance_metrics');
 
         if ($request->hasFile('profile_photo')) {
             if ($trader->profile_photo) {
                 Storage::disk('public')->delete($trader->profile_photo);
             }
-            $data['profile_photo'] = $request->file('profile_photo')->store('traders', 'public');
+            $validated['profile_photo'] = $request->file('profile_photo')->store('traders', 'public');
         }
 
-        $trader->update($data);
+        $validated['performance_metrics'] = $validated['performance'] ?? [];
+        unset($validated['performance']);
 
-        ActivityLogger::log('update_trader', 'Updated trader: ' . $trader->name . ' (ID: ' . $trader->id . ')', auth()->id());
+        $trader->update($validated);
 
+        ActivityLogger::log(
+            'update_trader',
+            'Updated trader: ' . $trader->name . ' (ID: ' . $trader->id . ')',
+            auth()->id()
+        );
 
         return redirect()->route('admin.traders.index')->with('success', 'Trader updated successfully.');
     }
+
 
     public function show(Trader $trader)
     {
