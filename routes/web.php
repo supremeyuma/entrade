@@ -115,8 +115,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('activity-logs', [AdminActivityLogController::class, 'index'])->name('activityLogs');
 
     // Settings
-    Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
-    Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
+    Route::get('settings', [SiteSettingsController::class, 'index'])->name('settings.index');
+    Route::post('settings', [SiteSettingsController::class, 'update'])->name('settings.update');
 
     Route::get('site-settings/referral', [SiteSettingsController::class, 'referralSettings'])->name('site_settings.referral');
     Route::post('site-settings/referral', [SiteSettingsController::class, 'updateReferralSettings'])->name('site_settings.referral.update');

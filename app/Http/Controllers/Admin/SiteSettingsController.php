@@ -8,6 +8,21 @@ use App\Models\SiteSetting;
 
 class SiteSettingsController extends Controller
 {
+    public function index()
+    {
+        $settings = SiteSetting::all()->pluck('value', 'key');
+        return view('admin.settings.index', compact('settings'));
+    }
+
+    public function update(Request $request)
+    {
+        foreach ($request->except('_token') as $key => $value) {
+            SiteSetting::set($key, is_array($value) ? json_encode($value) : $value);
+        }
+
+        return redirect()->route('admin.settings.index')->with('success', 'Settings updated successfully.');
+    }
+    
     public function referralSettings()
     {
         $settings = SiteSetting::whereIn('key', [
