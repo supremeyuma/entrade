@@ -20,6 +20,7 @@ use App\Http\Controllers\User\UserTraderSubscriptionController;
 use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Admin\AdminProfileController;
 use App\Http\Controllers\Admin\TraderController;
+use App\Http\Controllers\Admin\TradeController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\TradeLogController;
 use App\Http\Controllers\Admin\TradeOutcomeController;

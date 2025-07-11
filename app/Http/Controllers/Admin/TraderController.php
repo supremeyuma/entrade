@@ -73,6 +73,13 @@ class TraderController extends Controller
         return redirect()->route('admin.traders.index')->with('success', 'Trader updated successfully.');
     }
 
+    public function show(Trader $trader)
+    {
+        $trader->load('trades');
+        return view('admin.traders.show', compact('trader'));
+    }
+
+
     public function destroy(Trader $trader)
     {
         if ($trader->profile_photo) {
