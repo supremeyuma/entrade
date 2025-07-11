@@ -8,11 +8,33 @@ use Illuminate\Support\Facades\Storage;
 
 class TraderController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $traders = Trader::all();
+        $query = Trader::query();
+
+        // Search
+        if ($search = $request->input('search')) {
+            $query->where('name', 'like', "%$search%");
+        }
+
+        // Sort
+        if ($sort = $request->input('sort')) {
+            if ($sort === 'roi') {
+                $query->orderByRaw("JSON_EXTRACT(performance_metrics, '$.roi') DESC");
+            } elseif ($sort === 'trades') {
+                $query->withCount('trades')->orderBy('trades_count', 'desc');
+            } else {
+                $query->orderBy('name');
+            }
+        } else {
+            $query->orderBy('name');
+        }
+
+        $traders = $query->paginate(10)->withQueryString();
+
         return view('admin.traders.index', compact('traders'));
     }
+
 
     public function create()
     {
