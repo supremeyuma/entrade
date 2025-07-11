@@ -38,4 +38,37 @@ class TradeController extends Controller
 
         return redirect()->route('admin.traders.show', $trader)->with('success', 'Trade added successfully.');
     }
+    
+    public function edit(Trade $trade)
+    {
+        return view('admin.trades.edit', compact('trade'));
+    }
+
+    public function update(Request $request, Trade $trade)
+    {
+        $data = $request->validate([
+            'asset' => 'required|string',
+            'trade_type' => 'required|string',
+            'entry_price' => 'nullable|numeric',
+            'exit_price' => 'nullable|numeric',
+            'profit_loss' => 'nullable|numeric',
+            'status' => 'nullable|string',
+            'executed_at' => 'nullable|date',
+        ]);
+
+        $trade->update($data);
+
+        return redirect()->route('admin.traders.show', $trade->trader_id)
+            ->with('success', 'Trade updated successfully.');
+    }
+
+    public function destroy(Trade $trade)
+    {
+        $traderId = $trade->trader_id;
+        $trade->delete();
+
+        return redirect()->route('admin.traders.show', $traderId)
+            ->with('success', 'Trade deleted.');
+    }
+
 }

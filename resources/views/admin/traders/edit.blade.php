@@ -1,35 +1,54 @@
 <x-layouts.admin>
-<h1 class="text-2xl mb-4">{{ isset($trader) ? 'Edit' : 'Add' }} Trader</h1>
+    <div class="px-4 py-6 max-w-3xl mx-auto">
+        <h1 class="text-2xl font-bold mb-6">Edit Trade for {{ $trade->trader->name }}</h1>
 
-    <form action="{{ isset($trader) ? route('admin.traders.update', $trader) : route('admin.traders.store') }}" method="POST" enctype="multipart/form-data">
-        @csrf
-        @if(isset($trader))
-            @method('PUT')
-        @endif
+        <form action="{{ route('admin.trades.update', $trade) }}" method="POST">
+            @csrf @method('PUT')
 
-        <div class="mb-4">
-            <label>Name</label>
-            <input type="text" name="name" value="{{ old('name', $trader->name ?? '') }}" required class="input">
-        </div>
+            <div class="mb-4">
+                <label>Asset / Pair</label>
+                <input type="text" name="asset" class="input" value="{{ old('asset', $trade->asset) }}" required>
+            </div>
 
-        <div class="mb-4">
-            <label>Bio</label>
-            <textarea name="bio" class="input">{{ old('bio', $trader->bio ?? '') }}</textarea>
-        </div>
+            <div class="mb-4">
+                <label>Trade Type</label>
+                <select name="trade_type" class="input" required>
+                    <option value="buy" @selected($trade->trade_type === 'buy')>Buy</option>
+                    <option value="sell" @selected($trade->trade_type === 'sell')>Sell</option>
+                    <option value="long" @selected($trade->trade_type === 'long')>Long</option>
+                    <option value="short" @selected($trade->trade_type === 'short')>Short</option>
+                </select>
+            </div>
 
-        <div class="mb-4">
-            <label>Performance Metrics (JSON)</label>
-            <textarea name="performance_metrics" class="input">{{ old('performance_metrics', isset($trader) ? json_encode($trader->performance_metrics) : '') }}</textarea>
-        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label>Entry Price</label>
+                    <input type="number" step="0.0001" name="entry_price" class="input" value="{{ old('entry_price', $trade->entry_price) }}">
+                </div>
+                <div>
+                    <label>Exit Price</label>
+                    <input type="number" step="0.0001" name="exit_price" class="input" value="{{ old('exit_price', $trade->exit_price) }}">
+                </div>
+                <div>
+                    <label>Profit / Loss</label>
+                    <input type="number" step="0.01" name="profit_loss" class="input" value="{{ old('profit_loss', $trade->profit_loss) }}">
+                </div>
+                <div>
+                    <label>Status</label>
+                    <select name="status" class="input">
+                        <option value="open" @selected($trade->status === 'open')>Open</option>
+                        <option value="closed" @selected($trade->status === 'closed')>Closed</option>
+                        <option value="pending" @selected($trade->status === 'pending')>Pending</option>
+                    </select>
+                </div>
+                <div>
+                    <label>Opened At</label>
+                    <input type="datetime-local" name="executed_at" class="input"
+                           value="{{ old('executed_at', optional($trade->executed_at)->format('Y-m-d\TH:i')) }}">
+                </div>
+            </div>
 
-        <div class="mb-4">
-            <label>Profile Photo</label>
-            <input type="file" name="profile_photo" class="input">
-            @if(isset($trader) && $trader->profile_photo)
-                <img src="{{ asset('storage/' . $trader->profile_photo) }}" class="w-24 mt-2 rounded">
-            @endif
-        </div>
-
-        <button class="btn btn-primary">{{ isset($trader) ? 'Update' : 'Create' }}</button>
-    </form>
+            <button class="btn btn-primary mt-6">Update Trade</button>
+        </form>
+    </div>
 </x-layouts.admin>

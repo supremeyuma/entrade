@@ -91,6 +91,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::resource('traders.trades', TradeController::class)->only(['create', 'store']);
     Route::get('/traders/{trader}', [TraderController::class, 'show'])->name('traders.show');
 
+    //Trades
+    Route::resource('trades', TradeController::class)->except(['index', 'create', 'store', 'show']);
+
     // Users
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
