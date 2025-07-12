@@ -15,7 +15,7 @@ class FaqController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Faq::with('category');
+        $query = Faq::with('category')->whereNull('deleted_at');
 
         if ($request->filled('category')) {
             $query->where('faq_category_id', $request->category);
