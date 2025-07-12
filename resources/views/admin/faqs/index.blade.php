@@ -1,5 +1,5 @@
 <x-layouts.admin>
-    <div class="max-w-6xl mx-auto p-6">
+    <div class="max-w-6xl mx-auto p-6" x-data="{ search: '' }">
         <div class="flex justify-between items-center mb-4">
             <h1 class="text-2xl font-bold">FAQs</h1>
             <div class="space-x-2">
@@ -20,6 +20,17 @@
             <div class="mb-4 p-4 bg-green-100 text-green-800 rounded">{{ session('success') }}</div>
         @endif
 
+
+        {{-- 🔍 Search --}}
+        <div class="mb-4">
+            <input
+                type="text"
+                placeholder="Search FAQs..."
+                class="w-full px-4 py-2 border rounded shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                x-model="search"
+            />
+        </div>
+
         <div class="bg-white dark:bg-gray-800 shadow rounded p-4">
             <table class="min-w-full bg-white dark:bg-gray-800 rounded shadow overflow-hidden">
                 <thead>
@@ -33,7 +44,9 @@
                 </thead>
                 <tbody>
                     @foreach ($faqs as $faq)
-                        <tr class="border-t border-gray-200 dark:border-gray-700">
+                        <tr class="border-t border-gray-200 dark:border-gray-700"
+                        x-show="search === '' || '{{ strtolower($faq->question) }}'.includes(search.toLowerCase())"
+                        >
                         <td class="py-2 px-3 font-medium">{{ $faq->position }}</td>
                             <td class="py-2 px-3 font-medium">{{ $faq->question }}</td>
                             <td class="py-2 px-3 text-sm">{{ $faq->category->title ?? '-' }}</td>
@@ -54,6 +67,10 @@
                             </td>
                         </tr>
                     @endforeach
+
+                    @if ($faqs->isEmpty())
+                        <tr><td colspan="3" class="p-4 text-center text-gray-500 dark:text-gray-400">No FAQs found.</td></tr>
+                    @endif
                 </tbody>
             </table>
         </div>
