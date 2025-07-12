@@ -9,7 +9,14 @@
 
             <x-inputs.text name="question" label="Question" :value="$faq->question" required />
 
-            <x-inputs.textarea name="answer" label="Answer" :value="$faq->answer" rows="5" required />
+            <div>
+                <label for="answer" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Answer</label>
+                <input id="answer" type="hidden" name="answer" value="{{ old('answer', $faq->answer ?? '') }}">
+                <trix-editor input="answer" class="mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded shadow-sm"></trix-editor>
+                @error('answer')
+                    <p class="text-red-600 text-sm mt-1">{{ $message }}</p>
+                @enderror
+            </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <x-inputs.text name="position" label="Position" type="number" :value="$faq->position ?? 0" />
@@ -28,4 +35,9 @@
             </div>
         </form>
     </div>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/trix@2.0.0/dist/trix.css">
+  
+     <script src="https://cdn.jsdelivr.net/npm/trix@2.0.0/dist/trix.umd.min.js"></script>
+  
 </x-layouts.admin>
