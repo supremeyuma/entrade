@@ -26,7 +26,10 @@ class FaqCategoryController extends Controller
         FaqCategory::create([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
+            'icon_type' => $request->icon_type ?? 'emoji',
+            'icon_value' => $request->icon_value,
         ]);
+        
         return redirect()->route('admin.faq-categories.index')->with('success', 'Category created.');
     }
 
@@ -41,7 +44,10 @@ class FaqCategoryController extends Controller
         $faqCategory->update([
             'title' => $request->title,
             'slug' => Str::slug($request->title),
+            'icon_type' => $request->icon_type ?? 'emoji',
+            'icon_value' => $request->icon_value,
         ]);
+        
         return redirect()->route('admin.faq-categories.index')->with('success', 'Category updated.');
     }
 

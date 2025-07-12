@@ -15,6 +15,18 @@
 
             <x-inputs.textarea name="description" label="Description (optional)" :value="old('description')" rows="3" />
 
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <x-inputs.text name="position" label="Position" type="number" :value="$faq->position ?? 0" />
+
+                <div class="flex items-center mt-6">
+                    <input type="checkbox" name="is_featured" id="is_featured" value = "1"
+                        class="rounded text-indigo-600 shadow-sm border-gray-300"
+                        {{ (isset($faq) && $faq->is_featured) ? 'checked' : '' }}>
+                    <label for="is_featured" class="ml-2 text-sm text-gray-700">Featured</label>
+                </div>
+            </div>
+
+
             <div class="pt-4">
                 <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">Create Category</button>
             </div>

@@ -10,9 +10,15 @@ class SiteSettingsController extends Controller
 {
     public function index()
     {
-        $settings = SiteSetting::all()->pluck('value', 'key');
+        $settings = SiteSetting::all()
+            ->mapWithKeys(function ($setting) {
+                return [str_replace('.', '_', $setting->key) => $setting->value];
+            })
+            ->toArray(); // Plain array
+    
         return view('admin.settings.index', compact('settings'));
     }
+    
 
     public function update(Request $request)
     {

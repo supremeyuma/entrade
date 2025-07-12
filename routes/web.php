@@ -132,6 +132,13 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     //Faq Routes
     Route::resource('faqs', FaqController::class);
     Route::resource('faq-categories', FaqCategoryController::class);
+    Route::resource('categories', Admin\FaqCategoryController::class);
+    Route::resource('questions', Admin\FaqController::class);
+
+    Route::post('faqs/import', [FaqController::class, 'import'])->name('faqs.import');
+    Route::get('faqs/export/json', [FaqController::class, 'exportJson'])->name('faqs.export.json');
+    Route::get('faqs/export/csv', [FaqController::class, 'exportCsv'])->name('faqs.export.csv');
+
 
     //User Wallets
     Route::get('admin/user-wallets', [AdminWalletController::class, 'index'])->name('wallets.index');
