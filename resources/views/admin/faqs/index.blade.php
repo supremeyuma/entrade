@@ -42,10 +42,11 @@
                         <th class="py-2 px-3 text-right">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="faq-sortable">
                     @foreach ($faqs as $faq)
-                        <tr class="border-t border-gray-200 dark:border-gray-700"
-                        x-show="search === '' || '{{ strtolower($faq->question) }}'.includes(search.toLowerCase())"
+                        <tr class="border-t border-gray-200 dark:border-gray-700 cursor-move"
+                            data-id="{{ $faq->id }}" draggable="true"
+                            x-show="search === '' || '{{ strtolower($faq->question) }}'.includes(search.toLowerCase())"
                         >
                         <td class="py-2 px-3 font-medium">{{ $faq->position }}</td>
                             <td class="py-2 px-3 font-medium">{{ $faq->question }}</td>
@@ -75,4 +76,38 @@
             </table>
         </div>
     </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        new Sortable(document.getElementById('faq-sortable'), {
+            animation: 150,
+            ghostClass: 'bg-yellow-100', // Optional: visual feedback
+            handle: null,                // No handle needed; whole row draggable
+            draggable: 'tr',             // Important: make rows draggable
+            onEnd: function () {
+                const order = Array.from(document.querySelectorAll('#faq-sortable tr')).map(row => row.dataset.id);
+                console.log('Submitting reorder:', order); // ✅ Check this appears in Console
+
+                fetch('{{ route('admin.faqs.reorder') }}', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ order })
+                }).then(response => response.json())
+                .then(data => console.log('Reorder response:', data))
+                .catch(err => console.error('Reorder failed', err))
+                .then(() => {
+                    // Update the position numbers directly in the DOM
+                    document.querySelectorAll('#faq-sortable tr').forEach((row, index) => {
+                        row.querySelector('td').textContent = index + 1;
+                    });
+                });
+            }
+        });
+    </script>
+
 </x-layouts.admin>

@@ -25,7 +25,7 @@ class FaqController extends Controller
             $query->where('question', 'like', '%' . $request->search . '%');
         }
 
-        $faqs = Faq::with('category')->orderBy('position')->orderByDesc('created_at')->get();
+        $faqs = $query->orderBy('position')->get();
         $categories = FaqCategory::all();
 
         return view('admin.faqs.index', compact('faqs', 'categories'));
@@ -75,6 +75,19 @@ class FaqController extends Controller
         ]);
         return redirect()->route('admin.faqs.index')->with('success', 'FAQ updated.');
     }
+
+    public function reorder(Request $request)
+    {
+        $order = $request->input('order'); // e.g., [5, 3, 9, 2]
+        foreach ($order as $index => $faqId) {
+            \Log::info("Updating FAQ ID $faqId to position " . ($index + 1)); // 👈 TEMP LOG
+            Faq::where('id', $faqId)->update(['position' => $index + 1]);
+        }
+
+        return response()->json(['status' => 'ok']);
+    }
+
+
 
     public function destroy(Faq $faq)
     {

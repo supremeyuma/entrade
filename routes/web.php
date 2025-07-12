@@ -135,6 +135,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::resource('categories', Admin\FaqCategoryController::class);
     Route::resource('questions', Admin\FaqController::class);
 
+    Route::post('faqs/reorder', [FaqController::class, 'reorder'])->name('faqs.reorder');
     Route::post('faqs/import', [FaqController::class, 'import'])->name('faqs.import');
     Route::get('faqs/export/json', [FaqController::class, 'exportJson'])->name('faqs.export.json');
     Route::get('faqs/export/csv', [FaqController::class, 'exportCsv'])->name('faqs.export.csv');

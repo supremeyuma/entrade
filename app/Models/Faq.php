@@ -17,6 +17,13 @@ class Faq extends Model
         'is_featured',
     ];
 
+    protected static function booted()
+    {
+        static::creating(function ($faq) {
+            $faq->position = static::max('position') + 1;
+        });
+    }
+
     public function category() {
         return $this->belongsTo(FaqCategory::class, 'faq_category_id');
     }
