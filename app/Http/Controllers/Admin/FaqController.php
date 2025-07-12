@@ -87,6 +87,15 @@ class FaqController extends Controller
         return response()->json(['status' => 'ok']);
     }
 
+    public function toggleFeatured(Faq $faq)
+    {
+        $faq->is_featured = !$faq->is_featured;
+        $faq->save();
+
+        return response()->json(['success' => true, 'is_featured' => $faq->is_featured]);
+    }
+
+
 
 
     public function destroy(Faq $faq)

@@ -52,11 +52,25 @@
                             <td class="py-2 px-3 font-medium">{{ $faq->question }}</td>
                             <td class="py-2 px-3 text-sm">{{ $faq->category->title ?? '-' }}</td>
                             <td class="py-2 px-3 text-sm ">
-                                @if($faq->is_featured)
-                                    <span class="bg-indigo-100 text-indigo-700 text-xs px-2 py-1 rounded">Yes</span>
-                                @else
-                                    <span class="text-gray-400 text-xs">No</span>
-                                @endif
+                            <button 
+                                x-data="{ featured: {{ $faq->is_featured ? 'true' : 'false' }} }"
+                                @click.prevent="
+                                    fetch('{{ route('admin.faqs.toggle-featured', $faq) }}', {
+                                        method: 'PATCH',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                            'Accept': 'application/json'
+                                        }
+                                    }).then(response => response.json())
+                                    .then(data => { featured = data.is_featured })
+                                "
+                                class="w-10 h-6 rounded-full transition duration-300 flex items-center justify-start"
+                                :class="featured ? 'bg-indigo-600' : 'bg-gray-300'"
+                                :aria-pressed="featured.toString()"
+                            >
+                                <div class="w-4 h-4 bg-white rounded-full shadow transform transition duration-200"
+                                    :class="featured ? 'translate-x-4' : 'translate-x-1'"></div>
+                            </button>
                             </td>
                             <td class="py-2 px-3 text-right whitespace-nowrap">
                                 <a href="{{ route('admin.faqs.edit', $faq) }}" class="text-indigo-600 hover:underline mr-3">Edit</a>

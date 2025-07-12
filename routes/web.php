@@ -139,6 +139,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('faqs/import', [FaqController::class, 'import'])->name('faqs.import');
     Route::get('faqs/export/json', [FaqController::class, 'exportJson'])->name('faqs.export.json');
     Route::get('faqs/export/csv', [FaqController::class, 'exportCsv'])->name('faqs.export.csv');
+    Route::patch('faqs/{faq}/toggle-featured', [FaqController::class, 'toggleFeatured'])->name('faqs.toggle-featured');
 
 
     //User Wallets
