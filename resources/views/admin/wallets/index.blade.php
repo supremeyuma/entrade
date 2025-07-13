@@ -1,4 +1,4 @@
-<x-layouts/admin>
+<x-layouts.admin>
     <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
         <h2 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">All User Wallets</h2>
 
@@ -37,4 +37,4 @@
             </div>
         </div>
     </div>
-</x-layouts/admin>
+</x-layouts.admin>

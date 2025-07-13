@@ -1,53 +1,81 @@
-<x-layouts/admin>
-<div class="container">
-    <h1 class="mb-4">Trade Outcomes</h1>
+<x-layouts.admin>
+    <div class="px-4 sm:px-6 lg:px-8 py-6">
+        <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Trade Outcomes</h1>
 
-    @if(session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+        @if(session('success'))
+            <div class="mb-4 bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100 px-4 py-3 rounded">
+                {{ session('success') }}
+            </div>
+        @endif
 
-    <form method="GET" class="mb-4">
-        <div class="form-group">
-            <label for="trader_id">Filter by Trader:</label>
-            <select name="trader_id" id="trader_id" class="form-control">
-                <option value="">All Traders</option>
-                @foreach($traders as $trader)
-                    <option value="{{ $trader->id }}" {{ request('trader_id') == $trader->id ? 'selected' : '' }}>
-                        {{ $trader->name }} ({{ $trader->trader_id }})
-                    </option>
-                @endforeach
-            </select>
+        <form method="GET" class="mb-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div>
+                    <label for="trader_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Filter by Trader</label>
+                    <select name="trader_id" id="trader_id"
+                        class="w-full border-gray-300 dark:border-gray-700 dark:bg-gray-800 dark:text-white rounded shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">All Traders</option>
+                        @foreach($traders as $trader)
+                            <option value="{{ $trader->id }}" {{ request('trader_id') == $trader->id ? 'selected' : '' }}>
+                                {{ $trader->name }} ({{ $trader->trader_id }})
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="self-end">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded shadow">
+                        Filter
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <div class="mb-4">
+            <a href="{{ route('admin.trade-outcomes.create') }}" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded shadow">
+                + Add New Trade Outcome
+            </a>
         </div>
-        <button class="btn btn-primary mt-2">Filter</button>
-    </form>
 
-    <a href="{{ route('admin.trade-outcomes.create') }}" class="btn btn-success mb-3">Add New Trade Outcome</a>
+        <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Trader</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Percentage</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Description</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Created At</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    @forelse($tradeOutcomes as $outcome)
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                {{ $outcome->trader->name }} <br>
+                                <span class="text-xs text-gray-500">(ID: {{ $outcome->trader->trader_id }})</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-indigo-600 dark:text-indigo-400 font-semibold">
+                                {{ $outcome->percentage }}%
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                                {{ $outcome->description ?? '—' }}
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                                {{ $outcome->created_at->format('Y-m-d H:i') }}
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="px-4 py-3 text-center text-sm text-gray-500 dark:text-gray-400">
+                                No trade outcomes found.
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
 
-    <table class="table table-bordered">
-        <thead>
-            <tr>
-                <th>Trader</th>
-                <th>Percentage</th>
-                <th>Description</th>
-                <th>Created At</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse($tradeOutcomes as $outcome)
-                <tr>
-                    <td>{{ $outcome->trader->name }} ({{ $outcome->trader->trader_id }})</td>
-                    <td>{{ $outcome->percentage }}%</td>
-                    <td>{{ $outcome->description ?? '-' }}</td>
-                    <td>{{ $outcome->created_at->format('Y-m-d H:i') }}</td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="4">No trade outcomes found.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
-
-    {{ $tradeOutcomes->withQueryString()->links() }}
-</div>
-</x-layouts/admin>
+        <div class="mt-4">
+            {{ $tradeOutcomes->withQueryString()->links() }}
+        </div>
+    </div>
+</x-layouts.admin>

@@ -1,20 +1,39 @@
-<x-layouts.app>
-<h1>Subscribers for {{ $trader->name }}</h1>
+<x-layouts.admin>
+    <div class="px-4 sm:px-6 lg:px-8 py-6">
+        <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
+            Subscribers for {{ $trader->name }}
+        </h1>
 
-    <table class="table">
-        <thead>
-            <tr><th>User</th><th>Subscribed At</th><th>Allocated Amount</th></tr>
-        </thead>
-        <tbody>
-            @foreach ($subscribers as $subscription)
-                <tr>
-                    <td>{{ $subscription->user->name }}</td>
-                    <td>{{ $subscription->created_at }}</td>
-                    <td>{{ $subscription->allocated_amount }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
+        <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">User</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Subscribed At</th>
+                        <th class="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider">Allocated Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                    @foreach ($subscribers as $subscription)
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                            <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
+                                {{ $subscription->user->name }}<br>
+                                <span class="text-xs text-gray-500 dark:text-gray-400">(ID: {{ $subscription->user->id }})</span>
+                            </td>
+                            <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                                {{ $subscription->created_at->format('Y-m-d H:i') }}
+                            </td>
+                            <td class="px-4 py-3 text-sm font-medium text-indigo-600 dark:text-indigo-400">
+                                ${{ number_format($subscription->allocated_amount, 2) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
-    {{ $subscribers->links() }}
-</x-layouts.app>
+        <div class="mt-4">
+            {{ $subscribers->links() }}
+        </div>
+    </div>
+</x-layouts.admin>

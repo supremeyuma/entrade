@@ -1,4 +1,4 @@
-<x-layouts/admin>
+<x-layouts.admin>
 <div class="container mx-auto px-4 py-8">
         <h1 class="text-2xl font-bold mb-6">Trade Logs</h1>
 
@@ -44,4 +44,4 @@
             </table>
         </div>
     </div>
-</x-layouts/admin>
+</x-layouts.admin>

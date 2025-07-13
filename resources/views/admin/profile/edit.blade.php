@@ -1,4 +1,4 @@
-<x-admin/layout>
+<x-admin.layout>
 <div class="max-w-7xl mx-auto py-6">
     <h2 class="text-2xl font-semibold">Edit Profile</h2>
 
@@ -29,4 +29,4 @@
         </div>
     </form>
 </div>
-</x-admin/layout>
+</x-admin.layout>

@@ -35,6 +35,7 @@ use App\Http\Controllers\Admin\FaqCategoryController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\AdminWalletController;
 use App\Http\Controllers\Admin\AdminWithdrawalController;
+use App\Http\Controllers\Admin\AdminWithdrawalSettingsController;
 use App\Http\Controllers\User\UserWalletController;
 use App\Http\Controllers\User\UserWithdrawalController;
 use App\Http\Controllers\QrCodeController;
@@ -143,7 +144,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 
 
     //User Wallets
-    Route::get('admin/user-wallets', [AdminWalletController::class, 'index'])->name('wallets.index');
+    Route::get('user-wallets', [AdminWalletController::class, 'index'])->name('wallets.index');
 
     //Withdrawals
     Route::get('/withdrawals', [AdminWithdrawalController::class, 'index'])->name('withdrawals.index');

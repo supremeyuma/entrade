@@ -1,4 +1,4 @@
-<x-layouts/admin>
+<x-layouts.admin>
 <div class="container">
     <h1 class="mb-4">Add Trade Outcome</h1>
 
@@ -39,4 +39,4 @@
         <button type="submit" class="btn btn-primary">Add Outcome</button>
     </form>
 </div>
-</x-layouts/admin>
+</x-layouts.admin>

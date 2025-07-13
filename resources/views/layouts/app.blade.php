@@ -45,7 +45,9 @@
             <x-sidebar />
         @endauth
 
-        {{-- Main content area --}}
+        {{-- Main content area --}}.trix-content {
+            min-height: 100px;
+        }
         <main class="flex-1">
             {{ $slot }}
         </main>
