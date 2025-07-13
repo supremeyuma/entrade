@@ -1,10 +1,12 @@
+<?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SiteSetting;
 
-class ThemeSettingController extends Controller
+class ThemeSettingsController extends Controller
 {
     public function index()
     {
