@@ -1,0 +1,192 @@
+Excellent — here's a **clear, structured phase-by-phase plan** to build your **Laravel Admin Trade Simulation Bot**, with **all the improvements included**.
+
+This will give you:
+
+✅ Historical + future trade generation
+✅ Multi-market support
+✅ Realistic trade realism (mixed wins/losses, ROI over time)
+✅ Admin UI form + rollback
+
+---
+
+# 🧩 PHASE-BY-PHASE PLAN
+
+---
+
+## ✅ **Phase 1: Core Artisan Command (CLI Tool)**
+
+### 🎯 Goal:
+
+Create a working Artisan command to simulate trades based on:
+
+* `start_date`, `end_date`
+* `target_roi`
+* `market_type` (`forex`, `crypto`, `stocks`)
+* `trader_id`
+
+### 🔧 Tasks:
+
+* Create `SimulateTrades` Artisan command
+* Accept CLI arguments (validated)
+* Load OHLCV data (from local JSON or CSV for now)
+* Loop through candles to simulate trades:
+
+  * Generate **realistic winning/losing trades**
+  * Stop when `target_roi` is met
+* Save trades using `Trade::create([...])`
+
+---
+
+## ✅ **Phase 2: Market Support + Pair Config**
+
+### 🎯 Goal:
+
+Add support for multiple market types and customizable pairs.
+
+### 🔧 Tasks:
+
+* Define symbols for:
+
+  * `forex` → `EURUSD`, `GBPJPY`, etc.
+  * `crypto` → `BTCUSD`, `ETHUSD`, etc.
+  * `stocks` → `AAPL`, `TSLA`, etc.
+* Add pair filtering to Artisan command:
+
+  * Allow admin to choose specific pairs
+  * Or let bot randomize within market set
+
+---
+
+## ✅ **Phase 3: ROI Spread Over Multiple Trades**
+
+### 🎯 Goal:
+
+Ensure trades are spaced out and realistic, not all-in-one.
+
+### 🔧 Tasks:
+
+* Simulate ROI as a **series of trades**:
+
+  * Wins and losses
+  * Vary time between entries
+* Trade holding time based on strategy (next phase)
+* Use partial accumulation toward `target_roi`
+
+---
+
+## ✅ **Phase 4: Strategy Support (`scalp`, `intraday`, `swing`)**
+
+### 🎯 Goal:
+
+Make the bot simulate differently depending on trade style.
+
+### 🔧 Tasks:
+
+* Add new CLI/input: `--strategy=intraday`
+* Strategy controls:
+
+  * Holding period (e.g., 5m, 1h, 4h)
+  * SL/TP ranges
+  * Volatility sensitivity
+
+---
+
+## ✅ **Phase 5: Losses and Realistic Lot Sizes**
+
+### 🎯 Goal:
+
+* Avoid all-perfect trades
+* Add lot size variety and loss simulation
+
+### 🔧 Tasks:
+
+* Randomize:
+
+  * Lot sizes within safe range (e.g., 0.3–1.5)
+  * Entry price deviation (for realism)
+* Occasionally simulate a **loss trade**
+* Use basic rules:
+
+  * 1 loss every 3–5 trades
+  * SL hit logic (e.g., drop 50 pips)
+
+---
+
+## ✅ **Phase 6: Undo Last Trade Batch**
+
+### 🎯 Goal:
+
+Admin can rollback the last simulated trade batch per trader.
+
+### 🔧 Tasks:
+
+* Add `batch_id` to generated trades
+* Save batch metadata (trader, ROI target, date)
+* Create Artisan rollback command or UI button
+* Delete trades from last batch for selected trader
+
+---
+
+## ✅ **Phase 7: Admin Panel UI Integration**
+
+### 🎯 Goal:
+
+Expose the bot as a form-based admin tool inside Entrade.
+
+### 🧱 Page: `/admin/trade-simulator`
+
+### 🧩 Form Inputs:
+
+* Trader (dropdown)
+* Start Date
+* End Date
+* Market Type (select)
+* Strategy (select)
+* ROI Target (%)
+* Optional: Specific pairs
+* \[ Generate Trades ] button
+
+### 🔧 Tasks:
+
+* Create controller + view
+* Use `DispatchSync(SimulateTradesCommand)` behind the scenes
+* Show success message + trade batch summary
+* Add "Undo last batch" button (per trader)
+
+---
+
+## ✅ **Phase 8: Scheduled Future Scans**
+
+### 🎯 Goal:
+
+If date range is future, queue a scheduled scan to check every 6 hours.
+
+### 🔧 Tasks:
+
+* Detect if `start_date > now()`
+* Store scan task in DB
+* Create scheduler command to:
+
+  * Check recent OHLCV (last 12 hours)
+  * Generate new trades if ROI not yet met
+* Mark scan as "completed" when target ROI achieved
+
+---
+
+## ✅ Final Deliverables
+
+| Feature                               | Delivered in Phase |
+| ------------------------------------- | ------------------ |
+| Artisan simulation w/ inputs          | 1                  |
+| Market & symbol support               | 2                  |
+| Multi-trade ROI progression           | 3                  |
+| Strategies (`scalp`, `intraday`, etc) | 4                  |
+| Loss injection + lot realism          | 5                  |
+| Undo last trade batch                 | 6                  |
+| Admin UI for simulation               | 7                  |
+| Scheduled generation (future dates)   | 8                  |
+
+---
+
+Would you like to begin now with **Phase 1: Artisan Command**, and I’ll build it in clean, testable Laravel format?
+

@@ -25,29 +25,7 @@
 <body class="h-full text-gray-800 dark:text-gray-100">
 
 <div class="flex flex-col h-screen" x-data>
-    <!-- Mobile Sidebar -->
-    <aside x-show="sidebarOpen"
-           @click.away="sidebarOpen = false"
-           class="fixed inset-0 z-40 bg-white dark:bg-gray-800 w-64 p-4 shadow-lg md:hidden transform transition-transform duration-300 ease-in-out"
-           x-transition:enter="transform transition ease-in-out duration-300"
-           x-transition:enter-start="-translate-x-full"
-           x-transition:enter-end="translate-x-0"
-           x-transition:leave="transform transition ease-in-out duration-300"
-           x-transition:leave-start="translate-x-0"
-           x-transition:leave-end="-translate-x-full"
-           x-cloak>
-        <div class="text-lg font-semibold text-gray-700 dark:text-white border-b border-gray-200 dark:border-gray-700 mb-4">
-            <a href="{{ url('/') }}">Entrade</a>
-        </div>
-        <nav class="space-y-2">
-            <a href="{{ url('/') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Home</a>
-            <a href="{{ route('leaderboard.public') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Leaders</a>
-            <a href="{{ url('/about') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">About</a>
-            <a href="{{ url('/faq') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Help Center</a>
-            <a href="{{ route('login') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Login</a>
-            <a href="{{ route('register') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Register</a>
-        </nav>
-    </aside>
+  
 
     <!-- Topbar (desktop) -->
     <!-- Topbar (desktop) -->
@@ -162,3 +140,27 @@
 
 </body>
 </html>
+
+  <!-- Mobile Sidebar -->
+    <!--<aside x-show="sidebarOpen"
+           @click.away="sidebarOpen = false"
+           class="fixed inset-0 z-40 bg-white dark:bg-gray-800 w-64 p-4 shadow-lg md:hidden transform transition-transform duration-300 ease-in-out"
+           x-transition:enter="transform transition ease-in-out duration-300"
+           x-transition:enter-start="-translate-x-full"
+           x-transition:enter-end="translate-x-0"
+           x-transition:leave="transform transition ease-in-out duration-300"
+           x-transition:leave-start="translate-x-0"
+           x-transition:leave-end="-translate-x-full"
+           x-cloak>
+        <div class="text-lg font-semibold text-gray-700 dark:text-white border-b border-gray-200 dark:border-gray-700 mb-4">
+            <a href="{{ url('/') }}">Entrade</a>
+        </div>
+        <nav class="space-y-2">
+            <a href="{{ url('/') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Home</a>
+            <a href="{{ route('leaderboard.public') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Leaders</a>
+            <a href="{{ url('/about') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">About</a>
+            <a href="{{ url('/faq') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Help Center</a>
+            <a href="{{ route('login') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Login</a>
+            <a href="{{ route('register') }}" class="block px-4 py-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700">Register</a>
+        </nav>
+    </aside>-->
