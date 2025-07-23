@@ -15,6 +15,7 @@
                         <th class="px-4 py-2">Run At</th>
                     </tr>
                 </thead>
+                
                 <tbody>
                     @foreach ($logs as $log)
                         <tr class="border-b">

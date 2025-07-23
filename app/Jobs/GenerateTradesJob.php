@@ -92,6 +92,7 @@ class GenerateTradesJob implements ShouldQueue
             ]);
         }
     }
+    
 
     /**
      * Returns a random symbol based on market type.
