@@ -45,6 +45,7 @@ use App\Http\Controllers\Admin\AdminKycController;
 use App\Http\Controllers\User\UserPreferencesController;
 use App\Http\Controllers\User\UserAccountController;
 use App\Http\Controllers\Admin\UserFundsController;
+use App\Http\Controllers\Admin\BotLogController;
 
 
 
@@ -158,6 +159,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/kyc/{kyc}', [AdminKycController::class, 'show'])->name('kyc.show');
     Route::post('/kyc/{kyc}/approve', [AdminKycController::class, 'approve'])->name('kyc.approve');
     Route::post('/kyc/{kyc}/reject', [AdminKycController::class, 'reject'])->name('kyc.reject');
+
+    //BotLog Routes
+    Route::get('/bot-logs', [BotLogController::class, 'index'])->name('bot_logs.index');
+
 });
 
 // ------------------------

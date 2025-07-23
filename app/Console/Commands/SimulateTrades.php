@@ -156,7 +156,8 @@ class SimulateTrades extends Command
         return match ($type) {
             'forex' => ['EURUSD', 'GBPJPY', 'USDJPY', 'AUDUSD'],
             'crypto' => ['BTCUSD', 'ETHUSD', 'SOLUSD', 'XRPUSD'],
-            'stocks' => ['AAPL', 'TSLA', 'MSFT', 'AMZN'],
+            'stocks' => ['AAPL', 'TSLA', 'MSFT', 'AMZN', 'GOOGL'],
+            'commodities' => ['XAU/USD', 'XAG/USD', 'WTI/USD'],
             default => ['EURUSD'],
         };
     }
