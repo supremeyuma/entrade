@@ -11,15 +11,15 @@ class Trade extends Model
 
     protected $fillable = [
         'trader_id',
-        'asset',
         'pair',
-        'trade_type',
+        'batch_id',
+        'type',
         'entry_price',
         'exit_price',
         'lot_size',
         'stop_loss',
         'take_profit',
-        'profit_loss',
+        'profit',
         'status',
         'executed_at',
         'opened_at',
