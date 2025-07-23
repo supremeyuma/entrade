@@ -24,6 +24,8 @@ class Trade extends Model
         'executed_at',
         'opened_at',
         'closed_at',
+        'source',
+        'meta',
     ];
 
 

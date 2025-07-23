@@ -53,6 +53,7 @@
                             <th class="px-4 py-2">Status</th>
                             <th class="px-4 py-2">Opened</th>
                             <th class="px-4 py-2">Closed</th>
+                            <th class="px-4 py-2">Source</th>
                             <th class="px-4 py-2 text-right">Actions</th>
                         </tr>
                     </thead>
@@ -69,6 +70,8 @@
                                 <td class="px-4 py-2 capitalize">{{ $trade->status }}</td>
                                 <td class="px-4 py-2">{{ optional($trade->opened_at)->format('d M, H:i') }}</td>
                                 <td class="px-4 py-2">{{ optional($trade->closed_at)->format('d M, H:i') }}</td>
+                                <td class="text-sm text-gray-600">{{ ucfirst($trade->source ?? 'manual') }}</td>
+
                                 <td class="px-4 py-2 text-right">
                                     <div class="flex justify-end gap-2">
                                         <a href="{{ route('admin.trades.edit', $trade) }}" class="btn btn-xs btn-warning">Edit</a>
