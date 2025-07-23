@@ -18,7 +18,6 @@ class SimulateTrades extends Command
                             {--symbols= : Comma-separated symbols (e.g., EURUSD,BTCUSD)}
                             {--strategy=scalp : Strategy type (scalp, intraday, swing)}';
 
-
     protected $description = 'Simulate trades for a trader over a date range to reach a target ROI';
 
     protected function getStrategyConfig(string $strategy): array
@@ -31,26 +30,31 @@ class SimulateTrades extends Command
                 'max_loss' => 50,
                 'min_hold_minutes' => 2,
                 'max_hold_minutes' => 15,
+                'lot_min' => 0.1,
+                'lot_max' => 0.5,
             ],
             'swing' => [
                 'min_profit' => 150,
                 'max_profit' => 300,
                 'min_loss' => 80,
                 'max_loss' => 150,
-                'min_hold_minutes' => 360, // 6h
-                'max_hold_minutes' => 4320, // 3 days
+                'min_hold_minutes' => 360,
+                'max_hold_minutes' => 4320,
+                'lot_min' => 1.0,
+                'lot_max' => 2.5,
             ],
-            default => [ // intraday
+            default => [
                 'min_profit' => 60,
                 'max_profit' => 150,
                 'min_loss' => 40,
                 'max_loss' => 80,
                 'min_hold_minutes' => 30,
                 'max_hold_minutes' => 240,
+                'lot_min' => 0.3,
+                'lot_max' => 1.0,
             ],
         };
     }
-
 
     public function handle()
     {
@@ -79,7 +83,7 @@ class SimulateTrades extends Command
             return 1;
         }
 
-
+        $config = $this->getStrategyConfig($strategy);
 
         $balance = 1000;
         $currentROI = 0;
@@ -91,30 +95,32 @@ class SimulateTrades extends Command
         $tradeCount = 0;
         $trades = [];
 
-        $config = $this->getStrategyConfig($strategy);
-
-
         while ($currentROI < $roiTarget || $tradeCount < $minTrades) {
             $pair = $symbols[array_rand($symbols)];
-            $entry = rand(100000, 200000) / 100000;
-            $lotSize = rand(5, 15) / 10;
 
-            // Decide if this is a losing trade (20–30% chance)
+            // Add randomness to entry price to avoid robotic patterns
+            $basePrice = rand(100000, 200000) / 100000;
+            $entry = round($basePrice + rand(-30, 30) / 100000, 5);
+
+            // Base lot size
+            $lotSize = round(mt_rand($config['lot_min'] * 100, $config['lot_max'] * 100) / 100, 2);
+
+            // Random loss logic
             $isLoss = $tradeCount >= 1 && rand(1, 10) <= 3;
 
             if ($isLoss) {
+                $lotSize = round($lotSize * 1.1, 2); // Slightly higher on loss
                 $profit = -rand($config['min_loss'], $config['max_loss']);
-                $exit = $entry - abs($profit / 10000);
+                $exit = round($entry - abs($profit / 10000), 5);
             } else {
                 $profit = rand($config['min_profit'], $config['max_profit']);
-                $exit = $entry + ($profit / 10000);
+                $exit = round($entry + ($profit / 10000), 5);
             }
 
-
+            // Generate time within range
             $openedAt = $start->copy()->addMinutes(rand(0, $end->diffInMinutes($start)));
             $holdMinutes = rand($config['min_hold_minutes'], $config['max_hold_minutes']);
             $closedAt = $openedAt->copy()->addMinutes($holdMinutes);
-
 
             $trades[] = [
                 'trader_id' => $traderId,
@@ -141,8 +147,6 @@ class SimulateTrades extends Command
             Trade::create($trade);
         }
 
-
-
         $this->info("✅ Completed: Inserted trades to achieve ROI of $currentROI% (target was $roiTarget%)");
         $this->info("🆔 Batch ID: $batchId");
     }
@@ -157,4 +161,3 @@ class SimulateTrades extends Command
         };
     }
 }
-
