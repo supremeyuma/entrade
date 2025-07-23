@@ -15,9 +15,42 @@ class SimulateTrades extends Command
                             {end_date : Format YYYY-MM-DD}
                             {target_roi : Target ROI as percentage (e.g., 50)}
                             {market_type : forex|crypto|stocks}
-                            {--symbols= : Comma-separated symbols (e.g., EURUSD,BTCUSD)}';
+                            {--symbols= : Comma-separated symbols (e.g., EURUSD,BTCUSD)}
+                            {--strategy=scalp : Strategy type (scalp, intraday, swing)}';
+
 
     protected $description = 'Simulate trades for a trader over a date range to reach a target ROI';
+
+    protected function getStrategyConfig(string $strategy): array
+    {
+        return match ($strategy) {
+            'scalp' => [
+                'min_profit' => 20,
+                'max_profit' => 70,
+                'min_loss' => 20,
+                'max_loss' => 50,
+                'min_hold_minutes' => 2,
+                'max_hold_minutes' => 15,
+            ],
+            'swing' => [
+                'min_profit' => 150,
+                'max_profit' => 300,
+                'min_loss' => 80,
+                'max_loss' => 150,
+                'min_hold_minutes' => 360, // 6h
+                'max_hold_minutes' => 4320, // 3 days
+            ],
+            default => [ // intraday
+                'min_profit' => 60,
+                'max_profit' => 150,
+                'min_loss' => 40,
+                'max_loss' => 80,
+                'min_hold_minutes' => 30,
+                'max_hold_minutes' => 240,
+            ],
+        };
+    }
+
 
     public function handle()
     {
@@ -39,23 +72,51 @@ class SimulateTrades extends Command
             return 1;
         }
 
+        $strategy = strtolower($this->option('strategy')) ?: 'intraday';
+
+        if (!in_array($strategy, ['scalp', 'intraday', 'swing'])) {
+            $this->error("❌ Invalid strategy: $strategy. Must be one of: scalp, intraday, swing");
+            return 1;
+        }
+
+
 
         $balance = 1000;
         $currentROI = 0;
         $totalProfit = 0;
         $batchId = Str::uuid();
 
-        while ($currentROI < $roiTarget) {
+        $minTrades = 3;
+        $maxTrades = 7;
+        $tradeCount = 0;
+        $trades = [];
+
+        $config = $this->getStrategyConfig($strategy);
+
+
+        while ($currentROI < $roiTarget || $tradeCount < $minTrades) {
             $pair = $symbols[array_rand($symbols)];
-            $entry = rand(100000, 200000) / 100000; // Random price like 1.2345
-            $profit = rand(50, 200); // Random profit per trade
-            $lotSize = rand(5, 15) / 10; // 0.5 - 1.5
-            $exit = $entry + ($profit / 10000); // Rough simulation
+            $entry = rand(100000, 200000) / 100000;
+            $lotSize = rand(5, 15) / 10;
+
+            // Decide if this is a losing trade (20–30% chance)
+            $isLoss = $tradeCount >= 1 && rand(1, 10) <= 3;
+
+            if ($isLoss) {
+                $profit = -rand($config['min_loss'], $config['max_loss']);
+                $exit = $entry - abs($profit / 10000);
+            } else {
+                $profit = rand($config['min_profit'], $config['max_profit']);
+                $exit = $entry + ($profit / 10000);
+            }
+
 
             $openedAt = $start->copy()->addMinutes(rand(0, $end->diffInMinutes($start)));
-            $closedAt = $openedAt->copy()->addMinutes(rand(5, 240));
+            $holdMinutes = rand($config['min_hold_minutes'], $config['max_hold_minutes']);
+            $closedAt = $openedAt->copy()->addMinutes($holdMinutes);
 
-            Trade::create([
+
+            $trades[] = [
                 'trader_id' => $traderId,
                 'pair' => $pair,
                 'type' => 'buy',
@@ -67,11 +128,20 @@ class SimulateTrades extends Command
                 'closed_at' => $closedAt,
                 'status' => 'closed',
                 'batch_id' => $batchId,
-            ]);
+            ];
 
             $totalProfit += $profit;
             $currentROI = ($totalProfit / $balance) * 100;
+            $tradeCount++;
+
+            if ($tradeCount >= $maxTrades) break;
         }
+
+        foreach ($trades as $trade) {
+            Trade::create($trade);
+        }
+
+
 
         $this->info("✅ Completed: Inserted trades to achieve ROI of $currentROI% (target was $roiTarget%)");
         $this->info("🆔 Batch ID: $batchId");
