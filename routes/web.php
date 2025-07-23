@@ -160,8 +160,13 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('/kyc/{kyc}/approve', [AdminKycController::class, 'approve'])->name('kyc.approve');
     Route::post('/kyc/{kyc}/reject', [AdminKycController::class, 'reject'])->name('kyc.reject');
 
-    //BotLog Routes
+    //Bot Routes
     Route::get('/bot-logs', [BotLogController::class, 'index'])->name('bot_logs.index');
+    Route::get('/trade-bot', [TradeBotController::class, 'index'])->name('trade-bot.index');
+    Route::post('/trade-bot/run', [TradeBotController::class, 'run'])->name('trade-bot.run');
+    Route::get('/trade-bot/results', [TradeBotController::class, 'results'])->name('trade-bot.results');
+
+
 
 });
 
