@@ -66,6 +66,15 @@
                                     <button type="submit" class="btn btn-sm bg-blue-600 hover:bg-blue-700 text-white">Re-run</button>
                                 </form>
                             </td>
+                            <td class="text-sm text-gray-700">
+                                <div>Total: {{ $run->stats['total_trades'] }}</div>
+                                <div>Win Rate: {{ $run->stats['win_rate'] }}%</div>
+                                <div>Avg ROI: {{ $run->stats['avg_roi'] }}%</div>
+                                <div>Max Loss: {{ $run->stats['max_loss'] }}%</div>
+                                <div>From: {{ optional($run->stats['from'])->format('Y-m-d') }}</div>
+                                <div>To: {{ optional($run->stats['to'])->format('Y-m-d') }}</div>
+                            </td>
+
                         </tr>
                     @empty
                         <tr>
