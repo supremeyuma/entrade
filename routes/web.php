@@ -166,6 +166,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('/trade-bot/run', [TradeBotController::class, 'run'])->name('trade-bot.run');
     Route::get('/trade-bot/results', [TradeBotController::class, 'results'])->name('trade-bot.results');
 
+    Route::get('trade-bot/runs', [TradeBotRunController::class, 'index'])->name('trade-bot.runs.index');
+
 
 
 });
