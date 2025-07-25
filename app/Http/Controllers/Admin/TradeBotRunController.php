@@ -41,5 +41,21 @@ class TradeBotRunController extends Controller
         return view('admin.trade_bot.runs.index', compact('runs'));
     }
 
+    public function rerun(TradeBotConfig $config)
+    {
+        // Create new run entry
+        $run = TradeBotRun::create([
+            'trade_bot_config_id' => $config->id,
+            'status' => 'pending',
+            'result_summary' => null,
+        ]);
+
+        // Dispatch to job or run inline
+        SimulateTradesForRun::dispatchSync($run); // or use dispatch() for async
+
+        return back()->with('success', 'TradeBotConfig has been re-run successfully.');
+    }
+
+
 }
 

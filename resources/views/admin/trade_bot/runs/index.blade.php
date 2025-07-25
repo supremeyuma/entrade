@@ -37,6 +37,8 @@
                         <th class="px-4 py-3">Avg ROI</th>
                         <th class="px-4 py-3">Started</th>
                         <th class="px-4 py-3">Completed</th>
+                        <th class="px-4 py-3">Completed</th>
+                        <th class="px-4 py-3">Repeat</th>
                     </tr>
                 </thead>
                 <tbody class="text-gray-800 dark:text-gray-100">
@@ -58,6 +60,12 @@
                             <td class="px-4 py-2">{{ $run->average_roi ?? '-' }}%</td>
                             <td class="px-4 py-2">{{ $run->started_at ?? '-' }}</td>
                             <td class="px-4 py-2">{{ $run->completed_at ?? '-' }}</td>
+                            <td class="px-4 py-2">
+                                <form method="POST" action="{{ route('admin.trade-bot.configs.rerun', $config) }}" onsubmit="return confirm('Are you sure you want to re-run this config?');">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm bg-blue-600 hover:bg-blue-700 text-white">Re-run</button>
+                                </form>
+                            </td>
                         </tr>
                     @empty
                         <tr>
