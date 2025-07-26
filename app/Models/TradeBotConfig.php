@@ -25,4 +25,11 @@ class TradeBotConfig extends Model
         'auto_run' => 'boolean',
     ];
 
+    public function appendLog($line)
+    {
+        $this->job_log = trim($this->job_log . "\n" . now()->toDateTimeString() . ' | ' . $line);
+        $this->save();
+    }
+
+
 }

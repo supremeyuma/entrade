@@ -61,6 +61,18 @@
             </ul>
         </div>
 
+        <div x-data="{ logs: '', interval: null }" x-init="
+            interval = setInterval(() => {
+                fetch('{{ route('admin.trade-bot.logs', $tradeBotConfig) }}')
+                    .then(res => res.json())
+                    .then(data => logs = data.job_log);
+            }, 3000);
+        " class="bg-gray-900 text-white p-4 rounded mt-6 text-sm font-mono max-h-72 overflow-y-auto">
+            <h3 class="text-lg font-bold mb-2">Live Job Logs</h3>
+            <pre x-text="logs">Loading logs...</pre>
+        </div>
+
+
     </div>
 
     {{-- ROI Preview Script --}}

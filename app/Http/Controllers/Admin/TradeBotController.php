@@ -97,6 +97,14 @@ class TradeBotController extends Controller
         ]);
     }
 
+    public function logs(TradeBotConfig $tradeBotConfig)
+    {
+        return response()->json([
+            'job_log' => $tradeBotConfig->job_log
+        ]);
+    }
+
+
     public function results()
     {
         return view('admin.trade-bot.results', [
