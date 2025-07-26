@@ -73,6 +73,35 @@
                 </label>
             </div>
 
+            <h3 class="text-lg font-semibold mt-6 mb-2">Advanced Options</h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="timeframe">Trade Timeframe</label>
+                    <select id="timeframe" name="timeframe" class="form-select w-full">
+                        <option value="1h">1 Hour</option>
+                        <option value="4h">4 Hours</option>
+                        <option value="1d" selected>Daily</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label for="risk_per_trade">Risk per Trade (%)</label>
+                    <input type="number" step="0.1" min="0" max="100" name="risk_per_trade" class="form-input w-full" value="1.0" />
+                </div>
+
+                <div>
+                    <label for="desired_win_rate">Desired Win Rate (%)</label>
+                    <input type="number" step="0.1" min="0" max="100" name="desired_win_rate" class="form-input w-full" placeholder="Optional" />
+                </div>
+
+                <div>
+                    <label for="max_trades">Maximum Trades (cap)</label>
+                    <input type="number" min="1" name="max_trades" class="form-input w-full" placeholder="Optional" />
+                </div>
+            </div>
+
+
             <div class="pt-4">
                 <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded shadow hover:bg-indigo-700">
                     Generate Trades

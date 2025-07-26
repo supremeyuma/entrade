@@ -28,6 +28,10 @@ class TradeBotController extends Controller
             'trading_pairs' => 'required|array',
             'assign_to' => 'nullable|exists:traders,id',
             'auto_run' => 'nullable|boolean',
+            'timeframe' => 'required|in:1h,4h,1d',
+            'risk_per_trade' => 'required|numeric|min:0|max:100',
+            'desired_win_rate' => 'nullable|numeric|min:0|max:100',
+            'max_trades' => 'nullable|integer|min:1',
         ]);
 
         // Save config to DB (optional)

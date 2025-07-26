@@ -13,6 +13,10 @@ class TradeBotConfig extends Model
 
     protected $fillable = [
         'start_date', 'end_date', 'roi', 'markets', 'trading_pairs', 'assign_to', 'auto_run',
+        'timeframe',
+        'risk_per_trade',
+        'desired_win_rate',
+        'max_trades',
     ];
 
     protected $casts = [
