@@ -23,6 +23,9 @@ return new class extends Migration
             $table->float('close');
             $table->float('volume');
             $table->timestamps(); // created_at, updated_at
+
+            // **THIS IS THE CRITICAL LINE TO CHECK/ADD**
+            $table->unique(['symbol', 'market_type', 'interval', 'timestamp'], 'ohlcv_unique_candle');
         });
     }
 

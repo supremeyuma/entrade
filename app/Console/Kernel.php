@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Jobs\DownloadDailyOhlcvDataJob; // <-- ADD THIS LINE
 
 class Kernel extends ConsoleKernel
 {
@@ -12,7 +13,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        // Schedule the job to download daily OHLCV data every week
+        // It will run every Sunday at 02:00 AM based on your server's timezone
+        $schedule->job(new DownloadDailyOhlcvDataJob())->weekly()->sundays()->at('02:00');
+
+        // Example of other scheduling options:
+        // $schedule->job(new DownloadDailyOhlcvDataJob())->dailyAt('03:00'); // Runs daily at 3 AM
+        // $schedule->job(new DownloadDailyOhlcvDataJob())->hourly(); // Runs every hour
     }
 
     /**
