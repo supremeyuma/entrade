@@ -45,5 +45,14 @@ return [
         'key' => env('TOKENMETRICS_API_KEY'),
     ],
 
+    'alpha_vantage' => [
+        'key' => env('ALPHA_VANTAGE_API_KEY'),
+    ],
+
+    'polygon' => [
+        'key' => env('POLYGON_API_KEY'),
+        'base_url' => env('POLYGON_BASE_URL', 'https://api.polygon.io'),
+    ],
+
 
 ];

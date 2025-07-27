@@ -27,6 +27,7 @@ class Trade extends Model
         'source',
         'meta',
     ];
+    protected $dates = ['trade_date']; // If not already there
 
 
     public function trader()

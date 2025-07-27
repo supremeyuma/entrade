@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\TradeBotRun;
+use Illuminate\Http\Request;
 
 class TradeBotRunController extends Controller
 {

@@ -47,6 +47,7 @@ use App\Http\Controllers\User\UserAccountController;
 use App\Http\Controllers\Admin\UserFundsController;
 use App\Http\Controllers\Admin\BotLogController;
 use App\Http\Controllers\Admin\TradeBotRunController;
+use App\Http\Controllers\Admin\TradeBotController;
 
 
 
@@ -165,6 +166,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     //Bot Routes
     Route::get('/bot-logs', [BotLogController::class, 'index'])->name('bot_logs.index');
     Route::get('/trade-bot', [TradeBotController::class, 'index'])->name('trade-bot.index');
+    Route::post('/trade-bots', [TradeBotController::class, 'store'])->name('trade-bot.store');
+
     Route::post('/trade-bot/run', [TradeBotController::class, 'run'])->name('trade-bot.run');
     Route::get('/trade-bot/results', [TradeBotController::class, 'results'])->name('trade-bot.results');
 
@@ -172,6 +175,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('/trade-bot/configs/{config}/rerun', [TradeBotRunController::class, 'rerun'])->name('trade-bot.configs.rerun');
     Route::post('/trade-bot/preview', [TradeBotController::class, 'preview'])->name('trade-bot.preview');
     Route::get('/trade-bot/{tradeBotConfig}/logs', [TradeBotController::class, 'logs'])->name('trade-bot.logs');
+    Route::get('/trade-bots/{id}/preview', [TradeBotController::class, 'preview'])->name('trade-bots.preview');
 
 
 

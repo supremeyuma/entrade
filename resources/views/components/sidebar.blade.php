@@ -81,6 +81,8 @@
 
         <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'block px-3 py-2 rounded bg-gray-200 dark:bg-gray-700' : 'block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700' }}">Admin Dashboard</a>
 
+        <a href="{{ route('admin.trade-bot.index') }}" class="{{ request()->routeIs('admin.trade-bot.index') ? 'block px-3 py-2 rounded bg-gray-200 dark:bg-gray-700' : 'block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700' }}">Generate Trades</a>
+
         {{-- Admin Manage Dropdown --}}
         <div x-data="{ open: false }">
             <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
@@ -100,6 +102,22 @@
                 <a href="{{ route('admin.kyc.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">KYC</a>
             </div>
         </div>
+
+        {{-- Trade Manage Dropdown --}}
+        <div x-data="{ open: false }">
+            <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
+                <span>Trades</span>
+                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </button>
+            <div x-show="open" class="ml-4 mt-1 space-y-1">
+                <a href="{{ route('admin.trade-bot.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Generate Trade</a>
+                <a href="{{ route('admin.trade-bot.runs.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Bot History</a>
+            </div>
+        </div>
+
+
 
         {{-- FAQ Management --}}
         <div x-data="{ open: false }">

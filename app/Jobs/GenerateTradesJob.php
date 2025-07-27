@@ -27,8 +27,9 @@ class GenerateTradesJob implements ShouldQueue
     public $riskPerTrade;
     public $desiredWinRate;
     public $maxTrades;
+    public $tradingPairs; // Add this property
 
-    public function __construct($traderId, $market, $roi, $fromDate, $toDate, $timeframe = '1d', $riskPerTrade = 1, $desiredWinRate = 60, $maxTrades = null)
+    public function __construct($traderId, $market, $roi, $fromDate, $toDate, $timeframe = '1d', $riskPerTrade = 1, $desiredWinRate = 60, $maxTrades = null, $tradingPairs = [])
     {
         $this->traderId = $traderId;
         $this->market = $market;
@@ -39,65 +40,68 @@ class GenerateTradesJob implements ShouldQueue
         $this->riskPerTrade = $riskPerTrade;
         $this->desiredWinRate = $desiredWinRate;
         $this->maxTrades = $maxTrades;
+        $this->tradingPairs = $tradingPairs; // Assign it
     }
 
     public function handle()
     {
-        $log = BotLog::create([
-            'admin_id'   => Auth::id(),
-            'trader_id'  => $this->traderId,
-            'market'     => $this->market,
-            'roi'        => $this->roi,
-            'strategy'   => 'Historical ROI Simulation',
-            'input_data' => json_encode([
-                'roi_target'      => $this->roi,
-                'market'          => $this->market,
-                'timeframe'       => $this->timeframe,
-                'risk_per_trade'  => $this->riskPerTrade,
-                'desired_winrate' => $this->desiredWinRate,
-                'max_trades'      => $this->maxTrades,
-                'from'            => $this->fromDate,
-                'to'              => $this->toDate,
-            ]),
-        ]);
+        foreach(this->tradingPairs as $pair) {
+            $log = BotLog::create([
+                'admin_id'   => Auth::id(),
+                'trader_id'  => $this->traderId,
+                'market'     => $this->market,
+                'roi'        => $this->roi,
+                'strategy'   => 'Historical ROI Simulation',
+                'input_data' => json_encode([
+                    'roi_target'      => $this->roi,
+                    'market'          => $this->market,
+                    'timeframe'       => $this->timeframe,
+                    'risk_per_trade'  => $this->riskPerTrade,
+                    'desired_winrate' => $this->desiredWinRate,
+                    'max_trades'      => $this->maxTrades,
+                    'from'            => $this->fromDate,
+                    'to'              => $this->toDate,
+                ]),
+            ]);
 
-        try {
-            $simulatedTrades = $this->simulateTrades();
+            try {
+                $simulatedTrades = $this->simulateTrades();
 
-            foreach ($simulatedTrades as $trade) {
-                Trade::create([
-                    'trader_id'   => $this->traderId,
-                    'pair'        => $trade['pair'],
-                    'type'        => $trade['type'],
-                    'entry_price' => $trade['entry_price'],
-                    'exit_price'  => $trade['exit_price'],
-                    'profit'      => $trade['profit'],
-                    'opened_at'   => Carbon::parse($trade['opened_at']),
-                    'closed_at'   => Carbon::parse($trade['closed_at']),
-                    'source'      => 'bot',
-                    'meta'        => json_encode([
-                        'roi_target'      => $this->roi,
-                        'timeframe'       => $this->timeframe,
-                        'risk_per_trade'  => $this->riskPerTrade,
-                        'desired_winrate' => $this->desiredWinRate,
-                        'strategy'        => 'Historical ROI Simulation',
+                foreach ($simulatedTrades as $trade) {
+                    Trade::create([
+                        'trader_id'   => $this->traderId,
+                        'pair'        => $trade['pair'],
+                        'type'        => $trade['type'],
+                        'entry_price' => $trade['entry_price'],
+                        'exit_price'  => $trade['exit_price'],
+                        'profit'      => $trade['profit'],
+                        'opened_at'   => Carbon::parse($trade['opened_at']),
+                        'closed_at'   => Carbon::parse($trade['closed_at']),
+                        'source'      => 'bot',
+                        'meta'        => json_encode([
+                            'roi_target'      => $this->roi,
+                            'timeframe'       => $this->timeframe,
+                            'risk_per_trade'  => $this->riskPerTrade,
+                            'desired_winrate' => $this->desiredWinRate,
+                            'strategy'        => 'Historical ROI Simulation',
+                        ]),
+                    ]);
+                }
+
+                $log->update([
+                    'output_data' => json_encode([
+                        'trade_count' => count($simulatedTrades),
+                        'trades' => $simulatedTrades,
                     ]),
+                    'summary' => count($simulatedTrades) . ' trades generated successfully.',
+                ]);
+
+            } catch (\Exception $e) {
+                $log->update([
+                    'errors' => json_encode([$e->getMessage()]),
+                    'summary' => 'Failed to generate trades: ' . $e->getMessage(),
                 ]);
             }
-
-            $log->update([
-                'output_data' => json_encode([
-                    'trade_count' => count($simulatedTrades),
-                    'trades' => $simulatedTrades,
-                ]),
-                'summary' => count($simulatedTrades) . ' trades generated successfully.',
-            ]);
-
-        } catch (\Exception $e) {
-            $log->update([
-                'errors' => json_encode([$e->getMessage()]),
-                'summary' => 'Failed to generate trades: ' . $e->getMessage(),
-            ]);
         }
     }
 
@@ -128,7 +132,7 @@ class GenerateTradesJob implements ShouldQueue
                 : round(($this->riskPerTrade / 100) * -rand(80, 100), 2); // losing trades
 
             $trades[] = [
-                'pair' => $this->randomSymbol($this->market),
+                'pair' => $fake()->randomElement($this->tradingPairs), // Use the provided trading pairs here
                 'type' => fake()->randomElement(['buy', 'sell']),
                 'entry_price' => fake()->randomFloat(2, 20, 500),
                 'exit_price'  => fake()->randomFloat(2, 20, 500),
