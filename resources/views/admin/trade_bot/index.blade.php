@@ -21,7 +21,7 @@
         @endif
 
 
-        <form action="{{ route('admin.trade-bot.store') }}" method="POST" id="tradeBotForm" class="space-y-6 bg-white p-6 rounded-lg shadow">
+        <form action="{{ route('admin.trade-bot.generate') }}" method="POST" id="tradeBotForm" class="space-y-6 bg-white p-6 rounded-lg shadow">
             @csrf
 
             <div>
@@ -44,7 +44,7 @@
                 <div class="mt-2 space-y-2">
                     @foreach (['forex' => 'Forex', 'crypto' => 'Crypto', 'stocks' => 'Stocks', 'indices' => 'Indices'] as $value => $label)
                         <label class="inline-flex items-center space-x-2">
-                            <input type="checkbox" name="markets[]" value="{{ $value }}" class="form-checkbox text-indigo-600">
+                            <input type="checkbox" name="market" value="{{ $value }}" class="form-checkbox text-indigo-600">
                             <span>{{ $label }}</span>
                         </label>
                     @endforeach
@@ -53,13 +53,13 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Trading Pairs (optional)</label>
-                <textarea name="trading_pairs" rows="3" placeholder="e.g. BTC/USDT, EUR/USD" class="mt-1 block w-full rounded border-gray-300 shadow-sm" ></textarea>
+                <textarea name="symbol" rows="3" placeholder="e.g. BTC/USDT, EUR/USD" class="mt-1 block w-full rounded border-gray-300 shadow-sm" ></textarea>
                 <p class="text-xs text-gray-500 mt-1">Separate pairs with commas.</p>
             </div>
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Assign To Trader (optional)</label>
-                <select name="assign_to" class="mt-1 block w-full rounded border-gray-300 shadow-sm">
+                <select name="trader_id" class="mt-1 block w-full rounded border-gray-300 shadow-sm">
                     <option value="">-- Do not assign --</option>
                     @foreach ($traders as $trader)
                         <option value="{{ $trader->id }}">{{ $trader->name }} (ID: {{ $trader->id }})</option>
@@ -79,7 +79,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
                 <label for="timeframe">Trade Timeframe</label>
-                    <select id="timeframe" name="timeframe" class="form-select w-full">
+                    <select id="timeframe" name="interval" class="form-select w-full">
                         <option value="1min" {{ old('timeframe') == '1min' ? 'selected' : '' }}>1 Minute</option>
                         <option value="5min" {{ old('timeframe') == '5min' ? 'selected' : '' }}>5 Minutes</option>
                         <option value="15min" {{ old('timeframe') == '15min' ? 'selected' : '' }}>15 Minutes</option>
@@ -96,13 +96,28 @@
 
     <div>
         <label for="desired_win_rate">Desired Win Rate (%)</label>
-        <input type="number" step="0.1" min="0" max="100" name="desired_win_rate" class="form-input w-full" placeholder="Optional" />
+        <input type="number" step="0.1" min="0" max="100" name="target_win_rate" class="form-input w-full" placeholder="Optional" />
     </div>
 
     <div>
         <label for="max_trades">Maximum Trades (cap)</label>
-        <input type="number" min="1" name="max_trades" class="form-input w-full" placeholder="Optional" />
+        <input type="number" min="1" name="max_trade_count" class="form-input w-full" placeholder="Optional" />
     </div>
+</div>
+
+<div class="mb-4">
+    <label for="min_trade_duration_days" class="block text-gray-700 text-sm font-bold mb-2">Min Trade Duration (Days)</label>
+    <input type="number" id="min_trade_duration_days" name="min_trade_duration_days" class="form-input w-full" value="{{ old('min_trade_duration_days', 1) }}" min="1" required>
+    @error('min_trade_duration_days')
+        <p class="text-red-500 text-xs italic">{{ $message }}</p>
+    @enderror
+</div>
+<div class="mb-4">
+    <label for="max_trade_duration_days" class="block text-gray-700 text-sm font-bold mb-2">Max Trade Duration (Days)</label>
+    <input type="number" id="max_trade_duration_days" name="max_trade_duration_days" class="form-input w-full" value="{{ old('max_trade_duration_days', 5) }}" min="1" required>
+    @error('max_trade_duration_days')
+        <p class="text-red-500 text-xs italic">{{ $message }}</p>
+    @enderror
 </div>
 
             {{-- Export to CSV --}}

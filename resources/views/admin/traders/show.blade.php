@@ -50,38 +50,28 @@
                             <th class="px-4 py-2">Entry</th>
                             <th class="px-4 py-2">Exit</th>
                             <th class="px-4 py-2">Profit/Loss</th>
-                            <th class="px-4 py-2">Status</th>
+                            
                             <th class="px-4 py-2">Opened</th>
                             <th class="px-4 py-2">Closed</th>
-                            <th class="px-4 py-2">Source</th>
-                            <th class="px-4 py-2 text-right">Actions</th>
+                        
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($trader->trades as $trade)
                             <tr class="border-t dark:border-gray-700">
-                                <td class="px-4 py-2 capitalize">{{ $trade->trade_type }}</td>
-                                <td class="px-4 py-2">{{ $trade->pair ?? $trade->asset }}</td>
+                                <td class="px-4 py-2 capitalize">{{ $trade->type }}</td>
+                                <td class="px-4 py-2">{{ $trade->pair ?? $trade->symbol }}</td>
                                 <td class="px-4 py-2">{{ $trade->entry_price }}</td>
                                 <td class="px-4 py-2">{{ $trade->exit_price }}</td>
-                                <td class="px-4 py-2 {{ $trade->profit_loss >= 0 ? 'text-green-600' : 'text-red-600' }}">
-                                    {{ $trade->profit_loss }}
+                                <td class="px-4 py-2 {{ $trade->roi >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                    {{ $trade->roi }}
                                 </td>
-                                <td class="px-4 py-2 capitalize">{{ $trade->status }}</td>
-                                <td class="px-4 py-2">{{ optional($trade->opened_at)->format('d M, H:i') }}</td>
-                                <td class="px-4 py-2">{{ optional($trade->closed_at)->format('d M, H:i') }}</td>
-                                <td class="text-sm text-gray-600">{{ ucfirst($trade->source ?? 'manual') }}</td>
+                                
+                                <td class="px-4 py-2">{{ $trade->entry_timestamp }}</td>
+                                <td class="px-4 py-2">{{ $trade->exit_timestamp}}</td>
+                                
 
-                                <td class="px-4 py-2 text-right">
-                                    <div class="flex justify-end gap-2">
-                                        <a href="{{ route('admin.trades.edit', $trade) }}" class="btn btn-xs btn-warning">Edit</a>
-                                        <form action="{{ route('admin.trades.destroy', $trade) }}" method="POST"
-                                            onsubmit="return confirm('Are you sure you want to delete this trade?')">
-                                            @csrf @method('DELETE')
-                                            <button class="btn btn-xs btn-danger">Delete</button>
-                                        </form>
-                                    </div>
-                                </td>
+    
                             </tr>
                         @empty
                             <tr>

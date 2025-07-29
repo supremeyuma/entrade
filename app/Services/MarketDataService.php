@@ -9,6 +9,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use InvalidArgumentException;
 use Throwable; // Use Throwable for broader exception catching
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class MarketDataService
 {
@@ -117,7 +119,12 @@ class MarketDataService
             $columnsToUpdate = ['open', 'high', 'low', 'close', 'volume', 'updated_at'];
             $uniqueBy = ['symbol', 'market_type', 'interval', 'timestamp']; // Matches your unique index
 
-            OhlcvData::upsert($dataToUpsert, $uniqueBy, $columnsToUpdate);
+            
+            $symbolSlug = str_replace(['/', ':'], '_', $symbol);
+            $filename = "ohlcv/{$marketType}_{$symbolSlug}_{$interval}.json";
+
+            Storage::put($filename, json_encode($dataToUpsert, JSON_PRETTY_PRINT));
+            Log::info("Saved OHLCV data for {$symbol} to file: {$filename}");
 
             \Log::info("Successfully fetched and saved " . count($data['results']) . " OHLCV records from Polygon.io for {$polygonSymbol} ({$interval}).");
 
@@ -160,17 +167,15 @@ class MarketDataService
     /**
      * Formats symbol for Polygon.io API.
      */
-    protected function formatPolygonSymbol(string $symbol, string $marketType): string
+    public function formatPolygonSymbol(string $symbol, string $marketType): string
     {
         switch ($marketType) {
             case 'crypto':
                 $parts = explode('/', $symbol);
                 if (count($parts) === 2) {
-                    // Based on past experience, sometimes 'X:' is needed, sometimes not.
-                    // Let's try without 'X:' first as it's often more flexible for crypto now.
-                    return strtoupper($parts[0]) . strtoupper($parts[1]);
-                    // If you encounter "symbol not found" errors, try uncommenting the line below:
-                    // return 'X:' . strtoupper($parts[0]) . strtoupper($parts[1]);
+                    $base = strtoupper($parts[0]);
+                    // Always use USD for Polygon crypto API (Polygon doesn't support USDT)
+                    return 'X:' . $base . 'USD';
                 }
                 break;
             case 'forex':

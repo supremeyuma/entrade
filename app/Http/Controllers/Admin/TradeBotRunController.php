@@ -5,42 +5,54 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\TradeBotRun;
 use Illuminate\Http\Request;
+use App\Models\Trade;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 
 class TradeBotRunController extends Controller
 {
     public function index(Request $request)
     {
-        $query = TradeBotRun::query()->with('config', 'config.trader');
+        $query = Trade::query()
+            ->select([
+                'batch_id',
+                'trader_id',
+                DB::raw('COUNT(*) as trade_count'),
+                DB::raw('AVG(roi) as average_roi'),
+                DB::raw('SUM(CASE WHEN roi > 0 THEN 1 ELSE 0 END) * 100.0 / COUNT(*) as win_rate'),
+                DB::raw('MIN(entry_timestamp) as from_date'),
+                DB::raw('MAX(exit_timestamp) as to_date'),
+            ])
+            ->whereNotNull('batch_id')
+            ->groupBy('batch_id', 'trader_id');
 
+        // Optional filters
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->whereHas('config', function ($q) use ($search) {
-                $q->where('name', 'like', "%$search%")
-                ->orWhere('market_type', 'like', "%$search%");
+            $query->whereHas('trader', function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%");
             });
         }
 
-        if ($request->filled('status')) {
-            $query->where('status', $request->status);
-        }
-
         if ($request->filled('from') && $request->filled('to')) {
-            $query->whereBetween('created_at', [$request->from, $request->to]);
+            $query->whereBetween('entry_timestamp', [$request->from, $request->to]);
         }
 
-        if ($request->filled('sort')) {
-            $sort = match ($request->sort) {
-                'oldest' => ['created_at', 'asc'],
-                'roi' => ['config->roi_target', 'desc'],
-                default => ['created_at', 'desc'],
-            };
-            $query->orderBy(...$sort);
-        }
+        $query->orderByDesc('from_date');
 
-        $runs = $query->paginate(15);
+        $batches = $query->paginate(15);
 
-        return view('admin.trade_bot.runs.index', compact('runs'));
+        return view('admin.trades.simulated_batches.index', compact('batches'));
     }
+
+    public function show($batchId)
+    {
+        $trades = Trade::where('batch_id', $batchId)->get();
+
+        return view('admin.trades.simulated_batches.show', compact('trades', 'batchId'));
+    }
+
 
     public function rerun(TradeBotConfig $config)
     {

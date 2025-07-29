@@ -97,7 +97,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/traders/{trader}', [TraderController::class, 'show'])->name('traders.show');
 
     //Trades
-    Route::resource('trades', TradeController::class)->except(['index', 'create', 'store', 'show']);
+    Route::get('/trades', [TradeController::class, 'index'])->name('trades.index');
 
     // Users
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
@@ -107,6 +107,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('users/{user}/edit-role', [AdminUserController::class, 'editRole'])->name('users.editRole');
     Route::post('users/{user}/update-role', [AdminUserController::class, 'updateRole'])->name('users.updateRole');
     Route::post('/users/{user}/funds', [UserFundsController::class, 'store'])->name('users.funds.store');
+    Route::get('/admin/users/{user}/trade-histories', [AdminUserController::class, 'tradeHistory'])->name('users.tradeHistories');
+
 
     // Trade Outcomes
     Route::resource('trade-outcomes', TradeOutcomeController::class)->only(['index', 'create', 'store']);
@@ -166,12 +168,16 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     //Bot Routes
     Route::get('/bot-logs', [BotLogController::class, 'index'])->name('bot_logs.index');
     Route::get('/trade-bot', [TradeBotController::class, 'index'])->name('trade-bot.index');
+    Route::post('/trade-bot/generate', [TradeBotController::class, 'generate'])->name('trade-bot.generate');
     Route::post('/trade-bots', [TradeBotController::class, 'store'])->name('trade-bot.store');
 
     Route::post('/trade-bot/run', [TradeBotController::class, 'run'])->name('trade-bot.run');
     Route::get('/trade-bot/results', [TradeBotController::class, 'results'])->name('trade-bot.results');
 
     Route::get('/trade-bot/runs', [TradeBotRunController::class, 'index'])->name('trade-bot.runs.index');
+    Route::get('/trade-bot/{batchId}', [TradeBotRunController::class, 'show'])->name('trade-bot.show');
+
+
     Route::post('/trade-bot/configs/{config}/rerun', [TradeBotRunController::class, 'rerun'])->name('trade-bot.configs.rerun');
     Route::post('/trade-bot/preview', [TradeBotController::class, 'preview'])->name('trade-bot.preview');
     Route::get('/trade-bot/{tradeBotConfig}/logs', [TradeBotController::class, 'logs'])->name('trade-bot.logs');

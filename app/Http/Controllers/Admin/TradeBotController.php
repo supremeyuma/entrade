@@ -11,6 +11,7 @@ use App\Models\Trade;
 use Illuminate\Support\Facades\Validator;
 use App\Services\TradeBot\BacktestSimulator;
 use Illuminate\Support\Facades\Log; // Added for potential debugging
+use App\Jobs\GenerateSimulatedTradesJob; // Correctly referencing the new job
 
 class TradeBotController extends Controller
 {
@@ -173,6 +174,8 @@ class TradeBotController extends Controller
             'desired_win_rate' => 'nullable|numeric|min:0|max:100',
             'max_trades' => 'nullable|integer|min:1',
             'export_csv' => 'nullable|boolean', // Added validation for export_csv
+            'min_trade_duration_days' => 'required|integer|min:1',
+            'max_trade_duration_days' => 'required|integer|min:1|gte:min_trade_duration_days',
         ]);
 
         // --- FIX: Process trading_pairs into a clean array of symbols ---
@@ -227,4 +230,36 @@ class TradeBotController extends Controller
             ->route('admin.trade-bot.index')
             ->with('success', 'Trade generation job started successfully.');
     }
+
+    public function generate(Request $request)
+    {
+        $validated = $request->validate([
+            'symbol' => 'required|string',
+            'interval' => 'required|string',
+            'market' => 'required|string',
+            'roi' => 'required|numeric',
+            'target_win_rate' => 'required|numeric',
+            'max_trade_count' => 'required|integer',
+            'trader_id' => 'required|integer',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+            'target_win_rate' => 'nullable|numeric',
+
+        ]);
+
+        GenerateSimulatedTradesJob::dispatch(
+            symbol: $validated['symbol'],
+            marketType: $validated['market'],
+            interval: $validated['interval'],
+            targetRoi: $validated['roi'],
+            targetWinRate: $validated['target_win_rate'],
+            tradeCount: $validated['max_trade_count'],
+            traderUserId: $validated['trader_id'],
+            startDate: $validated['start_date'],
+            endDate: $validated['end_date'],
+        );
+
+        return back()->with('success', 'Simulation job dispatched.');
+    }
+
 }

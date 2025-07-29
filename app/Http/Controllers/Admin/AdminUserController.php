@@ -7,7 +7,8 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Transaction;   
+use App\Models\Transaction;
+use App\Models\TradeHistory;
 
 class AdminUserController extends Controller
 {
@@ -63,4 +64,18 @@ class AdminUserController extends Controller
 
         return redirect()->route('admin.users.index')->with('success', 'Role updated successfully.');
     }
+
+    public function tradeHistory(User $user)
+    {
+        $tradeHistories = TradeHistory::with(['trade', 'trade.trader'])
+            ->where('user_id', $user->id)
+            ->join('trades', 'trade_histories.trade_id', '=', 'trades.id')
+            ->orderBy('trades.entry_timestamp', 'desc')
+            ->select('trade_histories.*') // Important to avoid column conflicts
+            ->paginate(20);
+
+        return view('admin.users.trade_histories', compact('user', 'tradeHistories'));
+    }
+
+
 }

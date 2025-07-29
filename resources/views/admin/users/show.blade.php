@@ -17,6 +17,12 @@
             Edit User
         </a>
 
+        <a href="{{ route('admin.users.tradeHistories', $user) }}"
+        class="inline-block mt-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-yellow-600">
+            View Trade History
+        </a>
+
+
 
         <div class="mt-8">
             <h2 class="text-xl font-semibold mb-4">Transaction History</h2>

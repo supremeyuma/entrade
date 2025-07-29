@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\TradeLog;
 use App\Models\Trader;
+use App\Models\Trade;
 use Illuminate\Http\Request;
 
 class TradeLogController extends Controller
@@ -12,6 +13,10 @@ class TradeLogController extends Controller
     public function index()
     {
         $tradeLogs = TradeLog::with('trader')->latest()->get();
+        //$trades = Trade::where('trader_id', $traderId)
+        //    ->orderBy('opened_at', 'desc')
+        //    ->get();
+
         return view('admin.trade-logs.index', compact('tradeLogs'));
     }
 

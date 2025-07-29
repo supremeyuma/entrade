@@ -2,32 +2,30 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TradeHistory extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'user_id',
-        'trader_id',
-        'trade_outcome_id',
-        'input',
-        'roi',
-        'output',
+        'trade_id', 'user_id', 'trader_id', 'amount_invested', 
+        'roi', 'amount_returned','new_trade_balance',
     ];
 
-    public function user(): BelongsTo
+    public function trade()
+    {
+        return $this->belongsTo(Trade::class);
+    }
+
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function trader(): BelongsTo
+    public function trader()
     {
-        return $this->belongsTo(Trader::class);
-    }
-
-    public function tradeOutcome(): BelongsTo
-    {
-        return $this->belongsTo(TradeOutcome::class);
+        return $this->belongsTo(User::class, 'trader_id');
     }
 }

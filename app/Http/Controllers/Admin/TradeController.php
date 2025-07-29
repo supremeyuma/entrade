@@ -9,6 +9,14 @@ use Illuminate\Http\Request;
 
 class TradeController extends Controller
 {
+    public function index()
+    {
+        $trades = Trade::orderBy('created_at', 'desc')->get();
+
+        return view('admin.trades.index', compact('trades'));
+    }
+
+
     public function create(Trader $trader)
     {
         return view('admin.trades.create', compact('trader'));

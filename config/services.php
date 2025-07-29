@@ -50,7 +50,7 @@ return [
     ],
 
     'polygon' => [
-        'key' => env('POLYGON_API_KEY'),
+        'api_key' => env('POLYGON_API_KEY'),
         'base_url' => env('POLYGON_BASE_URL', 'https://api.polygon.io'),
     ],
 
