@@ -22,42 +22,27 @@
             <table class="table-auto w-full text-sm">
                 <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
                     <tr>
-                        <th class="px-4 py-2 text-left">Photo</th>
+                        
                         <th class="px-4 py-2 text-left">Name</th>
                         <th class="px-4 py-2 text-left">ROI</th>
                         <th class="px-4 py-2 text-left">Trades</th>
-                        <th class="px-4 py-2 text-left">Bio</th>
+                        <th class="px-4 py-2 text-left">Win Rate</th>
                         <th class="px-4 py-2 text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($traders as $trader)
                         <tr class="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900">
-                            <td class="px-4 py-3">
-                                @if($trader->profile_photo)
-                                    <img src="{{ asset('storage/' . $trader->profile_photo) }}"
-                                         class="w-10 h-10 rounded-full object-cover">
-                                @endif
-                            </td>
+                        
                             <td class="px-4 py-3 font-medium">{{ $trader->name }}</td>
                             <td class="px-4 py-3">
-                                @php
-                                    $roi = $trader->performance_metrics['roi'] ?? null;
-                                @endphp
-                                @if ($roi !== null)
                                     <div class="w-full">
-                                        <div class="text-xs font-semibold mb-1">{{ $roi }}%</div>
-                                        <div class="w-full h-2 bg-gray-200 rounded">
-                                            <div class="h-2 bg-green-500 rounded" style="width: {{ min(100, $roi) }}%"></div>
-                                        </div>
+                                        <div class="text-xs font-semibold mb-1">{{ $average_roi }}%</div>
                                     </div>
-                                @else
-                                    <span class="italic text-gray-400">N/A</span>
-                                @endif
                             </td>
                             <td class="px-4 py-3">{{ $trader->trades->count() }}</td>
                             <td class="px-4 py-3 text-gray-600 dark:text-gray-300">
-                                {{ Str::limit($trader->bio, 50) }}
+                                {{ $winRate }}
                             </td>
                             <td class="px-4 py-3 text-center">
                                 <div class="flex justify-center gap-2">

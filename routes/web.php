@@ -96,6 +96,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::resource('traders.trades', TradeController::class)->only(['create', 'store']);
     Route::get('/traders/{trader}', [TraderController::class, 'show'])->name('traders.show');
 
+    Route::post('/traders/{trader}/toggle-active', [TraderController::class, 'toggleActive'])->name('traders.toggle-active');
+    Route::post('/traders/{trader}/toggle-featured', [TraderController::class, 'toggleFeatured'])->name('traders.toggle-featured');
+    Route::get('/traders/{trader}/subscribers', [TraderController::class, 'subscribers'])->name('traders.subscribers');
+
     //Trades
     Route::get('/trades', [TradeController::class, 'index'])->name('trades.index');
 
