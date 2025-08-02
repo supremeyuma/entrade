@@ -49,13 +49,13 @@
                                 </span>
                             @endif
 
-                            <form method="POST" action="{{ route('user.traders.addToCompare', $trader->id) }}">
+                            <!--<form method="POST" action="{{ route('user.traders.addToCompare', $trader->id) }}">
                                 @csrf
                                 <button type="submit"
                                         class="px-3 py-1 bg-gray-200 text-gray-700 text-sm rounded hover:bg-gray-300">
                                     Add to Compare
                                 </button>
-                            </form>
+                            </form>-->
                         </div>
                     </div>
                 @endforeach
@@ -64,11 +64,11 @@
             <p class="text-gray-600 mt-4">No traders found.</p>
         @endif
 
-        <div class="mt-8 text-center">
+        <!--<div class="mt-8 text-center">
             <a href="{{ route('user.traders.compare') }}"
                class="inline-block text-indigo-600 hover:underline">
                 Compare Traders →
             </a>
-        </div>
+        </div>-->
     </div>
 </x-layouts.app>

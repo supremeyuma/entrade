@@ -55,8 +55,8 @@ class TradeBotController extends Controller
             'trading_pairs' => 'nullable|string',
             'assign_to' => 'nullable|exists:traders,id',
             'auto_run' => 'nullable|boolean',
-            'timeframe' => 'required|in:1h,4h,1d',
-            'risk_per_trade' => 'required|numeric|min:0|max:100',
+            //'timeframe' => 'required|in:1h,4h,1d',
+            //'risk_per_trade' => 'required|numeric|min:0|max:100',
             'desired_win_rate' => 'nullable|numeric|min:0|max:100',
             'max_trades' => 'nullable|integer|min:1',
         ]);
@@ -70,6 +70,10 @@ class TradeBotController extends Controller
         }
         // --- END FIX ---
 
+        //INITIATE VARIABLES
+        $timeframe = '1d';
+        $risk_per_trade = 70; 
+
         // Save configuration
         $config = TradeBotConfig::create([
             'start_date' => $validated['start_date'],
@@ -79,8 +83,8 @@ class TradeBotController extends Controller
             'trading_pairs' => $cleanTradingPairs,
             'assign_to' => $validated['assign_to'] ?? null,
             'auto_run' => $validated['auto_run'] ?? false,
-            'timeframe' => $validated['timeframe'],
-            'risk_per_trade' => $validated['risk_per_trade'],
+            'timeframe' => $timeframe,
+            'risk_per_trade' => $risk_per_trade,
             'desired_win_rate' => $validated['desired_win_rate'] ?? null,
             'max_trades' => $validated['max_trades'] ?? null,
             'status' => 'pending',
@@ -235,7 +239,7 @@ class TradeBotController extends Controller
     {
         $validated = $request->validate([
             'symbol' => 'required|string',
-            'interval' => 'required|string',
+            //'interval' => 'required|string',
             'market' => 'required|string',
             'roi' => 'required|numeric',
             'target_win_rate' => 'required|numeric',
@@ -247,10 +251,12 @@ class TradeBotController extends Controller
 
         ]);
 
+        $interval = $validated['interval'] ?? '1d'; // Default to '1d' if not provided
+
         GenerateSimulatedTradesJob::dispatch(
             symbol: $validated['symbol'],
             marketType: $validated['market'],
-            interval: $validated['interval'],
+            interval: $interval,
             targetRoi: $validated['roi'],
             targetWinRate: $validated['target_win_rate'],
             tradeCount: $validated['max_trade_count'],

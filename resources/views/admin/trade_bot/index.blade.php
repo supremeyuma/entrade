@@ -67,17 +67,17 @@
                 </select>
             </div>
 
-            <div>
+            <!--<div>
                 <label class="inline-flex items-center">
                     <input type="checkbox" name="auto_run" class="form-checkbox text-indigo-600" value="1">
                     <span class="ml-2 text-sm text-gray-700">Auto-run this configuration immediately</span>
                 </label>
-            </div>
+            </div>-->
 
             <h3 class="text-lg font-semibold mt-6 mb-2">Advanced Options</h3>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+            <!--<div>
                 <label for="timeframe">Trade Timeframe</label>
                     <select id="timeframe" name="interval" class="form-select w-full">
                         <option value="1min" {{ old('timeframe') == '1min' ? 'selected' : '' }}>1 Minute</option>
@@ -87,12 +87,12 @@
                         <option value="60min" {{ old('timeframe', '1d') == '60min' ? 'selected' : '' }}>60 Minutes (1 Hour)</option>
                         <option value="1d" {{ old('timeframe', '1d') == '1d' ? 'selected' : '' }}>Daily</option>
                     </select>
-            </div>
+            </div>-->
 
-    <div>
+    <!--<div>
         <label for="risk_per_trade">Risk per Trade (%)</label>
         <input type="number" step="0.1" min="0" max="100" name="risk_per_trade" class="form-input w-full" value="1.0" />
-    </div>
+    </div>-->
 
     <div>
         <label for="desired_win_rate">Desired Win Rate (%)</label>
@@ -121,12 +121,12 @@
 </div>
 
             {{-- Export to CSV --}}
-            <div>
+            <!--<div>
                 <label class="inline-flex items-center mt-4">
                     <input type="checkbox" name="export_csv" class="form-checkbox text-indigo-600">
                     <span class="ml-2 text-sm text-gray-700">Export trades as CSV after generation</span>
                 </label>
-            </div>
+            </div>-->
 
             {{-- Preview ROI Simulation --}}
             <div class="pt-6 flex justify-between items-center">
