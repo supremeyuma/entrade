@@ -42,10 +42,10 @@
                 </svg>
             </button>
             <div x-show="open" class="ml-4 mt-1 space-y-1">
+                <a href="{{ route('user.tradingDashboard') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade Dashboard</a>
                 <a href="{{ route('user.tradeHistory') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade History</a>
                 <a href="{{ route('user.leaderboard') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Leaderboard</a>
                 <a href="{{ route('user.traders.compare') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Compare Traders</a>
-                <a href="{{ route('user.myTraders') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">My Traders</a>
                 <a href="{{ route('user.trade.search') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Search Traders</a>
             </div>
         </div>
@@ -64,11 +64,6 @@
                 <a href="{{ route('user.wallets.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Wallets</a>
                 <a href="{{ route('user.reports.index', ['trader' => 1]) }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Statements</a>
                 <a href="{{ route('user.account.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Account Settings</a>
-                <a href="{{ route('user.profile.show') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Profile</a>
-                <a href="{{ route('user.notifications') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Notifications</a>
-                <a href="{{ route('user.activityLogs') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Activity Logs</a>
-                <a href="{{ route('user.kyc.submit') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Submit KYC</a>
-                <a href="{{ route('user.preferences.update') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Preferences</a>
             </div>
         </div>
 

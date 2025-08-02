@@ -19,9 +19,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($tradeLogs as $log)
+                    @foreach ($trade as $trade)
                         <tr class="border-b border-gray-200 hover:bg-gray-50">
-                            <td class="py-4 px-6">{{ $log->trader->name }}</td>
+                            <td class="py-4 px-6">{{ $trade->trader->name }}</td>
                             <td class="py-4 px-6">{{ $log->entry_date->format('Y-m-d') }}</td>
                             <td class="py-4 px-6">{{ ucfirst($log->result) }}</td>
                             <td class="py-4 px-6">{{ $log->percentage_change }}%</td>

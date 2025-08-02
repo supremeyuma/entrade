@@ -1,4 +1,4 @@
-<x-layouts/app>
+<x-layouts.app>
 <div class="container">
         <h1>Subscribe to {{ $trader->name }}</h1>
         <p>Trader ID: {{ $trader->unique_trader_id }}</p>
@@ -12,4 +12,4 @@
             <button type="submit" class="btn btn-primary mt-3">Subscribe</button>
         </form>
     </div>
-</x-layouts/app>
+</x-layouts.app>

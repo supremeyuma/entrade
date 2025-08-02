@@ -19,33 +19,51 @@ class UserTraderSubscriptionController extends Controller
         $user = auth()->user();
         $trader = Trader::findOrFail($traderId);
 
-        // Check if the user has enough balance
+        // 1. Check if the user has enough balance
         $balance = $user->balance;
         if ($balance->trade_balance < $request->amount) {
             return back()->with('error', 'Insufficient funds.');
         }
 
-        // Check if subscriptions are allowed and if admin allows it
-        if (!config('app.allow_multiple_traders') && $user->traderSubscriptions->count() >= 1) {
-            return back()->with('error', 'You can only follow one trader.');
+        // 2. Check if a subscription already exists for this user and trader
+        // and retrieve it if it does.
+        $subscription = $user->traderSubscriptions()
+                            ->where('trader_id', $traderId)
+                            ->first();
+
+        if ($subscription) {
+            // Subscription already exists. Just update its status and amount.
+            $subscription->status = 'active';
+            $subscription->allocated_amount = $request->amount; // You may want to handle this differently
+            $subscription->save();
+            $message = 'Successfully re-activated your subscription to trader.';
+        } else {
+            // No existing subscription. Create a new one.
+            // Check if multiple subscriptions are allowed
+            if (!config('app.allow_multiple_traders') && $user->traderSubscriptions->count() >= 1) {
+                return back()->with('error', 'You can only follow one trader.');
+            }
+
+            $subscription = new UserTraderSubscription([
+                'trader_id' => $traderId, // Assuming this is needed for a new subscription
+                'user_id' => $user->id,    // Assuming this is needed for a new subscription
+                'allocated_amount' => $request->amount,
+                'status' => 'active'
+            ]);
+            $user->traderSubscriptions()->save($subscription);
+            $message = 'Successfully subscribed to trader.';
         }
 
-        // Create subscription
-        $subscription = new UserTraderSubscription([
-            'allocated_amount' => $request->amount,
-            'status' => 'active'
-        ]);
-        $user->traderSubscriptions()->save($subscription);
-        
-        // Deduct from the user's main balance and add to trade balance
+        // 3. Deduct from the user's main balance and add to trade balance
         $balance->main_balance -= $request->amount;
         $balance->trade_balance += $request->amount;
         $balance->save();
 
+        // 4. Log the activity
         ActivityLogger::log('subscribe', 'Subscribed to trader: ' . $trader->name . ' (ID: ' . $trader->id . ')', auth()->id());
 
-
-        return redirect()->route('user.dashboard')->with('success', 'Successfully subscribed to trader.');
+        // 5. Redirect with success message
+        return redirect()->route('user.dashboard')->with('success', $message);
     }
 
     // Unsubscribe from a trader
@@ -66,7 +84,7 @@ class UserTraderSubscriptionController extends Controller
         ActivityLogger::log('unsubscribe', 'Unsubscribed from trader: ' . $subscription->trader->name . ' (ID: ' . $subscription->trader->id . ')', auth()->id());
 
 
-        return redirect()->route('user.dashboard')->with('success', 'Unsubscribed from trader.');
+        return back()->with('success', 'Unsubscribed from trader.');
     }
 
     // Update allocated amount for a trader subscription
@@ -91,7 +109,7 @@ class UserTraderSubscriptionController extends Controller
         ActivityLogger::log('update_allocation', 'Updated allocation for trader: ' . $subscription->trader->name . ' (ID: ' . $subscription->trader->id . ') to ' . $request->input('allocation_amount'), auth()->id());
 
 
-        return redirect()->route('user.dashboard')->with('success', 'Subscription amount updated.');
+        return back()->with('success', 'Subscription amount updated.');
     }
 
     // Transfer funds between main and trade balances
@@ -121,7 +139,7 @@ class UserTraderSubscriptionController extends Controller
         ActivityLogger::log('transfer_funds', 'Transferred funds: ' . $request->input('amount') . ' from ' . $request->input('from') . ' to ' . $request->input('to'), auth()->id());
 
 
-        return redirect()->route('user.dashboard')->with('success', 'Funds transferred successfully.');
+        return back()->with('success', 'Funds transferred successfully.');
     }
 
     public function searchForm(Request $request)
@@ -155,11 +173,12 @@ class UserTraderSubscriptionController extends Controller
     {
         $user = auth()->user();
 
+
         $subscriptions = UserTraderSubscription::with('trader')
             ->where('user_id', $user->id)
             ->get();
 
-        return view('user.trade.my_traders', compact('subscriptions', 'user'));
+        return view('user.trade.dashboard', compact('subscriptions', 'user'));
     }
 
 

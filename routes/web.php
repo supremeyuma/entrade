@@ -201,8 +201,10 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
 
     // Trade
     Route::get('/trade-history', [TradeHistoryController::class, 'index'])->name('tradeHistory');
-    Route::get('/trade-outcomes/{id}', [UserTradeController::class, 'showOutcome'])->name('trade.outcome.show');
+    Route::get('/trader-outcomes/{id}', [UserTradeController::class, 'showOutcome'])->name('trader.outcome.show');
     Route::get('/trader-profile/{trader}', [UserTradeController::class, 'profile'])->name('trader-profile');
+    Route::get('/trade-history/export', [TradeHistoryController::class, 'export'])->name('trade-history.export');
+
 
     // Leaderboard
     Route::get('/leaderboard', [UserTradeController::class, 'leaderboard'])->name('leaderboard');
@@ -290,7 +292,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/unsubscribe/{subscriptionId}', [UserTraderSubscriptionController::class, 'unsubscribe'])->name('user.unsubscribe');
     Route::post('/update-allocation/{subscriptionId}', [UserTraderSubscriptionController::class, 'updateAllocation'])->name('user.updateAllocation');
     Route::post('/transfer-funds', [UserTraderSubscriptionController::class, 'transferFunds'])->name('user.transferFunds');
-    Route::get('/my-traders', [UserTraderSubscriptionController::class, 'myTraders'])->name('user.myTraders');
+    Route::get('/trading-dashboard', [UserTraderSubscriptionController::class, 'myTraders'])->name('user.tradingDashboard');
     Route::get('/subscribe/{trader}/allocate', [UserTraderSubscriptionController::class, 'showAllocationForm'])->name('user.subscribe.allocate');
 });
 

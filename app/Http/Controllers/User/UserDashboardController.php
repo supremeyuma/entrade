@@ -29,9 +29,9 @@ class UserDashboardController extends Controller
             ->where('user_id', $user->id)
             ->pluck('trader_id');
 
-        $activeTrades = TradeOutcome::with('trader')
+        $activeTrades = TradeHistory::with('trader')
             ->whereIn('trader_id', $traderIds)
-            ->orderBy('trade_outcomes.created_at', 'desc')
+            ->orderBy('trade_histories.created_at', 'desc')
             ->take(3)
             ->get();
 
@@ -40,7 +40,7 @@ class UserDashboardController extends Controller
             ->latest()->take(3)
             ->get();*/
 
-        $recentTrades = TradeOutcome::with('trader')
+        $recentTrades = TradeHistory::with('trader')
             ->whereIn('trader_id', $user->copiedTraders()->pluck('user_trader_subscriptions.trader_id'))
             ->latest()->take(5)
             ->get();
@@ -49,11 +49,11 @@ class UserDashboardController extends Controller
         
         // Calculate total returns (sum of outputs for user's trades)
         $totalReturns = TradeHistory::where('user_id', $user->id)
-            ->sum('output');
+            ->sum('amount_returned');
 
         // Calculate total invested (sum of inputs for user's trades)
         $totalInvested = TradeHistory::where('user_id', $user->id)
-            ->sum('input');
+            ->sum('amount_invested');
 
         // Calculate net profit (total returns minus total invested)
         $netProfit = $totalReturns - $totalInvested;

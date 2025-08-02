@@ -5,6 +5,8 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TradeOutcome;
+use App\Models\TradeHistory;
+use App\Models\Trade;
 use App\Models\Trader;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -15,13 +17,24 @@ class UserTradeController extends Controller
 
     public function showOutcome($id)
     {
-        $tradeOutcome = TradeOutcome::with('trader')->findOrFail($id);
+        
 
         $user = auth()->user();
-        $userSubscription = $user->subscriptions()->where('trader_id', $tradeOutcome->trader_id)->first();
-
+        $trader_id = $id;
+        $userSubscription = $user->subscriptions()->where('trader_id', $trader_id)->first();
+        $trader = Trader::where('id', $id)->first();
+        //dd( $userSubscription);
+        
+        $histories = $user->tradeHistories()->where('trader_id', $trader_id)->orderBy('created_at', 'desc')->get();
         // Cumulative ROI (sum of percentage_change for this trader)
-        $cumulativeRoi = TradeOutcome::where('trader_id', $tradeOutcome->trader_id)->sum('percentage_change');
+        $cumulativeRoi = Trade::where('trader_id', $trader_id)->sum('roi');
+
+        $lastHistory = $user->tradeHistories()->where('trader_id', $trader_id)->latest('trade_id')->first();
+
+        $newBalance = $lastHistory->new_trade_balance;
+
+        $percentageChange = $histories->sum('roi');
+        $gainLoss = $histories->sum('amount_returned') - $histories->sum('amount_invested');
 
         // How many days subscribed
         $daysSubscribed = $userSubscription
@@ -29,18 +42,26 @@ class UserTradeController extends Controller
             : null;
 
         // Last 3 trade outcomes (excluding current one)
-        $recentOutcomes = TradeOutcome::where('trader_id', $tradeOutcome->trader_id)
-            ->where('id', '<>', $tradeOutcome->id)
+        $recentOutcomes = TradeHistory::where('trader_id', $trader_id)
+            //->where('id', '<>', $tradeOutcome->id)
             ->latest()
             ->take(3)
             ->get();
 
+    
+
         return view('user.trade.outcome_show', compact(
-            'tradeOutcome',
+            //'tradeOutcome',
             'userSubscription',
             'cumulativeRoi',
             'daysSubscribed',
-            'recentOutcomes'
+            'recentOutcomes',
+            'trader',
+            'percentageChange',
+            'gainLoss',
+            'lastHistory',
+            'newBalance',
+            'histories',
         ));
     }
 

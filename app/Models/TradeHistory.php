@@ -26,6 +26,12 @@ class TradeHistory extends Model
 
     public function trader()
     {
-        return $this->belongsTo(User::class, 'trader_id');
+        return $this->belongsTo(Trader::class, 'trader_id', 'id');
+    }
+
+    public function getProfitLossAmountAttribute()
+    {
+        $profitLossAmount = $this->amount_returned - $this->amount_invested;
+        return $profitLossAmount;
     }
 }

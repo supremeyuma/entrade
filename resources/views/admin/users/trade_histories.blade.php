@@ -13,6 +13,7 @@
                         <th class="px-4 py-3">Amount Invested</th>
                         <th class="px-4 py-3">ROI (%)</th>
                         <th class="px-4 py-3">Amount Returned</th>
+                        <th class="px-4 py-3">Balance</th>
                         <th class="px-4 py-3">Opened</th>
                         <th class="px-4 py-3">Closed</th>
                     </tr>
@@ -25,6 +26,7 @@
                             <td class="px-4 py-2">${{ number_format($history->amount_invested, 2) }}</td>
                             <td class="px-4 py-2">{{ $history->roi }}%</td>
                             <td class="px-4 py-2">${{ number_format($history->amount_returned, 2) }}</td>
+                            <td class="px-4 py-2">${{ number_format($history->new_trade_balance, 2) }}</td>
                             <td class="px-4 py-2">{{ $history->trade->entry_timestamp ?? '-' }}</td>
                             <td class="px-4 py-2">{{ $history->trade->exit_timestamp ?? '-' }}</td>
                         </tr>

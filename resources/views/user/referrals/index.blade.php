@@ -1,4 +1,4 @@
-<x-layouts.user>
+<x-layouts.app>
 <div class="max-w-4xl mx-auto px-4 py-6 space-y-6">
 
     <h2 class="text-2xl font-bold mb-4">My Referrals</h2>
@@ -66,4 +66,4 @@
     </div>
 
 </div>
-</x-layouts.user>
+</x-layouts.app>

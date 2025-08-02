@@ -37,9 +37,9 @@
             <a href="{{ route('user.referrals.index') }}" class="text-blue-600 hover:underline">View my referrals</a>
         </div>
     </div>
-
+        
     <!-- Copy Trading Section -->
-    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4">
+    <!--<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4">
         <h2 class="text-lg font-semibold mb-2">Your Copy Trading</h2>
         @if($activeTrades->isEmpty())
             <p>You are currently not copying any trader.</p>
@@ -47,15 +47,15 @@
             <ul class="space-y-2">
                 @foreach($activeTrades as $trade)
                     <li>
-                        {{ $trade->trader_name }} — 
-                        <span class="{{ $trade->outcome >= 0 ? 'text-green-600' : 'text-red-600' }}">
-                            {{ $trade->outcome }}%
+                        {{ $trade->trader->name }} — 
+                        <span class="{{ $trade->roi >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                            {{ $trade->roi }}%
                         </span> on {{ $trade->created_at->format('M d, Y') }}
                     </li>
                 @endforeach
             </ul>
         @endif
-    </div>
+    </div>-->
 
     <!-- Recent Trades -->
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4">
@@ -67,6 +67,7 @@
                 <thead>
                     <tr class="border-b text-left">
                         <th class="py-2">Trader</th>
+                        <th class="py-2">ROI</th>
                         <th class="py-2">Outcome</th>
                         <th class="py-2">Date</th>
                     </tr>
@@ -75,9 +76,13 @@
                     @foreach($recentTrades as $trade)
                         <tr class="border-b">
                             <td class="py-2">{{ $trade->trader->name }}</td>
-                            <td class="py-2 {{ $trade->outcome >= 0 ? 'text-green-600' : 'text-red-600' }}">
-                                {{ $trade->outcome }}%
+                            <td class="py-2 {{ $trade->roi >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                {{ $trade->roi }}%
                             </td>
+                             <td class="py-2 {{ $trade->profit_loss_amount >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                {{ $trade->profit_loss_amount }}
+                            </td>
+
                             <td class="py-2">{{ $trade->created_at->format('M d, Y') }}</td>
                         </tr>
                     @endforeach
