@@ -163,7 +163,7 @@
         @else
             {{ $content }}
         @endif
-        <x-components/footer/guest-footer />
+        <x-layouts.footer-guest />
     </main>
 </div>
 
@@ -197,6 +197,9 @@
 </script>
 
 </body>
+
+
+
 </html>
 
     <!-- Mobile Sidebar -->
