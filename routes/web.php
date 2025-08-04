@@ -48,6 +48,7 @@ use App\Http\Controllers\Admin\UserFundsController;
 use App\Http\Controllers\Admin\BotLogController;
 use App\Http\Controllers\Admin\TradeBotRunController;
 use App\Http\Controllers\Admin\TradeBotController;
+use App\Http\Controllers\Admin\AdminTradeHistoryController;
 
 
 
@@ -102,6 +103,9 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
 
     //Trades
     Route::get('/trades', [TradeController::class, 'index'])->name('trades.index');
+    Route::get('/trade-history/create', [AdminTradeHistoryController::class, 'create'])->name('trade-histories.create');
+    Route::post('/trade-history/store', [AdminTradeHistoryController::class, 'store'])->name('trade-histories.store');
+
 
     // Users
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
@@ -204,8 +208,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
     Route::get('/trader-outcomes/{id}', [UserTradeController::class, 'showOutcome'])->name('trader.outcome.show');
     Route::get('/trader-profile/{trader}', [UserTradeController::class, 'profile'])->name('trader-profile');
     Route::get('/trade-history/export', [TradeHistoryController::class, 'export'])->name('trade-history.export');
-
-
+ 
     // Leaderboard
     Route::get('/leaderboard', [UserTradeController::class, 'leaderboard'])->name('leaderboard');
 

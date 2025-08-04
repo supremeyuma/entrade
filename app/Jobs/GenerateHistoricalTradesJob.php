@@ -16,6 +16,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Arr; // <-- NEW: Import Arr helper
+use App\Jobs\DownloadDailyOhlcvDataJob;
+
 use Throwable;
 
 class GenerateHistoricalTradesJob implements ShouldQueue

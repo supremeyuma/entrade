@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Transaction;
 use App\Models\TradeHistory;
+use App\Models\Trader;
 
 class AdminUserController extends Controller
 {
@@ -65,17 +66,47 @@ class AdminUserController extends Controller
         return redirect()->route('admin.users.index')->with('success', 'Role updated successfully.');
     }
 
-    public function tradeHistory(User $user)
+    public function tradeHistory(Request $request, User $user)
     {
-        $tradeHistories = TradeHistory::with(['trade', 'trade.trader'])
+        /*$tradeHistories = TradeHistory::with(['trade', 'trade.trader'])
             ->where('user_id', $user->id)
-            ->join('trades', 'trade_histories.trade_id', '=', 'trades.id')
-            ->orderBy('trades.entry_timestamp', 'desc')
+            //->join('trades', 'trade_histories.trade_id', '=', 'trades.id')
+            ->orderBy('created_at', 'desc')
             ->select('trade_histories.*') // Important to avoid column conflicts
             ->paginate(20);
+        //$traderName = Trader::where('user_id', $tradeHistories->first()->first()?->name;*/
 
-        return view('admin.users.trade_histories', compact('user', 'tradeHistories'));
-    }
+
+        // Fetch all traders for the filter dropdown
+        $traders = Trader::orderBy('name')->get();
+
+        // Start with the base query for the user
+        $query = TradeHistory::with('trader')
+            ->where('user_id', $user->id);
+
+        // --- Add Filtering Logic ---
+        if ($request->filled('trader_id')) {
+            $query->where('trader_id', $request->trader_id);
+        }
+
+        // --- Add Sorting Logic ---
+        $sortBy = $request->get('sort_by', 'created_at'); // Default sort column
+        $sortDirection = $request->get('direction', 'desc'); // Default sort direction
+
+        // Validate the sortable columns to prevent SQL injection
+        $allowedSortColumns = ['id', 'created_at', 'roi', 'amount_invested', 'amount_returned', 'new_trade_balance'];
+        if (in_array($sortBy, $allowedSortColumns)) {
+            $query->orderBy($sortBy, $sortDirection);
+        } else {
+            // Fallback to default if the column is not allowed
+            $query->orderBy('created_at', 'desc');
+        }
+
+        // Paginate the results and append the sorting/filtering parameters
+        $tradeHistories = $query->paginate(20)->withQueryString();
+
+            return view('admin.users.trade_histories', compact('user', 'tradeHistories', 'traders', 'sortBy', 'sortDirection'));
+        }
 
 
 }
