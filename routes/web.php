@@ -335,3 +335,21 @@ Route::get('/api/calendar', function () {
 
     return isset($json['response']) ? response()->json($json['response']) : response()->json($json);
 });
+
+
+Route::view('/copy-trading', 'pages.copy-trading')->name('copy-trading');
+Route::view('/markets', 'pages.markets')->name('markets');
+Route::view('/traders', 'pages.traders.index')->name('traders.index');
+Route::view('/affiliate', 'pages.affiliate')->name('referral-program');
+Route::view('/about', 'pages.about')->name('about');
+Route::view('/careers', 'pages.careers')->name('careers');
+Route::view('/blog', 'pages.blog')->name('blog');
+Route::view('/contact', 'pages.contact')->name('contact');
+Route::view('/learn/faq', 'pages.learn.faq')->name('learn.faq');
+Route::view('/learn/guides', 'pages.learn.guides')->name('learn.guides');
+Route::view('/learn/simulator', 'pages.learn.simulator')->name('learn.simulator');
+Route::view('/learn/webinars', 'pages.learn.webinars')->name('learn.webinars');
+Route::view('/terms', 'pages.legal.terms')->name('terms');
+Route::view('/privacy', 'pages.legal.privacy')->name('privacy');
+Route::view('/risk', 'pages.legal.risk')->name('risk');
+Route::view('/cookies', 'pages.legal.cookies')->name('cookies');

@@ -1,60 +1,96 @@
-<footer class="bg-gray-900 text-gray-300 text-sm">
-    <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 md:grid-cols-4 gap-8">
+@php
+    $isDark = request()->cookie('theme') === 'dark'; // optional: depends on your theme logic
+@endphp
+
+<footer 
+    class="border-t px-6 pt-10 pb-6 transition-colors duration-300"
+    :class="{
+        'bg-gray-900 text-gray-300 border-gray-800': $store.theme.isDark,
+        'bg-gray-50 text-gray-700 border-gray-200': !$store.theme.isDark
+    }"
+    x-data="{ openSections: {} }"
+>
+    <div class="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-6 gap-8">
         <!-- Products -->
         <div>
-            <h3 class="text-white font-semibold mb-4">Products</h3>
-            <ul class="space-y-2">
-                <li><a href="#" class="hover:underline">Copy Trading</a></li>
-                <li><a href="#" class="hover:underline">Market Insights</a></li>
-                <li><a href="#" class="hover:underline">Traders</a></li>
-                <li><a href="#" class="hover:underline">Affiliate Program</a></li>
+            <h3 class="font-semibold text-base mb-3 cursor-pointer md:cursor-default" @click="openSections['products'] = !openSections['products']">
+                Products
+            </h3>
+            <ul class="space-y-2" :class="{ 'hidden md:block': !openSections['products'] }">
+                <li><a href="{{ route('copy-trading') }}" class="hover:underline">Copy Trading</a></li>
+                <li><a href="{{ route('traders.index') }}" class="hover:underline">Traders</a></li>
+                <li><a href="{{ route('referral-program') }}" class="hover:underline">Referral Program</a></li>
             </ul>
         </div>
 
         <!-- Company -->
         <div>
-            <h3 class="text-white font-semibold mb-4">Company</h3>
-            <ul class="space-y-2">
-                <li><a href="#" class="hover:underline">About Entrade</a></li>
-                <li><a href="#" class="hover:underline">Careers</a></li>
-                <li><a href="#" class="hover:underline">Blog</a></li>
-                <li><a href="#" class="hover:underline">Contact</a></li>
+            <h3 class="font-semibold text-base mb-3 cursor-pointer md:cursor-default" @click="openSections['company'] = !openSections['company']">
+                Company
+            </h3>
+            <ul class="space-y-2" :class="{ 'hidden md:block': !openSections['company'] }">
+                <li><a href="{{ route('about') }}" class="hover:underline">About Entrade</a></li>
+                <li><a href="{{ route('careers') }}" class="hover:underline">Careers</a></li>
+                <!--<li><a href="{{ route('blog') }}" class="hover:underline">Blog</a></li>-->
+                <!--<li><a href="{{ route('contact') }}" class="hover:underline">Contact</a></li>-->
+            </ul>
+        </div>
+
+        <!-- Learn -->
+        <div>
+            <h3 class="font-semibold text-base mb-3 cursor-pointer md:cursor-default" @click="openSections['learn'] = !openSections['learn']">
+                Learn
+            </h3>
+            <ul class="space-y-2" :class="{ 'hidden md:block': !openSections['learn'] }">
+                <li><a href="{{ route('learn.faq') }}" class="hover:underline">FAQs</a></li>
+                <li><a href="{{ route('learn.guides') }}" class="hover:underline">Trading Guides</a></li>
+                <!--<li><a href="{{ route('learn.simulator') }}" class="hover:underline">Trade Simulator</a></li>-->
+                <!--<li><a href="{{ route('learn.webinars') }}" class="hover:underline">Webinars</a></li>-->
             </ul>
         </div>
 
         <!-- Legal -->
         <div>
-            <h3 class="text-white font-semibold mb-4">Legal</h3>
-            <ul class="space-y-2">
-                <li><a href="#" class="hover:underline">Terms of Service</a></li>
-                <li><a href="#" class="hover:underline">Privacy Policy</a></li>
-                <li><a href="#" class="hover:underline">Risk Disclosure</a></li>
-                <li><a href="#" class="hover:underline">Cookies Policy</a></li>
+            <h3 class="font-semibold text-base mb-3 cursor-pointer md:cursor-default" @click="openSections['legal'] = !openSections['legal']">
+                Legal
+            </h3>
+            <ul class="space-y-2" :class="{ 'hidden md:block': !openSections['legal'] }">
+                <li><a href="{{ route('terms') }}" class="hover:underline">Terms of Service</a></li>
+                <li><a href="{{ route('privacy') }}" class="hover:underline">Privacy Policy</a></li>
+                <li><a href="{{ route('risk') }}" class="hover:underline">Risk Disclosure</a></li>
+                <li><a href="{{ route('cookies') }}" class="hover:underline">Cookies Policy</a></li>
             </ul>
         </div>
 
         <!-- Connect -->
         <div>
-            <h3 class="text-white font-semibold mb-4">Connect</h3>
+            <h3 class="font-semibold text-base mb-3">Connect</h3>
             <div class="flex space-x-4 mb-4">
-                <a href="#" class="hover:text-white"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="hover:text-white"><i class="fab fa-twitter"></i></a>
-                <a href="#" class="hover:text-white"><i class="fab fa-linkedin-in"></i></a>
-                <a href="#" class="hover:text-white"><i class="fab fa-youtube"></i></a>
+                <a href="#" class="hover:text-primary"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="hover:text-primary"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" class="hover:text-primary"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="hover:text-primary"><i class="fab fa-youtube"></i></a>
             </div>
             <div>
-                <label for="language" class="block mb-2">Language</label>
-                <select id="language" class="bg-gray-800 border border-gray-700 text-sm rounded p-2 w-full">
-                    <option>English</option>
-                    <option>Français</option>
-                    <option>Español</option>
-                    <option>Deutsch</option>
+                <label for="language" class="block mb-1 text-sm">Language</label>
+                <select id="language" class="bg-transparent border rounded px-2 py-1 w-full text-sm">
+                    <option value="en" selected>🇺🇸 English</option>
+                    <option value="fr">🇫🇷 Français</option>
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="de">🇩🇪 Deutsch</option>
                 </select>
             </div>
         </div>
+
+        <!-- Contact -->
+        <div>
+            <h3 class="font-semibold text-base mb-3">Contact</h3>
+            <p class="mb-1">📞 +234 800 000 0000</p>
+            <p>✉️ support@entrade.com</p>
+        </div>
     </div>
 
-    <div class="border-t border-gray-800 py-4 text-center text-xs text-gray-500">
+    <div class="mt-10 text-center text-xs text-gray-500">
         &copy; {{ date('Y') }} Entrade. All rights reserved.
     </div>
 </footer>
