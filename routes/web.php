@@ -339,7 +339,7 @@ Route::get('/api/calendar', function () {
 
 Route::view('/copy-trading', 'pages.copy-trading')->name('copy-trading');
 Route::view('/markets', 'pages.markets')->name('markets');
-Route::view('/traders', 'pages.traders.index')->name('traders.index');
+Route::view('/traders', 'pages.traders')->name('traders.index');
 Route::view('/affiliate', 'pages.affiliate')->name('referral-program');
 Route::view('/about', 'pages.about')->name('about');
 Route::view('/careers', 'pages.careers')->name('careers');
