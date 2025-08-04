@@ -341,7 +341,7 @@ Route::view('/copy-trading', 'pages.copy-trading')->name('copy-trading');
 Route::view('/markets', 'pages.markets')->name('markets');
 Route::view('/traders', 'pages.traders')->name('traders.index');
 Route::view('/referral-program', 'pages.referral-program')->name('referral-program');
-Route::view('/about', 'pages.about')->name('about');
+//Route::view('/about', 'pages.about')->name('about');
 Route::view('/careers', 'pages.careers')->name('careers');
 Route::view('/blog', 'pages.blog')->name('blog');
 Route::view('/contact', 'pages.contact')->name('contact');
