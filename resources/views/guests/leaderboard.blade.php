@@ -3,7 +3,7 @@
 
   <h1 class="text-3xl font-bold mb-6">Top Traders Leaderboard</h1>
 
-  @if($traders->isEmpty())
+  @if($tradersWithRoiData->isEmpty())
     <p class="text-gray-600 dark:text-gray-400">No traders available yet.</p>
   @else
     <div class="overflow-x-auto">
@@ -18,7 +18,7 @@
           </tr>
         </thead>
         <tbody>
-          @foreach($traders as $index => $trader)
+          @foreach($tradersWithRoiData as $index => $trader)
             <tr class="border-b border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600">
               <td class="px-6 py-3">{{ $index + 1 }}</td>
               <td class="px-6 py-3 font-semibold">{{ $trader->name }}</td>
@@ -32,5 +32,12 @@
         </tbody>
       </table>
     </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach ($tradersWithRoiData as $trader)
+            <x-trader-card :trader="$trader" />
+        @endforeach
+    </div>
+
   @endif
 </x-layouts.guest>

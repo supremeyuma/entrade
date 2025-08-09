@@ -10,11 +10,71 @@ class TraderLeaderboardController extends Controller
 {
     public function publicLeaderboard()
     {
-        $traders = Trader::orderByDesc('roi')
+        $traders = Trader::with('trades')->orderByDesc('roi')
             ->limit(5)
             ->get();
 
-        return view('guests.leaderboard', compact('traders'));
+        $now = \Carbon\Carbon::now();
+
+        $tradersWithRoiData = $traders->map(function ($trader) use ($now) 
+            {
+                $now = \Carbon\Carbon::now();
+                $roiData = [];
+
+                //1W ROI
+                $days = collect(range(0, 6))->map(fn($i) => $now->copy()->subDays($i))->reverse();
+                $roiData['1W'] = $days->map(function ($day) use ($trader) {
+                    return round($trader->trades
+                        ->filter(fn($t) => \Carbon\Carbon::parse($t->exit_timestamp)->isSameDay($day))
+                        ->avg('roi') ?? 0, 2);
+                })->values()->all();
+
+                 // 1M ROI (weekly data)
+                $weeks = collect(range(0, 3))->map(fn($i) => $now->copy()->subWeeks($i))->reverse();
+                $roiData['1M'] = $weeks->map(function ($week) use ($trader) {
+                    $start = $week->copy()->startOfWeek();
+                    $end = $week->copy()->endOfWeek();
+                    return round($trader->trades
+                        ->filter(fn($t) => \Carbon\Carbon::parse($t->exit_timestamp)->between($start, $end))
+                        ->avg('roi') ?? 0, 2);
+                })->values()->all();
+
+                // 12M ROI (monthly data)
+                $months = collect(range(0, 11))->map(fn($i) => $now->copy()->subMonths($i))->reverse();
+                $roiData['12M'] = $months->map(function ($month) use ($trader) {
+                    return round($trader->trades
+                        ->filter(fn($t) => \Carbon\Carbon::parse($t->exit_timestamp)->format('Y-m') === $month->format('Y-m'))
+                        ->avg('roi') ?? 0, 2);
+                })->values()->all();
+                   
+                
+        
+        
+            
+
+                // Count subscribers
+                $subscriberCount = $trader->subscriptions()->count(); // assumes Trader has 'subscribers()' relationship
+                $average_roi = round($trader->trades->avg('roi') ?? 0, 2);
+                
+                $totalTrades = $trader->trades->count();
+                $winningTrades = $trader->trades->filter(fn ($trade) =>$trade->roi > 0)->count();
+
+                $winRate = round($winningTrades / $totalTrades * 100, 2);
+
+                $trader->wwinRate = $winRate;
+                $trader->roi = $average_roi;
+                $trader->subscriberCount = $subscriberCount;
+                $trader->roiData = $roiData;
+
+                return $trader;
+
+                
+            }
+        );
+
+        //dd($tradersWithRoiData);
+
+        return view('guests.leaderboard', compact('tradersWithRoiData'));
     }
 
     public function userLeaderboard(Request $request)

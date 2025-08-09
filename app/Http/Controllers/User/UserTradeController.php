@@ -65,10 +65,10 @@ class UserTradeController extends Controller
         ));
     }
 
-    public function show(Trader $trader)
+    /*public function show(Trader $trader)
     {
         return view('traders.profile', compact('trader'));
-    }
+    }*/
 
     public function trades(Trader $trader)
     {
@@ -110,7 +110,48 @@ class UserTradeController extends Controller
 
         $user = Auth::user();
 
-        return view('user.trade.leaderboard_user', compact('traders', 'user'));
+        // Monthly ROI (e.g. Jan-Dec)
+         $range = request('range', '12m'); // Default to 12 months
+        $now = \Carbon\Carbon::now();
+
+        $labels = [];
+        $roiSeries = [];
+
+        if ($range === '1w') {
+            $days = collect(range(0, 6))->map(fn($i) => $now->copy()->subDays($i))->reverse();
+
+            $labels = $days->map(fn($d) => $d->format('D d M'))->values()->all();
+            $roiData = $days->map(function ($day) use ($trader) {
+                return round($trader->trades
+                    ->filter(fn($t) => \Carbon\Carbon::parse($t->exit_timestamp)->isSameDay($day))
+                    ->avg('roi') ?? 0, 2);
+            });
+
+        } else {
+            // Interpret range (e.g. "3m", "6m", "12m", "24m")
+            $months = match ($range) {
+                '1m' => 1,
+                '6m' => 6,
+                '24m' => 24,
+                default => 12
+            };
+
+            $monthDates = collect(range(0, $months - 1))
+                ->map(fn($i) => $now->copy()->subMonths($i))
+                ->reverse();
+
+            $labels = $monthDates->map(fn($d) => $d->format('M Y'))->values()->all();
+            $roiSeries = $monthDates->map(function ($month) use ($trader) {
+                $avgRoi = $trader->trades
+                    ->filter(fn($t) => \Carbon\Carbon::parse($t->exit_timestamp)->format('Y-m') === $month->format('Y-m'))
+                    ->avg('roi');
+
+                return round($avgRoi ?? 0, 2);
+            }) ->values()->all();
+        }
+        
+
+        return view('user.trade.leaderboard_user', compact('traders', 'user', 'roiSeries', 'labels'));
     }
 
     // Show trader profile page for users
@@ -166,5 +207,124 @@ class UserTradeController extends Controller
         return view('user.trade.compare', compact('traders'));
     }
 
+
+     public function show(Trader $trader)
+    {
+        $trader->load('trades');
+            // Paginate trades
+        $trades = $trader->trades()->latest()->paginate(20);
+
+        // Monthly ROI (e.g. Jan-Dec)
+         $range = request('range', '12m'); // Default to 12 months
+        $now = \Carbon\Carbon::now();
+
+        $labels = [];
+        $roiData = [];
+
+        if ($range === '1w') {
+            $days = collect(range(0, 6))->map(fn($i) => $now->copy()->subDays($i))->reverse();
+
+            $labels = $days->map(fn($d) => $d->format('D d M'))->values()->all();
+            $roiData = $days->map(function ($day) use ($trader) {
+                return round($trader->trades
+                    ->filter(fn($t) => \Carbon\Carbon::parse($t->exit_timestamp)->isSameDay($day))
+                    ->avg('roi') ?? 0, 2);
+            });
+
+        } else {
+            // Interpret range (e.g. "3m", "6m", "12m", "24m")
+            $months = match ($range) {
+                '3m' => 3,
+                '6m' => 6,
+                '24m' => 24,
+                default => 12
+            };
+
+            $monthDates = collect(range(0, $months - 1))
+                ->map(fn($i) => $now->copy()->subMonths($i))
+                ->reverse();
+
+            $labels = $monthDates->map(fn($d) => $d->format('M Y'))->values()->all();
+            $roiData = $monthDates->map(function ($month) use ($trader) {
+                $avgRoi = $trader->trades
+                    ->filter(fn($t) => \Carbon\Carbon::parse($t->exit_timestamp)->format('Y-m') === $month->format('Y-m'))
+                    ->avg('roi');
+
+                return round($avgRoi ?? 0, 2);
+            }) ->values()->all();
+        }
+        
+
+        // Count subscribers
+        $subscriberCount = $trader->subscriptions()->count(); // assumes Trader has 'subscribers()' relationship
+        $average_roi = round($trader->trades->avg('roi') ?? 0, 2);
+        
+        $totalTrades = $trader->trades->count();
+        $winningTrades = $trader->trades->filter(fn ($trade) =>$trade->roi > 0)->count();
+
+        $winRate = round($winningTrades / $totalTrades * 100, 2);
+    return view('traders.profile', compact('trader', 'trades', 'roiData', 'labels', 'subscriberCount', 'average_roi', 'winRate'));
+
+    }
+
+
+     public function traderCard(Trader $trader)
+        {
+            $trader->load('trades');
+                // Paginate trades
+            $trades = $trader->trades()->latest()->paginate(20);
+
+            // Monthly ROI (e.g. Jan-Dec)
+            $range = request('range', '12m'); // Default to 12 months
+            $now = \Carbon\Carbon::now();
+
+            $labels = [];
+            $roiData = [];
+
+            if ($range === '1w') {
+                $days = collect(range(0, 6))->map(fn($i) => $now->copy()->subDays($i))->reverse();
+
+                $labels = $days->map(fn($d) => $d->format('D d M'))->values()->all();
+                $roiData = $days->map(function ($day) use ($trader) {
+                    return round($trader->trades
+                        ->filter(fn($t) => \Carbon\Carbon::parse($t->exit_timestamp)->isSameDay($day))
+                        ->avg('roi') ?? 0, 2);
+                });
+
+            } else {
+                // Interpret range (e.g. "3m", "6m", "12m", "24m")
+                $months = match ($range) {
+                    '3m' => 3,
+                    '6m' => 6,
+                    '24m' => 24,
+                    default => 12
+                };
+
+                $monthDates = collect(range(0, $months - 1))
+                    ->map(fn($i) => $now->copy()->subMonths($i))
+                    ->reverse();
+
+                $labels = $monthDates->map(fn($d) => $d->format('M Y'))->values()->all();
+                $roiData = $monthDates->map(function ($month) use ($trader) {
+                    $avgRoi = $trader->trades
+                        ->filter(fn($t) => \Carbon\Carbon::parse($t->exit_timestamp)->format('Y-m') === $month->format('Y-m'))
+                        ->avg('roi');
+
+                    return round($avgRoi ?? 0, 2);
+                }) ->values()->all();
+            }
+            
+
+            // Count subscribers
+            $subscriberCount = $trader->subscriptions()->count(); // assumes Trader has 'subscribers()' relationship
+            $average_roi = round($trader->trades->avg('roi') ?? 0, 2);
+            
+            $totalTrades = $trader->trades->count();
+            $winningTrades = $trader->trades->filter(fn ($trade) =>$trade->roi > 0)->count();
+
+            $winRate = round($winningTrades / $totalTrades * 100, 2);
+        return view('admin.traders.show', compact('trader', 'trades', 'roiData', 'labels', 'subscriberCount', 'average_roi', 'winRate'));
+
+        }
 
 }

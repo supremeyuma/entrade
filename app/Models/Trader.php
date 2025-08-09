@@ -44,5 +44,20 @@ class Trader extends Model
         return $this->hasMany(TradeLog::class);
     }
 
+    public function getRoi12mAttribute()
+    {
+        return round($this->trades()->where('created_at', '>=', now()->subYear())->avg('roi'), 2);
+    }
+
+    public function getSubscriberCountAttribute()
+    {
+        return $this->subscriptions()->count();
+    }
+
+    public function getAvatarUrlAttribute()
+    {
+        return $this->avatar ?? 'https://ui-avatars.com/api/?name=' . urlencode($this->name);
+    }
+
 
 }
