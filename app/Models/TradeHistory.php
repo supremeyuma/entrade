@@ -16,7 +16,7 @@ class TradeHistory extends Model
 
     public function trade()
     {
-        return $this->belongsTo(Trade::class);
+        return $this->belongsTo(Trade::class, 'trade_id', 'id');
     }
 
     public function user()

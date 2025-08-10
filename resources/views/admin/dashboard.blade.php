@@ -8,10 +8,10 @@
                 <h2 class="text-sm text-gray-500">Total Users</h2>
                 <p class="mt-1 text-3xl font-semibold text-blue-600">{{ $totalUsers }}</p>
             </div>
-            <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
+            <!--<div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
                 <h2 class="text-sm text-gray-500">Admins</h2>
                 <p class="mt-1 text-3xl font-semibold text-indigo-500">{{ $admins }}</p>
-            </div>
+            </div>-->
             <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
                 <h2 class="text-sm text-gray-500">Verified Traders</h2>
                 <p class="mt-1 text-3xl font-semibold text-green-500">{{ $traders }}</p>
@@ -19,6 +19,15 @@
             <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
                 <h2 class="text-sm text-gray-500">Pending Withdrawals</h2>
                 <p class="mt-1 text-3xl font-semibold text-red-500">{{ $pendingWithdrawals }}</p>
+            </div>
+            {{-- ✅ New KPI for pending subscriptions --}}
+            <div class="bg-white dark:bg-gray-800 p-4 rounded shadow">
+                <h2 class="text-sm text-gray-500">Pending Subscriptions</h2>
+                <p class="mt-1 text-3xl font-semibold text-yellow-500">
+                    <a href="{{ route('admin.subscriptions.index') }}" class="hover:underline">
+                        {{ $pendingSubscriptions }}
+                    </a>
+                </p>
             </div>
         </div>
 

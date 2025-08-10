@@ -40,10 +40,13 @@ class UserDashboardController extends Controller
             ->latest()->take(3)
             ->get();*/
 
-        $recentTrades = TradeHistory::with('trader')
+        $recentTrades = TradeHistory::with(['trader', 'trade'])
             ->whereIn('trader_id', $user->copiedTraders()->pluck('user_trader_subscriptions.trader_id'))
-            ->latest()->take(5)
+            ->latest()
+            ->take(5)
             ->get();
+
+        //dd($recentTrades->pluck('trade_id'));
 
         // Calculate portfolio stats
         

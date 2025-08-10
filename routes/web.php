@@ -49,6 +49,7 @@ use App\Http\Controllers\Admin\BotLogController;
 use App\Http\Controllers\Admin\TradeBotRunController;
 use App\Http\Controllers\Admin\TradeBotController;
 use App\Http\Controllers\Admin\AdminTradeHistoryController;
+use App\Http\Controllers\Admin\TraderSubscriptionController;
 
 
 
@@ -191,6 +192,10 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('/trade-bot/{tradeBotConfig}/logs', [TradeBotController::class, 'logs'])->name('trade-bot.logs');
     Route::get('/trade-bots/{id}/preview', [TradeBotController::class, 'preview'])->name('trade-bots.preview');
 
+    Route::get('subscriptions', [TraderSubscriptionController::class, 'index'])->name('subscriptions.index');
+    Route::get('subscriptions/{id}', [TraderSubscriptionController::class, 'show'])->name('subscriptions.show');
+    Route::post('subscriptions/{id}/approve', [TraderSubscriptionController::class, 'approve'])->name('subscriptions.approve');
+    Route::post('subscriptions/{id}/reject', [TraderSubscriptionController::class, 'reject'])->name('subscriptions.reject');
 
 
 

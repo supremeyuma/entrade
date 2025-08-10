@@ -16,55 +16,93 @@ class UserTraderSubscriptionController extends Controller
     // Subscribe to a trader
     public function subscribe(Request $request, $traderId)
     {
+        $request->validate([
+            'amount' => 'required|numeric|min:1',
+        ]);
+
         $user = auth()->user();
         $trader = Trader::findOrFail($traderId);
 
         // 1. Check if the user has enough balance
         $balance = $user->balance;
-        if ($balance->trade_balance < $request->amount) {
+        if ($balance->main_balance < $request->amount) {
             return back()->with('error', 'Insufficient funds.');
         }
 
-        // 2. Check if a subscription already exists for this user and trader
-        // and retrieve it if it does.
-        $subscription = $user->traderSubscriptions()
-                            ->where('trader_id', $traderId)
-                            ->first();
-
-        if ($subscription) {
-            // Subscription already exists. Just update its status and amount.
-            $subscription->status = 'active';
-            $subscription->allocated_amount = $request->amount; // You may want to handle this differently
-            $subscription->save();
-            $message = 'Successfully re-activated your subscription to trader.';
-        } else {
-            // No existing subscription. Create a new one.
-            // Check if multiple subscriptions are allowed
-            if (!config('app.allow_multiple_traders') && $user->traderSubscriptions->count() >= 1) {
-                return back()->with('error', 'You can only follow one trader.');
+        // 2. Check if multiple subscriptions are allowed
+        if ($user->traderSubscriptions->where('trader_id', $traderId)->count() >= 1) {
+            $subscriptions = $user->traderSubscriptions()->where('trader_id', $traderId)->get();
+            $subscription = $subscriptions->first();
+            if ($subscription->status === 'pending_approval') {
+                return back()->with('info', 'You already have a pending subscription request for this trader.');
             }
 
-            $subscription = new UserTraderSubscription([
-                'trader_id' => $traderId, // Assuming this is needed for a new subscription
-                'user_id' => $user->id,    // Assuming this is needed for a new subscription
-                'allocated_amount' => $request->amount,
-                'status' => 'active'
-            ]);
-            $user->traderSubscriptions()->save($subscription);
-            $message = 'Successfully subscribed to trader.';
+            if ($subscription->status === 'inactive') {
+                $subscription->status = 'pending_approval';
+                $subscription->allocated_amount = $request->amount;
+                $subscription->save();
+
+                \Notification::route('mail', config('app.admin_email'))
+                    ->notify(new \App\Notifications\NewSubscriptionRequestNotification($subscription));
+
+                ActivityLogger::log(
+                    'subscription_request',
+                    'Requested to subscribe to trader: ' . $trader->name . ' (ID: ' . $trader->id . ')',
+                    $user->id
+                );
+
+        return redirect()->route('user.tradingDashboard')
+            ->with('success', 'Your subscription request has been sent for approval.');
+
+            }
+            if ($subscription->status === 'active') {
+            return back()->with('error', 'You can only follow a trader once.');
+            }
         }
 
-        // 3. Deduct from the user's main balance and add to trade balance
-        $balance->main_balance -= $request->amount;
-        $balance->trade_balance += $request->amount;
-        $balance->save();
+        //dd($user->traderSubscriptions->where('trader_id', $traderId)->count());
+        
+        if (!config('app.allow_multiple_traders') && $user->traderSubscriptions
+            ->where('trader_id', !$traderId)->count() >= 1) {
+            return back()->with('error', 'You can only follow one trader.');
+        }
+        
 
-        // 4. Log the activity
-        ActivityLogger::log('subscribe', 'Subscribed to trader: ' . $trader->name . ' (ID: ' . $trader->id . ')', auth()->id());
+        // 3. Check if a pending request already exists
+        $existingPending = $user->traderSubscriptions()
+            ->where('trader_id', $traderId)
+            ->where('status', 'pending_approval')
+            ->first();
 
-        // 5. Redirect with success message
-        return redirect()->route('user.dashboard')->with('success', $message);
+        if ($existingPending) {
+            return back()->with('info', 'You already have a pending subscription request for this trader.');
+        }
+
+        // 4. Create the pending subscription request
+        $subscription = new UserTraderSubscription([
+            'trader_id'         => $traderId,
+            'user_id'           => $user->id,
+            'allocated_amount'  => $request->amount,
+            'status'            => 'pending_approval', // ✅ Not active yet
+        ]);
+
+        $user->traderSubscriptions()->save($subscription);
+
+        // 5. Notify admin (assuming you have a Notification class)
+        \Notification::route('mail', config('app.admin_email'))
+            ->notify(new \App\Notifications\NewSubscriptionRequestNotification($subscription));
+
+        // 6. Log the activity
+        ActivityLogger::log(
+            'subscription_request',
+            'Requested to subscribe to trader: ' . $trader->name . ' (ID: ' . $trader->id . ')',
+            $user->id
+        );
+
+        return redirect()->route('user.tradingDashboard')
+            ->with('success', 'Your subscription request has been sent for approval.');
     }
+
 
     // Unsubscribe from a trader
     public function unsubscribe($subscriptionId)

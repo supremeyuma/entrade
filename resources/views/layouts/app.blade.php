@@ -30,6 +30,25 @@
     </style>
 </head>
 <body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 h-full min-h-screen flex flex-col">
+
+@if(session('success'))
+    <div class="bg-green-500 text-white p-3 rounded mb-4">
+        {{ session('success') }}
+    </div>
+@endif
+
+@if(session('error'))
+    <div class="bg-red-500 text-white p-3 rounded mb-4">
+        {{ session('error') }}
+    </div>
+@endif
+
+@if(session('info'))
+    <div class="bg-blue-500 text-white p-3 rounded mb-4">
+        {{ session('info') }}
+    </div>
+@endif
+
     
 <div x-data="{ sidebarOpen: true }" class="flex flex-col min-h-screen">
     <!-- Header -->

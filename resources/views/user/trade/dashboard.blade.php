@@ -55,6 +55,27 @@
                             </div>
                         </form>
                     </div>
+
+                @elseif($subscription->status == 'pending_approval')
+                    <div class="bg-white shadow rounded-lg p-5 mb-6">
+                        <div class="flex items-center justify-between mb-3">
+                            <div>
+                                <h4 class="text-lg font-semibold text-indigo-600">{{ $subscription->trader->name }}</h4>
+                                <p class="text-sm text-gray-600">Allocated Amount: ${{ $subscription->allocated_amount }}</p>
+                            </div>
+
+                            <button>
+                                <a class="text-indigo-600 hover:underline text-sm" >Subscription Request Sent. Awaiting Approval</a>
+                            </button>
+
+                            <form action="{{ route('user.unsubscribe', $subscription->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="text-red-600 hover:underline text-sm">Unsubscribe</button>
+                            </form>
+                        </div>
+                    </div>
+                
+
                 @else
                     <div class="bg-white shadow rounded-lg p-5 mb-6">
                         <div class="flex items-center justify-between mb-3">

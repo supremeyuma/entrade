@@ -67,7 +67,7 @@
                 <thead>
                     <tr class="border-b text-left">
                         <th class="py-2">Trader</th>
-                        <th class="py-2">ROI</th>
+                        <th class="py-2">Pair</th>
                         <th class="py-2">Outcome</th>
                         <th class="py-2">Date</th>
                     </tr>
@@ -77,7 +77,7 @@
                         <tr class="border-b">
                             <td class="py-2">{{ $trade->trader->name }}</td>
                             <td class="py-2 {{ $trade->roi >= 0 ? 'text-green-600' : 'text-red-600' }}">
-                                {{ $trade->roi }}%
+                                {{ $trade->trade->symbol }}
                             </td>
                              <td class="py-2 {{ $trade->profit_loss_amount >= 0 ? 'text-green-600' : 'text-red-600' }}">
                                 {{ $trade->profit_loss_amount }}
