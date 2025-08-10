@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-class KycVerification extends Model
+class KycDetail extends Model
 {
     use HasFactory;
 
@@ -19,10 +19,7 @@ class KycVerification extends Model
         'passport_number',
         'id_document_path',
         'passport_document_path',
-        'status',
-        'rejection_reason',
-        'id_document',
-        'proof_of_address',
+        'status'
     ];
 
     public function user()

@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\User\UserKycController;
 
 Route::middleware('guest')->group(function () {
     Route::get('register', [RegisterController::class, 'create'])
@@ -57,4 +58,15 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->name('logout');
+});
+
+Route::middleware(['auth'])->group(function () {
+    // Show the KYC form
+    Route::get('/kyc', [UserKycController::class, 'create'])->name('kyc.create');
+
+    // Handle KYC form submission
+    Route::post('/kyc', [UserKycController::class, 'store'])->name('kyc.store');
+
+    // Handle skip KYC action
+    Route::post('/kyc/skip', [UserKycController::class, 'skip'])->name('kyc.skip');
 });

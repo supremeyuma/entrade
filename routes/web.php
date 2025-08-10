@@ -50,6 +50,7 @@ use App\Http\Controllers\Admin\TradeBotRunController;
 use App\Http\Controllers\Admin\TradeBotController;
 use App\Http\Controllers\Admin\AdminTradeHistoryController;
 use App\Http\Controllers\Admin\TraderSubscriptionController;
+use App\Http\Controllers\KycController;
 
 
 
