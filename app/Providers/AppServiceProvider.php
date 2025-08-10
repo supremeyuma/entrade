@@ -5,6 +5,8 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Trade;
 use App\Observers\TradeObserver;
+use Livewire\Livewire;
+use App\Http\Livewire\TraderCard;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,5 +30,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         Trade::observe(TradeObserver::class);
+        Livewire::component('trader-card', TraderCard::class);
     }
 }

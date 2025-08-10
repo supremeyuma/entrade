@@ -29,6 +29,9 @@
             width: 100%;
         }
     </style>
+
+    @livewireStyles
+
 </head>
 <body class="h-full text-gray-800 dark:text-gray-100">
 
@@ -187,14 +190,15 @@
             }
         });
 
-        // Apply theme on initial load
-        if (Alpine.store('darkMode').on) {
-            document.documentElement.classList.add('dark');
-        } else {
-            document.documentElement.classList.remove('dark');
-        }
+        
     });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+@livewireScripts
+@vite('resources/js/components/trader-chart.js')
+
 
 </body>
 

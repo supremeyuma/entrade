@@ -1,9 +1,12 @@
 import './bootstrap';
 
-import Alpine from 'alpinejs';
-
 import './components/traderCard.js';
 
+import './components/trader-chart.js';
+
+import traderChartComponent from './components/trader-chart';
+
+window.traderChartComponent = traderChartComponent;
 
 
 document.addEventListener('alpine:init', () => {
@@ -12,6 +15,6 @@ document.addEventListener('alpine:init', () => {
     });
 });
 
-window.Alpine = Alpine;
 
-Alpine.start();
+
+

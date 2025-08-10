@@ -18,6 +18,8 @@
             [x-cloak] { display: none !important; }
         }
     </style>
+
+
 </head>
 <body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
 
@@ -58,6 +60,7 @@
         </main>
     </div>
 </div>
+
 
 </body>
 </html>
