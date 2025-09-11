@@ -54,5 +54,11 @@ return [
         'base_url' => env('POLYGON_BASE_URL', 'https://api.polygon.io'),
     ],
 
+    'nowpayments' => [
+        'api_key' => env('NOWPAYMENTS_API_KEY'),
+        'ipn_secret' => env('NOWPAYMENTS_IPN_SECRET'),
+    ],
+
+
 
 ];

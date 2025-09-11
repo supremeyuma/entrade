@@ -15,8 +15,9 @@ class Deposit extends Model
         'currency',
         'gateway',
         'payment_address',
-        'txn_id',
+        'invoice_id',
         'status',
+        'invoice_url',
     ];
 
     public function user()

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use App\Models\Deposit;
 use Plisio\PlisioSdkLaravel\Payment;
 use Auth;
@@ -20,47 +21,71 @@ class DepositController extends Controller
         $request->validate([
             'amount' => 'required|numeric|min:10',
             'currency' => 'required|string|max:10',
+            'crypto' => 'required|string|max:10',
         ]);
 
         $user = Auth::user();
+
+        $response = Http::withHeaders([
+            'x-api-key' => config('services.nowpayments.api_key'),
+        ])->post('https://api.nowpayments.io/v1/invoice', [
+            'price_amount'   => $request->amount,
+            'price_currency' => $request->currency,
+            'pay_currency'   => $request->crypto,
+            'ipn_callback_url' => route('deposits.webhook'),
+            'order_id' => uniqid('dep_'),
+            'order_description' => "Deposit for {$user->name}{$user->id}",
+            'is_fee_paid_by_user' => true,
+        ]);
+
+        
+
+        $data = $response->json();
+
+        //dd($data);
 
         // Create deposit record
         $deposit = Deposit::create([
             'user_id' => $user->id,
             'amount' => $request->amount,
             'currency' => strtoupper($request->currency),
-            'status' => 'pending',
+            'status' => 'waiting',
+            'invoice_id' => $data['order_id'],
+            'pay_address' => $data['pay_address'] ?? null,
+            'invoice_url' => $data['invoice_url']
         ]);
 
-        // Initialize Plisio
-        $plisioGateway = new Payment(config('plisio.api_key'));
+        return response()->json(['invoice_url' => $data['invoice_url']]);
 
-        $data = [
-            'order_name' => 'Deposit #' . $deposit->id,
-            'order_number' => $deposit->id,
-            'source_amount' => number_format($deposit->amount, 8, '.', ''),
-            'source_currency' => $deposit->currency,
-            'cancel_url' => route('user.deposit.cancel', $deposit->id),
-            'callback_url' => route('plisio.callback'),
-            'success_url' => route('user.deposit.success', $deposit->id),
-            'email' => $user->email,
-            'plugin' => 'laravelSdk',
-            'version' => '1.0.0',
-        ];
+        
+    }
 
-        $response = $plisioGateway->createTransaction($data);
+    public function webhook(Request $request)
+    {
+        $payload = $request->all();
+        $signature = hash_hmac('sha512', json_encode($payload), config('services.nowpayments.ipn_secret'));
 
-        if ($response && $response['status'] !== 'error' && !empty($response['data'])) {
+        if ($signature !== $request->header('x-nowpayments-sig')) {
+            return response()->json(['error' => 'Invalid signature'], 400);
+        }
+
+        $deposit = Deposit::where('payment_id', $payload['payment_id'])->first();
+
+        if ($deposit) {
             $deposit->update([
-                'invoice_id' => $response['data']['txn_id'],
-                'payment_url' => $response['data']['invoice_url'],
+                'status' => $payload['payment_status'],
+                'received_amount' => $payload['actually_paid'] ?? null,
             ]);
 
-            return redirect($response['data']['invoice_url']);
-        } else {
-            return back()->with('error', 'Payment failed to initialize. Please try again.');
+            // If payment confirmed, credit user's balance
+            if ($payload['payment_status'] === 'finished') {
+                $deposit->user->increment('balance', $deposit->amount);
+            }
         }
+
+        return response()->json(['status' => 'ok']);
     }
+
 
     public function history(Request $request)
     {

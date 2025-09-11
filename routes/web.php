@@ -318,6 +318,9 @@ Route::middleware('auth')->prefix('traders')->name('traders.')->group(function (
 // Miscellaneous
 // ------------------------
 
+//Deposit Webhook
+Route::post('/deposit/webhook', [DepositController::class, 'webhook'])->name('deposits.webhook');
+
 // Plisio Webhook
 Route::post('/plisio/callback', [PlisioCallbackController::class, 'handle'])->name('plisio.callback');
 

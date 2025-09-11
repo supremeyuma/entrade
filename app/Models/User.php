@@ -165,11 +165,6 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Transaction::class);
     }
 
-    public function kycDetail()
-    {
-        return $this->hasOne(KycDetail::class);
-    }
-
 
 
 

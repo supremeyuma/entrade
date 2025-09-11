@@ -77,6 +77,8 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => \Hash::make($data['password']),
             'referral_code' => $referralCode,
+            'role' => 'user',
+            'status' => 'active',
         ]);
 
         $newUser->assignRole('user');
