@@ -56,9 +56,16 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         //Creating User Account Settings Table
-        User::created(function ($user) {
+        /*User::created(function ($user) {
             $user->settings()->create(); // sets defaults
         });
+
+        //Creating User Balances
+        User::created(function ($user) {
+            $user->balance()->create();
+        }
+        
+        )*/
         
 
         Auth::login($user);

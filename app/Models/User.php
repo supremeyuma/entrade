@@ -68,6 +68,18 @@ class User extends Authenticatable implements MustVerifyEmail
         'profile_photo_url',
     ];
 
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            // Create settings
+            $user->settings()->create();
+            
+            // Create balance
+            $user->balance()->create();
+        });
+    }
+
+
     public function deposits()
     {
         return $this->hasMany(Deposit::class);

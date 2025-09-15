@@ -355,7 +355,7 @@ Route::view('/careers', 'pages.careers')->name('careers');
 Route::view('/blog', 'pages.blog')->name('blog');
 Route::view('/contact', 'pages.contact')->name('contact');
 Route::view('/learn/faq', 'pages.learn.faq')->name('learn.faq');
-Route::view('/learn/guides', 'pages.learn.guides')->name('learn.guides');
+Route::view('user-guide', 'pages.user-guide')->name('user-guide');
 Route::view('/learn/simulator', 'pages.learn.simulator')->name('learn.simulator');
 Route::view('/learn/webinars', 'pages.learn.webinars')->name('learn.webinars');
 Route::view('/terms', 'pages.legal.terms')->name('terms');

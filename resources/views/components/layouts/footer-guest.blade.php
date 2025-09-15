@@ -43,7 +43,7 @@
             </h3>
             <ul class="space-y-2" :class="{ 'hidden md:block': !openSections['learn'] }">
                 <li><a href="{{ route('learn.faq') }}" class="hover:underline">FAQs</a></li>
-                <li><a href="{{ route('learn.guides') }}" class="hover:underline">Trading Guides</a></li>
+                <li><a href="{{ route('user-guide') }}" class="hover:underline">User Guides</a></li>
                 <!--<li><a href="{{ route('learn.simulator') }}" class="hover:underline">Trade Simulator</a></li>-->
                 <!--<li><a href="{{ route('learn.webinars') }}" class="hover:underline">Webinars</a></li>-->
             </ul>
