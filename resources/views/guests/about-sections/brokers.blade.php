@@ -8,18 +8,18 @@
 
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
         @foreach ([
-            'aaafx.png' => 'AAAfx',
+            'activtrades.png' => 'ActivTrades',
             'avatrade.png' => 'AvaTrade',
-            'xm.png' => 'XM',
+            'blackbull.png' => 'Black Bull',
             'icmarkets.png' => 'IC Markets',
-            'pepperstone.png' => 'Pepperstone',
             'fxview.png' => 'FXView',
-            'eightcap.png' => 'Eightcap',
-            'robomarkets.png' => 'RoboMarkets',
+            'dbinvest.png' => 'DbInvest',
+            'tickmill.png' => 'Tick Mill',
+            'yamarkets.png' => 'YaMarkets',
         ] as $logo => $name)
             <div class="flex flex-col items-center bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-sm">
                 <img src="{{ asset('images/brokers/' . $logo) }}" alt="{{ $name }} Logo" class="h-12 object-contain mb-2" />
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-200">{{ $name }}</span>
+                <!--<span class="text-sm font-medium text-gray-700 dark:text-gray-200">{{ $name }}</span>-->
             </div>
         @endforeach
     </div>

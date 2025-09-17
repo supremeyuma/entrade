@@ -1,6 +1,6 @@
-<section class="blockElement space bg-white">
+<section class="blockElement space bg-white dark:bg-gray-900">
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="px-3 row justify-content-center">
             <div class="col-12 col-xl-10">
                 <h2 class="text-center text-3xl font-bold mb-8">Entrade Milestones</h2>
                 <ul class="relative border-l border-gray-300 dark:border-gray-600">

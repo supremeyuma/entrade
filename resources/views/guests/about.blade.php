@@ -1,5 +1,5 @@
 <x-layouts.guest>
-<section class="bg-white dark:bg-gray-900 py-10">
+<section class="bg-white dark:bg-gray-900 py-10 items-center">
     <div class="container">
         <div class="text-center mb-8">
             <h1 class="text-4xl font-bold mb-2">About Entrade</h1>
@@ -10,28 +10,36 @@
 
         <!-- Tabs -->
         <div x-data="{ tab: 'about' }" class="max-w-5xl mx-auto">
-            <div class="flex flex-wrap justify-center gap-2 mb-8 border-b border-gray-200 dark:border-gray-700">
-                <button @click="tab = 'about'" :class="{ 'border-primary text-primary': tab === 'about' }"
-                    class="px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">
+            <div class="flex justify-center mb-8">
+                <div class="inline-flex rounded-full bg-gray-100 dark:bg-gray-800 p-1">
+                <button @click="tab = 'about'" 
+                    :class="tab === 'about' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300'"
+                    class="px-4 py-2 text-sm font-medium rounded-full transition">
                     Who We Are
                 </button>
-                <button @click="tab = 'brokers'" :class="{ 'border-primary text-primary': tab === 'brokers' }"
-                    class="px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">
+                <!--<button @click="tab = 'brokers'" 
+                    :class="tab === 'brokers' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300'"
+                    class="px-4 py-2 text-sm font-medium rounded-full transition">
                     Our Brokers
                 </button>
-                <button @click="tab = 'awards'" :class="{ 'border-primary text-primary': tab === 'awards' }"
-                    class="px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">
+                <button @click="tab = 'awards'" 
+                    :class="tab === 'awards' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300'"
+                    class="px-4 py-2 text-sm font-medium rounded-full transition">
                     Awards
-                </button>
-                <button @click="tab = 'timeline'" :class="{ 'border-primary text-primary': tab === 'timeline' }"
-                    class="px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">
+                </button>-->
+                <button @click="tab = 'timeline'" 
+                    :class="tab === 'timeline' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300'"
+                    class="px-4 py-2 text-sm font-medium rounded-full transition">
                     Timeline
                 </button>
-                <button @click="tab = 'careers'" :class="{ 'border-primary text-primary': tab === 'careers' }"
-                    class="px-4 py-2 text-sm font-medium border-b-2 border-transparent hover:text-primary">
+                <button @click="tab = 'careers'" 
+                    :class="tab === 'careers' ? 'bg-primary text-white' : 'text-gray-600 dark:text-gray-300'"
+                    class="px-4 py-2 text-sm font-medium rounded-full transition">
                     Careers
                 </button>
-            </div>
+                </div>
+        </div>
+
 
             <!-- Tab Sections -->
             <div x-show="tab === 'about'" x-cloak>
