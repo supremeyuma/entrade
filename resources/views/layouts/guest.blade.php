@@ -33,7 +33,13 @@
         class="z-30 bg-white dark:bg-gray-800 shadow transition-all duration-300 md:block hidden">
     <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
         <!-- Logo -->
-        <a href="{{ url('/') }}" class="text-lg font-semibold text-gray-800 dark:text-white">Entrade</a>
+         <a href="/">
+            <!-- Light mode logo -->
+            <img src="/images/logo-light.png" alt="Logo" class="w-64 h-auto dark:hidden">
+            <!-- Dark mode logo -->
+            <img src="/images/logo-dark.png" alt="Logo" class="bg-gray-800 w-64 h-auto hidden dark:block">
+        </a>
+        <!--<a href="{{ url('/') }}" class="text-lg font-semibold text-gray-800 dark:text-white">Entrade</a>-->
 
         <!-- Navigation Links -->
         <nav class="flex space-x-6 text-sm font-medium text-gray-700 dark:text-gray-300">
@@ -97,7 +103,7 @@
     </div>
 
     <!-- Page Content -->
-    <main class="flex-1 overflow-y-auto pt-20 md:pt-24 p-6 bg-gray-100 dark:bg-gray-900">
+    <main class="flex-1 overflow-y-auto pt-20 md:pt-24 p-6 bg-gray-100 dark:bg-gray-800">
         @if (isset($slot))
         {{ $slot }}
         @else
