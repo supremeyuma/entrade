@@ -2,9 +2,12 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
             <!-- Left side: App name -->
-            <div class="text-lg font-semibold text-gray-800 dark:text-white">
-                {{ config('app.name', 'CopyTrade') }}
-            </div>
+            <a href="/">
+                <!-- Light mode logo -->
+                <img src="/images/logo-light.png" alt="Logo" class="w-auto h-10 dark:hidden">
+                <!-- Dark mode logo -->
+                <img src="/images/logo-dark.png" alt="Logo" class="bg-gray-700 w-auto h-10 hidden dark:block">
+            </a>
 
             <!-- Right side: Theme toggle & profile dropdown -->
             <div class="flex items-center space-x-4">

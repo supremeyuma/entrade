@@ -44,9 +44,9 @@
         <!-- Navigation Links -->
         <nav class="flex space-x-6 text-sm font-medium text-gray-700 dark:text-gray-300">
             <a href="{{ url('/') }}" class="hover:underline">Home</a>
-            <a href="{{ route('leaderboard.public') }}" class="hover:underline">Leaders</a>
+            <!--<a href="{{ route('leaderboard.public') }}" class="hover:underline">Leaders</a>-->
             <a href="{{ url('/about') }}" class="hover:underline">About</a>
-            <a href="{{ url('/tools') }}" class="hover:underline">Tools</a>
+            <a href="{{ url('/tools') }}" class="hover:underline">Toolls</a>
             <a href="{{ url('/faq') }}" class="hover:underline">Help Center</a>
         </nav>
 

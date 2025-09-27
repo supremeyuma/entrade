@@ -41,12 +41,11 @@
     <header :class="{'-top-20': !showDesktopTopbar, 'top-0': showDesktopTopbar}"
             class="desktop-topbar bg-white dark:bg-gray-800 shadow md:block hidden">
         <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
-            <a href="{{ url('/') }}" class="text-lg font-semibold text-gray-800 dark:text-white flex items-center space-x-2">
-                {{-- Example Logo SVG (replace with your actual logo) --}}
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <span>Entrade</span>
+            <a href="/">
+                <!-- Light mode logo -->
+                <img src="/images/logo-light.png" alt="Logo" class="w-auto h-10 dark:hidden">
+                <!-- Dark mode logo -->
+                <img src="/images/logo-dark.png" alt="Logo" class="bg-gray-700 w-auto h-10 hidden dark:block">
             </a>
 
             {{-- toolsOpen state moved inside the specific div for the dropdown --}}
@@ -55,10 +54,10 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m0 0l7 7m-1.5-1.5V21a1 1 0 01-1 1H10a1 1 0 01-1-1v-4a1 1 0 00-1-1H4a1 1 0 00-1 1v4a1 1 0 01-1 1H3a1 1 0 01-1-1V9l8-8 8 8z"></path></svg>
                     <span>Home</span>
                 </a>
-                <a href="{{ route('leaderboard.public') }}" class="hover:underline flex items-center space-x-1">
+                <!--<a href="{{ route('leaderboard.public') }}" class="hover:underline flex items-center space-x-1">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
                     <span>Leaders</span>
-                </a>
+                </a>-->
 
                 <div class="relative" x-data="{ toolsOpen: false }">
                     <button @click="toolsOpen = !toolsOpen" class="hover:underline focus:outline-none flex items-center space-x-1">
@@ -126,13 +125,12 @@
 
 
     {{-- Removed the hamburger menu and its logic --}}
-    <div class="mobile-topbar bg-white dark:bg-gray-800 shadow px-4 py-3 flex justify-between items-center md:hidden">
-        <a href="{{ url('/') }}" class="text-lg font-semibold text-gray-800 dark:text-white flex items-center space-x-2">
-            {{-- Example Logo SVG (replace with your actual logo) --}}
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-indigo-600 dark:text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-            </svg>
-            <span>Entrade</span>
+    <div class="mobile-topbar bg-white dark:bg-gray-800 shadow px-3 py-2 flex justify-between items-center md:hidden">
+        <a href="/">
+            <!-- Light mode logo -->
+            <img src="/images/logo-light.png" alt="Logo" class="w-auto h-9 dark:hidden">
+            <!-- Dark mode logo -->
+            <img src="/images/logo-dark.png" alt="Logo" class="bg-gray-700 w-auto h-9 hidden dark:block">
         </a>
 
         <div class="flex items-center space-x-4">

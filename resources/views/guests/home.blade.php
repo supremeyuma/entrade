@@ -132,8 +132,8 @@
                         </div>
                     </div>
                 </div>
-                <a href="/zulutrade-data" class="text-blue-600 dark:text-blue-400 inline-flex items-center mb-4 hover:underline text-sm sm:text-base">
-                    Explore ZuluTrade's Statistics
+                <a href="/about" class="text-blue-600 dark:text-blue-400 inline-flex items-center mb-4 hover:underline text-sm sm:text-base">
+                    Explore Bullsbybit Statistics
                     {{-- Adjusted arrow icon size: w-3 h-3 ml-1 (for sm), w-4 h-4 ml-2 (for md) --}}
                     <img src="https://cdn.sanity.io/images/uswo7bx0/production/ee4682395fddf7d9b8827665f7a3aacf0cfe3bea-52x56.png?auto=format"
                          alt="Arrow" class="ml-1 w-3 h-3 sm:ml-2 sm:w-4 sm:h-4">
@@ -151,11 +151,11 @@
             <div class="w-full lg:w-1/2">
                 {{-- Adjusted image size: h-48 sm:h-auto (on small screens, max height will be 48, then auto) --}}
                 <img src="https://cdn.sanity.io/images/uswo7bx0/production/54847a4abb8484536b018ad3dfb9f142e7f30e1b-403x321.png?auto=format"
-                     alt="Why ZuluTrade?" class="mx-auto h-48 sm:h-auto" height="350">
+                     alt="Why Bullsbybit?" class="mx-auto h-48 sm:h-auto" height="350">
             </div>
             <div class="w-full lg:w-1/2 px-4 sm:px-0"> {{-- Added px-4 for internal padding on small screens --}}
                 {{-- Adjusted text sizes: text-xl md:text-3xl (h2), text-sm md:text-base (li) --}}
-                <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-4 md:mb-6">Why ZuluTrade?</h2>
+                <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-4 md:mb-6">Why Bullsbybit?</h2>
                 <ul class="list-decimal list-inside space-y-1 md:space-y-2 text-left text-sm sm:text-base">
                     <li><span class="font-semibold">Copy Trading at your Fingertips</span> – Copy experienced Leaders with ease.</li>
                     <li><span class="font-semibold">Multiple Assets</span> – Trade forex, crypto, stocks, and more.</li>
@@ -189,7 +189,7 @@
                             [
                                 'title' => 'Advanced Tools',
                                 'desc_sm' => 'Customize settings and trade with advanced tools.', // Shortened for small screens
-                                'desc_lg' => 'If you prefer manual trading with ZuluTrade, you can always customize your settings and trade with various advanced tools.',
+                                'desc_lg' => 'If you prefer manual trading with Bullsbybit, you can always customize your settings and trade with various advanced tools.',
                                 'img' => 'https://cdn.sanity.io/images/uswo7bx0/production/190ef23ced76088412bd215b6ade5b7f73282af4-101x101.png?auto=format'
                             ],
                             [
@@ -254,7 +254,7 @@
                 <h2 class="text-xl sm:text-2xl md:text-3xl font-bold mb-4 md:mb-6">How it works?</h2>
                 <ul class="list-decimal list-inside space-y-1 md:space-y-2 text-left text-sm sm:text-base">
                     <li>Leaders join and share trading strategies.</li>
-                    <li>ZuluTrade ranks Leaders based on performance and behavior.</li>
+                    <li>Bullsbybit ranks Leaders based on performance and behavior.</li>
                     <li>Investors select Leaders to copy based on capital, risk, and goals.</li>
                 </ul>
                 <a href="/register"
@@ -266,7 +266,7 @@
     </div>
 </section>
 
-<section class="bg-white dark:bg-gray-900 pt-12 md:py-24">
+<!--<section class="bg-white dark:bg-gray-900 pt-12 md:py-24">
     {{-- Changed px-4 md:px-6 to px-0 sm:px-4 md:px-6 for no margin on small screens --}}
     <div class="max-w-7xl mx-auto px-0 sm:px-4 md:px-6">
         {{-- Adjusted text size: text-xl md:text-4xl (h2) --}}
@@ -294,7 +294,7 @@
             @endforeach
         </div>
     </div>
-</section>
+</section>-->
 
 
 <section class="bg-white-800 dark:bg-gray-800 text-white pt-12 pb-12 md:py-24 transition-colors duration-300">
