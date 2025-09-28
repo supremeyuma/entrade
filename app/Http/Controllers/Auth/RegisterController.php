@@ -11,6 +11,7 @@ use App\Models\SiteSetting;
 use App\Helpers\SettingsHelper;
 use App\Models\Referral;
 use App\Helpers\ActivityLogger;
+use Illuminate\View\View;
 
 class RegisterController extends Controller
 {
@@ -42,6 +43,11 @@ class RegisterController extends Controller
     public function __construct()
     {
         $this->middleware('guest');
+    }
+    
+    public function showRegistrationForm(): View
+    {
+        return view('auth.register');
     }
 
     /**

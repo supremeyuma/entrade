@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\UserKycController;
 
 Route::middleware('guest')->group(function () {
-    Route::get('register', [RegisterController::class, 'create'])
+    Route::get('register', [RegisterController::class, 'showRegistrationForm'])
                 ->name('register');
 
-    Route::post('register', [RegisterController::class, 'create']);
+    Route::post('register', [RegisterController::class, 'register']);
 
     Route::get('login', [AuthenticatedSessionController::class, 'create'])
                 ->name('login');
