@@ -65,6 +65,6 @@ class UserKycController extends Controller
     public function skip(Request $request)
     {
         $request->user()->update(['kyc_skipped' => true]);
-        return redirect()->route('dashboard')->with('status', 'You skipped KYC for now.');
+        return redirect()->route('user.dashboard')->with('status', 'You skipped KYC for now.');
     }
 }
