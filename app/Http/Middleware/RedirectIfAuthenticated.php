@@ -15,14 +15,22 @@ class RedirectIfAuthenticated
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, string ...$guards): Response
+    public function handle($request, Closure $next, ...$guards)
     {
-        $guards = empty($guards) ? [null] : $guards;
+        $guard = $guards[0] ?? null;
 
-        foreach ($guards as $guard) {
-            if (Auth::guard($guard)->check()) {
-                return redirect(RouteServiceProvider::HOME);
+        if (Auth::guard($guard)->check()) {
+            $user = Auth::user();
+
+            if (strtolower(trim($user->role)) === 'admin') {
+                return redirect('/admin/dashboard');
             }
+
+            if (!$user->kycVerification && !session()->has('kyc_skipped')) {
+                return redirect('/kyc');
+            }
+
+            return redirect('/user/dashboard');
         }
 
         return $next($request);

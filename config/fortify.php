@@ -73,7 +73,7 @@ return [
     |
     */
 
-    'home' => '/dashboard',
+    //'home' => '/dashboard',
 
     /*
     |--------------------------------------------------------------------------
@@ -155,5 +155,26 @@ return [
             // 'window' => 0,
         ]),
     ],
+
+    'redirects' => [
+        'login' => function () {
+            $user = auth()->user();
+
+            if (!$user) {
+                return '/login';
+            }
+
+            if (strtolower(trim($user->role)) === 'admin') {
+                return '/admin/dashboard';
+            }
+
+            if (!$user->kycVerification && !session()->has('kyc_skipped')) {
+                return '/kyc';
+            }
+
+            return '/user/dashboard';
+        },
+    ],
+
 
 ];

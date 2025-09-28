@@ -29,7 +29,20 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        //return redirect()->intended(RouteServiceProvider::HOME);
+        
+        $user = $request->user();
+
+        if (strtolower(trim($user->role)) === 'admin') {
+            return redirect()->intended('/admin/dashboard');
+        }
+        
+        if (!$user->kycVerification && !session()->has('kyc_skipped')) {
+            return redirect()->intended('/kyc');
+        }
+        
+        return redirect()->intended('/user/dashboard');
+
     }
 
     /**

@@ -11,6 +11,7 @@ use App\Events\FirstDepositMade;
 use App\Events\DepositMade;
 use Laravel\Fortify\Events\Login;
 use Laravel\Fortify\Events\Logout;
+use App\Listeners\RedirectAuthenticatedUsers;
 
 class EventServiceProvider extends ServiceProvider
 {
