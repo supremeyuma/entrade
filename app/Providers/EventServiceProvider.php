@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Event;
 use App\Listeners\TriggerReferralBonus;
 use App\Events\FirstDepositMade;
 use App\Events\DepositMade;
+use Laravel\Fortify\Events\Login;
+use Laravel\Fortify\Events\Logout;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -18,6 +20,9 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
+        Login::class => [
+            RedirectAuthenticatedUsers::class,
+        ],
         Registered::class => [
             SendEmailVerificationNotification::class,
             TriggerReferralBonus::class,

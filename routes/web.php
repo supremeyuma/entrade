@@ -45,7 +45,6 @@ use App\Http\Controllers\Admin\AdminKycController;
 use App\Http\Controllers\User\UserPreferencesController;
 use App\Http\Controllers\User\UserAccountController;
 use App\Http\Controllers\Admin\UserFundsController;
-use App\Http\Controllers\Admin\BotLogController;
 use App\Http\Controllers\Admin\TradeBotRunController;
 use App\Http\Controllers\Admin\TradeBotController;
 use App\Http\Controllers\Admin\AdminTradeHistoryController;
@@ -149,8 +148,8 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     //Faq Routes
     Route::resource('faqs', FaqController::class);
     Route::resource('faq-categories', FaqCategoryController::class);
-    Route::resource('categories', Admin\FaqCategoryController::class);
-    Route::resource('questions', Admin\FaqController::class);
+    Route::resource('categories', FaqCategoryController::class);
+    Route::resource('questions', FaqController::class);
 
     Route::post('faqs/reorder', [FaqController::class, 'reorder'])->name('faqs.reorder');
     Route::post('faqs/import', [FaqController::class, 'import'])->name('faqs.import');
@@ -176,7 +175,6 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('/kyc/{kyc}/reject', [AdminKycController::class, 'reject'])->name('kyc.reject');
 
     //Bot Routes
-    Route::get('/bot-logs', [BotLogController::class, 'index'])->name('bot_logs.index');
     Route::get('/trade-bot', [TradeBotController::class, 'index'])->name('trade-bot.index');
     Route::post('/trade-bot/generate', [TradeBotController::class, 'generate'])->name('trade-bot.generate');
     Route::post('/trade-bots', [TradeBotController::class, 'store'])->name('trade-bot.store');
@@ -258,7 +256,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
     // Accounts-Sections Routes
     Route::get('/account', [UserAccountController::class, 'index'])->name('account.index');
 
-    Route::put('/account/profile', [UserProfileController::class, 'update'])->name('profile.update');
+    //Route::put('/account/profile', [UserProfileController::class, 'update'])->name('profile.update');
 
     Route::put('/account/security/password', [UserSecurityController::class, 'changePassword'])->name('security.change-password');
     Route::post('/account/security/enable-2fa', [UserSecurityController::class, 'enable2FA'])->name('security.enable-2fa');
@@ -333,8 +331,8 @@ Route::middleware(['auth', 'verified'])->get('/dashboard', function () {
 })->name('dashboard');
 
 // Laravel auth fallback
-Auth::routes();
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Auth::routes();
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //FCS API ROUTE
 

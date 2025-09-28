@@ -195,7 +195,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 @livewireScripts
-@vite('resources/js/components/trader-chart.js')
+
 
 
 </body>

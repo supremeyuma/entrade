@@ -1,6 +1,7 @@
 import Chart from 'chart.js/auto';
 
 export default function traderChartComponent() {
+    console.log("Trader Chart Component Loaded!");
     return {
         chart: null,
         labels: {},

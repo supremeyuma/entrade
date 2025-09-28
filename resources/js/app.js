@@ -2,9 +2,7 @@ import './bootstrap';
 
 import './components/traderCard.js';
 
-import './components/trader-chart.js';
-
-import traderChartComponent from './components/trader-chart';
+import traderChartComponent from './components/trader-chart.js';
 
 window.traderChartComponent = traderChartComponent;
 
