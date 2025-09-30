@@ -14,12 +14,12 @@ class TraderController extends Controller
     public function index(Request $request)
     {
         $query = Trader::query();
-
+    
         // Search
         if ($search = $request->input('search')) {
             $query->where('name', 'like', "%$search%");
         }
-
+    
         // Sort
         if ($sort = $request->input('sort')) {
             if ($sort === 'roi') {
@@ -32,26 +32,28 @@ class TraderController extends Controller
         } else {
             $query->orderBy('name');
         }
-
+    
+        // Eager load trades for performance
+        $query->with('trades');
+    
         $traders = $query->paginate(10)->withQueryString();
-        
-        
+    
+        // Calculate metrics for each trader
         foreach ($traders as $trader) {
-        $average_roi = round($trader->trades->avg('roi') ?? 0, 2);
-        
-        
-            $totalTrades = $trader->trades->count();
-            $winningTrades = $trader->trades->filter(fn ($trade) =>$trade->roi > 0)->count();
-            if ($winningTrades > 0) {
-                $winRate = round($winningTrades / $totalTrades * 100, 2);
-            } else {
-                $winRate = 0;
-            }
+            $average_roi = round($trader->trades->avg('roi') ?? 0, 2);
             
+            $totalTrades = $trader->trades->count();
+            $winningTrades = $trader->trades->filter(fn ($trade) => $trade->roi > 0)->count();
+            $winRate = $totalTrades > 0 ? round($winningTrades / $totalTrades * 100, 2) : 0;
+    
+            // Assign as dynamic properties to each trader
+            $trader->average_roi = $average_roi;
+            $trader->winRate = $winRate;
         }
-
-        return view('admin.traders.index', compact('traders', 'winRate', 'average_roi'));
+    
+        return view('admin.traders.index', compact('traders'));
     }
+
 
 
     public function create()

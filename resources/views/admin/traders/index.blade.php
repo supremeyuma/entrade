@@ -24,6 +24,7 @@
                     <tr>
                         
                         <th class="px-4 py-2 text-left">Name</th>
+                        <th class="px-4 py-2 text-left">Trader ID</th>
                         <th class="px-4 py-2 text-left">ROI</th>
                         <th class="px-4 py-2 text-left">Trades</th>
                         <th class="px-4 py-2 text-left">Win Rate</th>
@@ -35,14 +36,15 @@
                         <tr class="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900">
                         
                             <td class="px-4 py-3 font-medium">{{ $trader->name }}</td>
+                            <td class="px-4 py-3 font-medium">{{ $trader->trader_id }}</td>
                             <td class="px-4 py-3">
                                     <div class="w-full">
-                                        <div class="text-xs font-semibold mb-1">{{ $average_roi }}%</div>
+                                        <div class="text-xs font-semibold mb-1">{{ $trader->average_roi }}%</div>
                                     </div>
                             </td>
                             <td class="px-4 py-3">{{ $trader->trades->count() }}</td>
                             <td class="px-4 py-3 text-gray-600 dark:text-gray-300">
-                                {{ $winRate }}
+                                {{ $trader->winRate }}
                             </td>
                             <td class="px-4 py-3 text-center">
                                 <div class="flex justify-center gap-2">
