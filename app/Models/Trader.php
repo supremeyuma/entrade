@@ -14,6 +14,17 @@ class Trader extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'name',
+        'trader_id',
+        'bio',
+        'performance_metrics',
+        'roi',
+        'profile_photo',
+        'is_active',
+        'is_featured',
+    ];
+
     public function subscriptions()
     {
         return $this->hasMany(UserTraderSubscription::class);

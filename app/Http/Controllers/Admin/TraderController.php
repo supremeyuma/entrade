@@ -6,6 +6,8 @@ use App\Models\Trader;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use App\Helpers\ActivityLogger;
 
 class TraderController extends Controller
 {
@@ -40,7 +42,12 @@ class TraderController extends Controller
         
             $totalTrades = $trader->trades->count();
             $winningTrades = $trader->trades->filter(fn ($trade) =>$trade->roi > 0)->count();
-            $winRate = round($winningTrades / $totalTrades * 100, 2);
+            if ($winningTrades > 0) {
+                $winRate = round($winningTrades / $totalTrades * 100, 2);
+            } else {
+                $winRate = 0;
+            }
+            
         }
 
         return view('admin.traders.index', compact('traders', 'winRate', 'average_roi'));
@@ -52,32 +59,37 @@ class TraderController extends Controller
         return view('admin.traders.create');
     }
 
+
     public function store(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'bio' => 'nullable|string',
+            'bio' => 'nullable|array',
             'profile_photo' => 'nullable|image|max:2048',
-            'performance' => 'nullable|array',
         ]);
-
+    
+        // Generate a unique 4-character alphanumeric code for trader_id
+        do {
+            $traderId = strtoupper(Str::random(4)); // e.g., 'A3F9'
+        } while (Trader::where('trader_id', $traderId)->exists());
+    
+        $validated['trader_id'] = $traderId;
+    
         if ($request->hasFile('profile_photo')) {
             $validated['profile_photo'] = $request->file('profile_photo')->store('traders', 'public');
         }
-
-        $validated['performance_metrics'] = $validated['performance'] ?? [];
-        unset($validated['performance']);
-
+    
         $trader = Trader::create($validated);
-
+    
         ActivityLogger::log(
             'add_trader',
             'Added new trader: ' . $trader->name . ' (ID: ' . $trader->id . ')',
             auth()->id()
         );
-
+    
         return redirect()->route('admin.traders.index')->with('success', 'Trader created successfully.');
     }
+
 
 
     public function edit(Trader $trader)
@@ -170,7 +182,11 @@ class TraderController extends Controller
         $totalTrades = $trader->trades->count();
         $winningTrades = $trader->trades->filter(fn ($trade) =>$trade->roi > 0)->count();
 
-        $winRate = round($winningTrades / $totalTrades * 100, 2);
+        if ($winningTrades > 0) {
+            $winRate = round($winningTrades / $totalTrades * 100, 2);
+        } else {
+            $winRate = 0;
+        }
     return view('admin.traders.show', compact('trader', 'trades', 'roiData', 'labels', 'subscriberCount', 'average_roi', 'winRate'));
 
     }
