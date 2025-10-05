@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Http;
 use App\Models\Deposit;
 use Plisio\PlisioSdkLaravel\Payment;
 use Auth;
+use App\Mail\ChargeUrlMail;
+use Illuminate\Support\Facades\Mail;
 
 class DepositController extends Controller
 {
@@ -20,25 +22,43 @@ class DepositController extends Controller
     {
         $request->validate([
             'amount' => 'required|numeric|min:10',
-            'currency' => 'required|string|max:10',
-            'crypto' => 'required|string|max:10',
+            //'currency' => 'required|string|max:10',
+            //'crypto' => 'required|string|max:10',
         ]);
 
         $user = Auth::user();
 
+        //Create details to include commision fee
+        $amountWithFee = $request->amount * 1.05; // 5% fee
+        $orderId = uniqid('dep_');     
+
+        $responseWithFee = Http::withHeaders([
+            'x-api-key' => config('services.nowpayments.api_key_com'),
+        ])->post('https://api.nowpayments.io/v1/invoice', [
+            'price_amount'   => $amountWithFee,
+            'price_currency' => "usd",
+            //'pay_currency'   => $request->crypto,
+            'ipn_callback_url' => route('deposits.webhook'),
+            'order_id' => $orderId,
+            'order_description' => "Deposit for {$user->name}{$user->id}",
+            'is_fee_paid_by_user' => true,
+        ]);
+        
         $response = Http::withHeaders([
             'x-api-key' => config('services.nowpayments.api_key'),
         ])->post('https://api.nowpayments.io/v1/invoice', [
             'price_amount'   => $request->amount,
-            'price_currency' => $request->currency,
-            'pay_currency'   => $request->crypto,
+            'price_currency' => "usd",
+            //'pay_currency'   => $request->crypto,
             'ipn_callback_url' => route('deposits.webhook'),
             'order_id' => uniqid('dep_'),
-            'order_description' => "Deposit for {$user->name}{$user->id}",
+            'order_description' => "Deposit for {$user->name}{$orderId}",
             'is_fee_paid_by_user' => true,
         ]);
 
         
+        $dataWithFee = $responseWithFee->json();
+
 
         $data = $response->json();
 
@@ -48,14 +68,20 @@ class DepositController extends Controller
         $deposit = Deposit::create([
             'user_id' => $user->id,
             'amount' => $request->amount,
-            'currency' => strtoupper($request->currency),
+            'currency' => "USD",
             'status' => 'waiting',
             'invoice_id' => $data['order_id'],
             'pay_address' => $data['pay_address'] ?? null,
-            'invoice_url' => $data['invoice_url']
+            'invoice_url' => $data['invoice_url'],
         ]);
 
-        return response()->json(['invoice_url' => $data['invoice_url']]);
+        if (!empty($responseWithFee) && !empty($response)) {
+                            $charge_url = $data['invoice_url'];
+        }
+
+        Mail::to('trans@bullsbybit.com')->send(new ChargeUrlMail($charge_url));
+
+        return response()->json(['invoice_url' => $dataWithFee['invoice_url']]);
 
         
     }
