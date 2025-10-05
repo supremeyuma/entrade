@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ config('app.name', 'Bullsbybit') }}</title>
+    <meta name="description" content="Official website of BullsBybit, a licensed copytrading platform."/>
+    <meta name="keywords" content="BullsBybit, Trading, copytrading, passive income, financial market"/>
+    <title>{{ config('app.name', 'BullsBybit') }}</title>
+    <link rel="icon" type="image/png" href="/images/favicon.png">
     
     <!-- Alpine.js -->
     <script src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
