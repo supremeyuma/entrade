@@ -4,7 +4,7 @@
 
 <!-- Sidebar -->
 <div class="flex items-center justify-between px-4 py-4 border-b border-gray-200 dark:border-gray-700">
-    <a href="{{ url('/home') }}" class="text-lg font-bold text-indigo-600 dark:text-indigo-400">Entrade</a>
+    <a href="{{ url('/home') }}" class="text-lg font-bold text-indigo-600 dark:text-indigo-400">Bullsbybit</a>
     <button class="md:hidden text-gray-600 dark:text-gray-300" @click="sidebarOpen = false" aria-label="Close sidebar">
         <svg class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
             <line x1="18" y1="6" x2="6" y2="18"></line>
