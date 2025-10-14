@@ -94,12 +94,10 @@
                         <label class="block font-medium mb-1">Cryptocurrency <span class="text-red-500">*</span></label>
                         <select name="cryptocurrency" x-model="form.cryptocurrency"
                                 class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-                            <option value="">Select</option>
-                            <option>BTC</option>
-                            <option>ETH</option>
-                            <option>USDT</option>
-                            <option>BUSD</option>
-                            <option>BNB</option>
+                                <option value="">Select crypto / token</option>
+                            @foreach ($feeSettings as $crypto => $_)
+                                <option value="{{ $crypto }}">{{ $crypto }}</option>
+                            @endforeach
                         </select>
                     </div>
 
@@ -114,10 +112,10 @@
                         <label class="block font-medium mb-1">Network</label>
                         <select name="network" x-model="form.network"
                                 class="w-full rounded-md border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white">
-                            <option value="">Select</option>
-                            <option>ERC20</option>
-                            <option>TRC20</option>
-                            <option>BEP20</option>
+                            <option value="">Select network</option>
+                        <template x-for="net in networkOptions()" :key="net">
+                            <option :value="net" x-text="net"></option>
+                        </template>
                         </select>
                     </div>
 
@@ -154,6 +152,8 @@
                 storeUrl: '{{ route('user.wallets.store') }}',
                 updateUrl: '',
 
+                cryptoNetworks: @json($cryptoNetworks),
+
                 resetForm() {
                     this.editing = false;
                     this.form = {
@@ -172,7 +172,18 @@
                     this.updateUrl = `/user/wallets/${wallet.id}`;
                     this.openModal = true;
                 }
-            }
+
+                onCryptoChange() {
+                    // when user manually picks crypto, reset network
+                    this.form.network = '';
+                },
+
+                networkOptions() {
+                    let crypto = this.form.cryptocurrency;
+                    if (!crypto) return [];
+                    return this.cryptoNetworks[crypto] || [];
+                    },
+                        }
         }
     </script>
 </x-layouts.app>

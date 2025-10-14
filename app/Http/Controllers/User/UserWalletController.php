@@ -6,13 +6,35 @@ use App\Models\UserWallet;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Models\WithdrawalSetting;
 
 class UserWalletController extends Controller
 {
     public function index()
     {
         $wallets = Auth::user()->wallets;
-        return view('user.wallets.index', compact('wallets'));
+        
+        // crypto → networks map
+        $cryptoNetworks = WithdrawalSetting::all()
+            ->keyBy('cryptocurrency')
+            ->map(function ($item) {
+                return $item->networks;
+            })
+            ->toArray();
+
+        // feeSettings: e.g. ['BTC' => ['fixed' => 0.0001, 'percent' => 0.1], ...]
+        $feeSettings = WithdrawalSetting::all()
+            ->keyBy('cryptocurrency')
+            ->map(function ($item) {
+                return [
+                    'fixed' => $item->fixed_fee,
+                    'percent' => $item->percent_fee,
+                ];
+            })
+            ->toArray();
+
+
+        return view('user.wallets.index', compact('wallets', 'cryptoNetworks', 'feeSettings'));
     }
 
     public function store(Request $request)
