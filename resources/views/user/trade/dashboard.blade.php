@@ -9,7 +9,11 @@
 
         @if($subscriptions->isEmpty())
             <div class="bg-yellow-100 text-yellow-800 rounded p-4 text-sm">
-                You are not copying any traders yet.
+                You are not copying any traders yet. Let's change that.
+                
+                <a href="{{ route('user.deposit.create') }}" class="font-semibold text-yellow-700 hover:underline">
+                            Search to follow a trader.
+                        </a>
             </div>
         @else
             @if(session('success'))
