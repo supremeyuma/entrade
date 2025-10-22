@@ -14,6 +14,20 @@
 
     <!-- Tailwind CSS -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+        <!--AOS-->
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            AOS.init({
+            once: true,
+            duration: 700,
+            easing: 'ease-out-cubic',
+            });
+        });
+    </script>
+
 
     <style>
         html {

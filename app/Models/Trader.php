@@ -16,13 +16,10 @@ class Trader extends Model
 
     protected $fillable = [
         'name',
-        'trader_id',
         'bio',
-        'performance_metrics',
-        'roi',
         'profile_photo',
-        'is_active',
-        'is_featured',
+        'performance_metrics',
+
     ];
 
     public function subscriptions()
