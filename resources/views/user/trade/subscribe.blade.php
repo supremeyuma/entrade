@@ -18,6 +18,9 @@
             @if(session('error'))
                 <div class="mb-4 p-4 text-red-800 bg-red-100 dark:bg-red-900/30 dark:text-red-300 rounded-lg">
                     {{ session('error') }}
+                    <a href="{{ route('user.deposit.create') }}" class="font-semibold text-green-700 hover:underline">
+                        Please make a new deposit to continue.
+                    </a>
                 </div>
             @endif
 
