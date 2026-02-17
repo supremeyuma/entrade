@@ -53,18 +53,23 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Trading Pairs (optional)</label>
-                <textarea name="symbol" rows="3" placeholder="e.g. BTC/USDT, EUR/USD" class="mt-1 block w-full rounded border-gray-300 shadow-sm" ></textarea>
+                <textarea name="trading_pairs" rows="3" placeholder="e.g. BTC/USDT, EUR/USD" class="mt-1 block w-full rounded border-gray-300 shadow-sm" ></textarea>
                 <p class="text-xs text-gray-500 mt-1">Separate pairs with commas.</p>
             </div>
 
             <div>
-                <label class="block text-sm font-medium text-gray-700">Assign To Trader (optional)</label>
-                <select name="trader_id" class="mt-1 block w-full rounded border-gray-300 shadow-sm">
-                    <option value="">-- Do not assign --</option>
-                    @foreach ($traders as $trader)
-                        <option value="{{ $trader->id }}">{{ $trader->name }} (ID: {{ $trader->id }})</option>
+                <label class="block text-sm font-medium text-gray-700">Select User</label>
+                <select name="user_id" class="mt-1 block w-full rounded border-gray-300 shadow-sm" required>
+                    <option value="">-- Select user --</option>
+                    @foreach ($users as $u)
+                        <option value="{{ $u->id }}">{{ $u->name }} ({{ $u->email }})</option>
                     @endforeach
                 </select>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Net Profit (currency)</label>
+                <input type="number" name="net_profit" step="0.01" min="0" class="mt-1 block w-full rounded border-gray-300 shadow-sm" required>
             </div>
 
             <!--<div>
@@ -96,29 +101,16 @@
 
     <div>
         <label for="desired_win_rate">Desired Win Rate (%)</label>
-        <input type="number" step="0.1" min="0" max="100" name="target_win_rate" class="form-input w-full" placeholder="Optional" />
+        <input type="number" step="0.1" min="0" max="100" name="desired_win_rate" class="form-input w-full" placeholder="Optional" />
     </div>
 
     <div>
         <label for="max_trades">Maximum Trades (cap)</label>
-        <input type="number" min="1" name="max_trade_count" class="form-input w-full" placeholder="Optional" />
+        <input type="number" min="1" name="max_trades" class="form-input w-full" placeholder="Optional" />
     </div>
 </div>
 
-<div class="mb-4">
-    <label for="min_trade_duration_days" class="block text-gray-700 text-sm font-bold mb-2">Min Trade Duration (Days)</label>
-    <input type="number" id="min_trade_duration_days" name="min_trade_duration_days" class="form-input w-full" value="{{ old('min_trade_duration_days', 1) }}" min="1" required>
-    @error('min_trade_duration_days')
-        <p class="text-red-500 text-xs italic">{{ $message }}</p>
-    @enderror
-</div>
-<div class="mb-4">
-    <label for="max_trade_duration_days" class="block text-gray-700 text-sm font-bold mb-2">Max Trade Duration (Days)</label>
-    <input type="number" id="max_trade_duration_days" name="max_trade_duration_days" class="form-input w-full" value="{{ old('max_trade_duration_days', 5) }}" min="1" required>
-    @error('max_trade_duration_days')
-        <p class="text-red-500 text-xs italic">{{ $message }}</p>
-    @enderror
-</div>
+            
 
             {{-- Export to CSV --}}
             <!--<div>
@@ -128,54 +120,12 @@
                 </label>
             </div>-->
 
-            {{-- Preview ROI Simulation --}}
-            <div class="pt-6 flex justify-between items-center">
+            <div class="pt-6">
                 <button type="submit" class="bg-indigo-600 text-white px-5 py-2 rounded shadow hover:bg-indigo-700">
                     Generate Trades
                 </button>
-
-                <button type="button" id="previewBtn" class="text-indigo-600 hover:underline text-sm">
-                    Preview ROI Simulation
-                </button>
             </div>
         </form>
-
-        {{-- ROI Preview Summary --}}
-        <div id="previewSummary" class="hidden mt-6 bg-gray-100 border border-gray-300 rounded p-4 shadow-sm">
-            <h2 class="text-lg font-bold mb-2">Backtest Preview</h2>
-            <ul class="text-sm space-y-1 text-gray-700">
-                <li><strong>Estimated Trades:</strong> <span id="estTrades">...</span></li>
-                <li><strong>Projected Win Rate:</strong> <span id="estWinRate">...</span>%</li>
-                <li><strong>Expected ROI:</strong> <span id="estROI">...</span>%</li>
-            </ul>
-        </div>
-
-       
-
-
     </div>
 
-    {{-- ROI Preview Script --}}
-    <script>
-        document.getElementById('previewBtn').addEventListener('click', function () {
-            const form = document.getElementById('tradeBotForm');
-            const data = new FormData(form);
-
-            fetch("{{ route('admin.trade-bot.preview') }}", {
-                method: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                },
-                body: data
-            })
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('previewSummary').classList.remove('hidden');
-                document.getElementById('estTrades').textContent = data.trade_count;
-                document.getElementById('estWinRate').textContent = data.win_rate;
-                document.getElementById('estROI').textContent = data.projected_roi;
-            })
-            .catch(err => alert("Failed to preview: " + err.message));
-        });
-    </script>
 </x-layouts.admin>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Trader;
+use App\Models\User;
 use App\Models\TradeBotConfig;
 use App\Jobs\GenerateHistoricalTradesJob; // Correctly referencing the new job
 use App\Models\Trade;
@@ -34,9 +35,14 @@ class TradeBotController extends Controller
 
     public function index()
     {
+        // Provide markets and eligible users (exclude users with roles 'admin' or 'trader')
+        $eligibleUsers = User::whereDoesntHave('roles', function ($q) {
+            $q->whereIn('name', ['admin', 'trader']);
+        })->get();
+
         return view('admin.trade_bot.index', [
             'markets' => ['forex', 'crypto', 'stocks', 'indices'],
-            'traders' => Trader::all(),
+            'users' => $eligibleUsers,
         ]);
     }
 
@@ -121,27 +127,8 @@ class TradeBotController extends Controller
 
     public function preview(Request $request, $id)
     {
-        $tradeBotConfig = TradeBotConfig::findOrFail($id);
-
-        // Run backtest simulation
-        // Ensure BacktestSimulator::run expects these parameters and handles them correctly.
-        // If BacktestSimulator needs the 'trading_pairs' array, make sure to pass it.
-        $simulation = BacktestSimulator::run([
-            'start_date' => $tradeBotConfig->start_date, // Use $tradeBotConfig
-            'end_date' => $tradeBotConfig->end_date,     // Use $tradeBotConfig
-            'timeframe' => $tradeBotConfig->timeframe ?? '1h',
-            'risk_per_trade' => $tradeBotConfig->risk_per_trade ?? 1,
-            'desired_win_rate' => $tradeBotConfig->desired_win_rate ?? 60,
-            'max_trades' => $tradeBotConfig->max_trades ?? 100,
-            // Add trading_pairs if BacktestSimulator needs it
-            'trading_pairs' => $tradeBotConfig->trading_pairs, // Pass the array
-        ]);
-
-        return view('admin.trade_bot.preview', [
-            'tradeBotConfig' => $tradeBotConfig,
-            'roiCurve' => $simulation['roi_curve'] ?? [],
-            'simulation' => $simulation,
-            ]);
+        // Preview simulation removed per new requirements.
+        abort(404);
     }
 
 
@@ -238,34 +225,40 @@ class TradeBotController extends Controller
     public function generate(Request $request)
     {
         $validated = $request->validate([
-            'symbol' => 'required|string',
-            //'interval' => 'required|string',
-            'market' => 'required|string',
-            'roi' => 'required|numeric',
-            'target_win_rate' => 'required|numeric',
-            'max_trade_count' => 'required|integer',
-            'trader_id' => 'required|integer',
             'start_date' => 'required|date',
-            'end_date' => 'required|date',
-            'target_win_rate' => 'nullable|numeric',
-
+            'end_date' => 'required|date|after_or_equal:start_date',
+            'trading_pairs' => 'nullable|string',
+            'net_profit' => 'required|numeric',
+            'desired_win_rate' => 'nullable|numeric|min:0|max:100',
+            'max_trades' => 'required|integer|min:1',
+            'user_id' => 'required|exists:users,id',
+            'markets' => 'nullable|array',
         ]);
 
-        $interval = $validated['interval'] ?? '1d'; // Default to '1d' if not provided
+        // Ensure selected user is not admin or trader
+        $user = User::find($validated['user_id']);
+        if ($user->hasAnyRole(['admin', 'trader'])) {
+            return back()->withErrors(['user_id' => 'Selected user is not eligible for synthetic trade generation.']);
+        }
 
+        // Process trading_pairs into array
+        $cleanTradingPairs = [];
+        if (!empty($validated['trading_pairs'])) {
+            $cleanTradingPairs = array_filter(array_map('trim', explode(',', $validated['trading_pairs'])));
+        }
+
+        // Dispatch job to generate synthetic trades for the selected user
         GenerateSimulatedTradesJob::dispatch(
-            symbol: $validated['symbol'],
-            marketType: $validated['market'],
-            interval: $interval,
-            targetRoi: $validated['roi'],
-            targetWinRate: $validated['target_win_rate'],
-            tradeCount: $validated['max_trade_count'],
-            traderUserId: $validated['trader_id'],
+            tradingPairs: $cleanTradingPairs,
+            netProfit: (float) $validated['net_profit'],
+            targetWinRate: (float) ($validated['desired_win_rate'] ?? 50),
+            tradeCount: (int) $validated['max_trades'],
+            userId: (int) $validated['user_id'],
             startDate: $validated['start_date'],
             endDate: $validated['end_date'],
         );
 
-        return back()->with('success', 'Simulation job dispatched.');
+        return back()->with('success', 'Synthetic trade generation job dispatched.');
     }
 
 }
