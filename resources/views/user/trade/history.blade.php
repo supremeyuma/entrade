@@ -51,8 +51,11 @@
                                 <th class="px-3 sm:px-4 py-2 sm:py-3 border-b">Date</th>
                                 <th class="px-3 sm:px-4 py-2 sm:py-3 border-b">Trader</th>
                                 <th class="px-3 sm:px-4 py-2 sm:py-3 border-b">Pair</th>
+                                <th class="px-3 sm:px-4 py-2 sm:py-3 border-b">Side</th>
                                 <th class="px-3 sm:px-4 py-2 sm:py-3 text-right border-b">Outcome (%)</th>
                                 <th class="px-3 sm:px-4 py-2 sm:py-3 text-right border-b">Profit/Loss</th>
+                                <th class="px-3 sm:px-4 py-2 sm:py-3 border-b">Entry / Exit</th>
+                            </tr>
                                 <!--<th class="px-3 sm:px-4 py-2 sm:py-3 text-right border-b">New Balance</th>-->
                             </tr>
                         </thead>
@@ -66,11 +69,17 @@
                                     <td class="px-3 sm:px-4 py-2 sm:py-3 text-right border-b">
                                         {{ $history->trade->symbol }}
                                     </td>
+                                    <td class="px-3 sm:px-4 py-2 sm:py-3 border-b">{{ $history->trade->type ?? $history->trade->trade_type ?? 'N/A' }}</td>
                                     <td class="px-3 sm:px-4 py-2 sm:py-3 text-right font-semibold {{ $history->roi >= 0 ? 'text-green-600' : 'text-red-600' }} border-b">
                                         {{ $history->roi }}%
                                     </td>
                                     <td class="px-3 sm:px-4 py-2 sm:py-3 text-right border-b">
                                         {{ number_format($history->profit_loss_amount, 2) }}
+                                    </td>
+                                    <td class="px-3 sm:px-4 py-2 sm:py-3 border-b">
+                                        {{ $history->trade->entry_timestamp ? \Carbon\Carbon::parse($history->trade->entry_timestamp)->format('Y-m-d H:i') : '-' }}
+                                        /
+                                        {{ $history->trade->exit_timestamp ? \Carbon\Carbon::parse($history->trade->exit_timestamp)->format('Y-m-d H:i') : '-' }}
                                     </td>
                                     
                                     <!--<td class="px-3 sm:px-4 py-2 sm:py-3 text-right border-b">
