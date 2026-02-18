@@ -41,7 +41,6 @@ class TradeBotController extends Controller
         })->get();
 
         return view('admin.trade_bot.index', [
-            'markets' => ['forex', 'crypto', 'stocks', 'indices'],
             'users' => $eligibleUsers,
         ]);
     }
@@ -56,8 +55,6 @@ class TradeBotController extends Controller
         $validated = $request->validate([
             'start_date' => 'required|date',
             'end_date' => 'required|date|after:start_date',
-            'roi' => 'required|numeric|min:1',
-            'markets' => 'required|array',
             'trading_pairs' => 'nullable|string',
             'assign_to' => 'nullable|exists:traders,id',
             'auto_run' => 'nullable|boolean',
@@ -84,8 +81,6 @@ class TradeBotController extends Controller
         $config = TradeBotConfig::create([
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
-            'roi' => $validated['roi'],
-            'markets' => $validated['markets'],
             'trading_pairs' => $cleanTradingPairs,
             'assign_to' => $validated['assign_to'] ?? null,
             'auto_run' => $validated['auto_run'] ?? false,
@@ -152,10 +147,7 @@ class TradeBotController extends Controller
     {
        $validated = $request->validate([
             'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date', // Changed to after_or_equal for flexibility
-            'roi' => 'required|numeric|min:1',
-            'markets' => 'required|array',
-            'markets.*' => 'in:forex,crypto,stocks', // Added validation for individual market values
+            'end_date' => 'required|date|after_or_equal:start_date',
             // CHANGED to nullable|string for single textarea input
             'trading_pairs' => 'nullable|string',
             'assign_to' => 'nullable|exists:traders,id',
@@ -164,26 +156,23 @@ class TradeBotController extends Controller
             'risk_per_trade' => 'required|numeric|min:0|max:100',
             'desired_win_rate' => 'nullable|numeric|min:0|max:100',
             'max_trades' => 'nullable|integer|min:1',
-            'export_csv' => 'nullable|boolean', // Added validation for export_csv
+            'export_csv' => 'nullable|boolean',
             'min_trade_duration_days' => 'required|integer|min:1',
             'max_trade_duration_days' => 'required|integer|min:1|gte:min_trade_duration_days',
         ]);
 
-        // --- FIX: Process trading_pairs into a clean array of symbols ---
+        // --- Process trading_pairs into a clean array of symbols ---
         $cleanTradingPairs = [];
         if (!empty($validated['trading_pairs'])){
             $commaSeparatedString = $validated['trading_pairs'];
             $cleanTradingPairs = array_map('trim', explode(',', $commaSeparatedString));
             $cleanTradingPairs = array_filter($cleanTradingPairs);
         }
-        // --- END FIX ---
 
-        // Save configuration
+        // Save configuration (without markets/roi fields — those were removed)
         $config = TradeBotConfig::create([
             'start_date' => $validated['start_date'],
             'end_date' => $validated['end_date'],
-            'roi' => $validated['roi'],
-            'markets' => $validated['markets'],
             'trading_pairs' => $cleanTradingPairs,
             'assign_to' => $validated['assign_to'] ?? null,
             'auto_run' => $validated['auto_run'] ?? false,
@@ -192,30 +181,7 @@ class TradeBotController extends Controller
             'desired_win_rate' => $validated['desired_win_rate'] ?? null,
             'max_trades' => $validated['max_trades'] ?? null,
             'status' => 'pending',
-            //'export_csv' => $validated['export_csv'] ?? false,
         ]);
-
-        // ... after you create the $config object
-        // Save configuration
-        $config = TradeBotConfig::create([
-            'start_date' => $validated['start_date'],
-            'end_date' => $validated['end_date'],
-            'roi' => $validated['roi'],
-            'markets' => $validated['markets'],
-            'trading_pairs' => $cleanTradingPairs,
-            'assign_to' => $validated['assign_to'] ?? null,
-            'auto_run' => $validated['auto_run'] ?? false,
-            'timeframe' => $validated['timeframe'],
-            'risk_per_trade' => $validated['risk_per_trade'],
-            'desired_win_rate' => $validated['desired_win_rate'] ?? null,
-            'max_trades' => $validated['max_trades'] ?? null,
-            //'export_csv' => $validated['export_csv'] ?? false,
-            'status' => 'pending',
-        ]);
-
-        // --- FIX: Pass the entire $config object to the job ---
-        dispatch(new GenerateHistoricalTradesJob($config));
-// --- END FIX ---
 
         return redirect()
             ->route('admin.trade-bot.index')

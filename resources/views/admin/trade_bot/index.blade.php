@@ -34,22 +34,7 @@
                 <input type="date" name="end_date" class="mt-1 block w-full rounded border-gray-300 shadow-sm" required>
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Target ROI (%)</label>
-                <input type="number" name="roi" step="0.1" min="0" class="mt-1 block w-full rounded border-gray-300 shadow-sm" required>
-            </div>
-
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Market Types</label>
-                <div class="mt-2 space-y-2">
-                    @foreach (['forex' => 'Forex', 'crypto' => 'Crypto', 'stocks' => 'Stocks', 'indices' => 'Indices'] as $value => $label)
-                        <label class="inline-flex items-center space-x-2">
-                            <input type="checkbox" name="market" value="{{ $value }}" class="form-checkbox text-indigo-600">
-                            <span>{{ $label }}</span>
-                        </label>
-                    @endforeach
-                </div>
-            </div>
+            {{-- Target ROI and Market Types removed — Net Profit only is required. --}}
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Trading Pairs (optional)</label>
