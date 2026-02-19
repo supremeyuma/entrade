@@ -256,6 +256,8 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
     // Accounts-Sections Routes
     Route::get('/account', [UserAccountController::class, 'index'])->name('account.index');
 
+    // Transactions (User-facing)
+    Route::get('/transactions', [\App\Http\Controllers\User\UserTransactionController::class, 'index'])->name('transactions.index');
     //Route::put('/account/profile', [UserProfileController::class, 'update'])->name('profile.update');
 
     Route::put('/account/security/password', [UserSecurityController::class, 'changePassword'])->name('security.change-password');

@@ -60,6 +60,7 @@
             </button>
             <div x-show="open" class="ml-4 mt-1 space-y-1">
                 <a href="{{ route('user.deposit.history') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Deposit History</a>
+                <a href="{{ route('user.transactions.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Transaction History</a>
                 <a href="{{ route('user.withdrawals.history') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Withdrawal History</a>
                 <a href="{{ route('user.wallets.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Wallets</a>
                 <a href="{{ route('user.reports.index', ['trader' => 1]) }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Statements</a>
