@@ -54,4 +54,4 @@ export default function traderChartComponent() {
 }
 
 
-window.traderChartComponent = traderChartComponent;
+//window.traderChartComponent = traderChartComponent;
