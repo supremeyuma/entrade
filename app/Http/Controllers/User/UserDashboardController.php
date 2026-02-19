@@ -46,6 +46,9 @@ class UserDashboardController extends Controller
             ->take(5)
             ->get();
 
+        // Recent transactions for dashboard widget
+        $recentTransactions = $user->transactions()->latest()->take(5)->get();
+
         //dd($recentTrades->pluck('trade_id'));
 
         // Calculate portfolio stats
@@ -72,6 +75,7 @@ class UserDashboardController extends Controller
             'referrals',
             'activeTrades',
             'recentTrades',
+            'recentTransactions',
             'totalReturns',
             'totalInvested',
             'netProfit',

@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Trade;
+use App\Models\Trader;
 use Illuminate\Bus\Queueable;
 use Illuminate\Support\Str;
 use Illuminate\Queue\SerializesModels;
@@ -19,168 +20,189 @@ class GenerateSimulatedTradesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $symbol;
-    protected $marketType;
-    protected $interval;
-    protected $targetRoi;
+    protected $tradingPairs;
+    protected $netProfit;
     protected $targetWinRate;
     protected $tradeCount;
-    protected $traderUserId;
+    protected $userId;
     protected $startDate;
     protected $endDate;
 
-    public function __construct($symbol, $marketType, $interval, $targetRoi, $targetWinRate, $tradeCount, $traderUserId, $startDate, $endDate)
+    public function __construct(array $tradingPairs = [], float $netProfit = 0.0, float $targetWinRate = 50.0, int $tradeCount = 10, int $userId = null, $startDate = null, $endDate = null)
     {
-        $this->symbol = $symbol;
-        $this->marketType = $marketType;
-        $this->interval = $interval;
-        $this->targetRoi = $targetRoi;
+        $this->tradingPairs = $tradingPairs;
+        $this->netProfit = $netProfit;
         $this->targetWinRate = $targetWinRate;
         $this->tradeCount = $tradeCount;
-        $this->traderUserId = $traderUserId;
-        $this->startDate = Carbon::parse($startDate);
-        $this->endDate = Carbon::parse($endDate);
+        $this->userId = $userId;
+        $this->startDate = $startDate ? Carbon::parse($startDate) : Carbon::now()->subDays(30);
+        $this->endDate = $endDate ? Carbon::parse($endDate) : Carbon::now();
     }
 
     public function handle(): void
     {
-        Log::info("Starting simulated trade generation for {$this->symbol} between {$this->startDate} and {$this->endDate}");
+        Log::info("Starting synthetic trade generation for user {$this->userId} between {$this->startDate} and {$this->endDate}");
 
-        $fileName = str_replace(['/', ':'], '_', "{$this->marketType}_{$this->symbol}_{$this->interval}.json");
-        $filePath = storage_path("app/ohlcv/{$fileName}");
-        //Step 1: Ensure OHLCV Data Exists
-        if (!File::exists($filePath)) {
-            Log::warning("📦 OHLCV file not found. Downloading: {$filePath}");
-            DownloadDailyOhlcvDataJob::dispatchSync($this->symbol, $this->marketType, $this->interval);
+        $pairs = $this->tradingPairs ?: ['BTC/USDT'];
+
+        // Ensure there's a system trader to attach trades to (database requires trader_id)
+        $systemTrader = Trader::where('name', 'system-generated')->first();
+        if (! $systemTrader) {
+            // If no system trader exists, fallback to the first trader in DB. We avoid creating new trader records here.
+            $systemTrader = Trader::first();
         }
 
-        // Step 2: Load OHLCV data (after ensuring file exists)
-        if (!File::exists($filePath)) {
-            Log::error("❌ OHLCV file still missing after attempted download: {$filePath}");
+        if (! $systemTrader) {
+            Log::error('No trader record found to associate synthetic trades with. Aborting.');
             return;
         }
 
-        $ohlcv = collect(json_decode(File::get($filePath), true));
+        $batchId = Str::uuid();
 
-        // Step 3: Check if OHLCV has data in the buffered date range
-        $bufferStart = Carbon::parse($this->startDate)->subDays(3);
-        $bufferEnd = Carbon::parse($this->endDate)->subDay();
+        $winsNeeded = (int) round($this->tradeCount * ($this->targetWinRate / 100));
+        $lossesNeeded = $this->tradeCount - $winsNeeded;
 
-        $hasBufferedData = $ohlcv->contains(function ($candle) use ($bufferStart, $bufferEnd) {
-            $timestamp = Carbon::parse($candle['timestamp']);
-            return $timestamp->between($bufferStart, $bufferEnd);
-        });
+        // Build trade outcome array and shuffle
+        $tradeTypes = array_merge(array_fill(0, $winsNeeded, 'win'), array_fill(0, $lossesNeeded, 'loss'));
+        shuffle($tradeTypes);
 
-        if (!$hasBufferedData) {
-            Log::warning("📅 OHLCV data missing for buffered range: {$bufferStart->toDateString()} to {$bufferEnd->toDateString()}");
-            Log::info("🔁 Re-downloading OHLCV to update missing candles");
-
-            DownloadDailyOhlcvDataJob::dispatchSync($this->symbol, $this->marketType, $this->interval);
-
-            // Reload OHLCV
-            $ohlcv = collect(json_decode(File::get($filePath), true));
-
-            $hasBufferedData = $ohlcv->contains(function ($candle) use ($bufferStart, $bufferEnd) {
-                $timestamp = Carbon::parse($candle['timestamp']);
-                return $timestamp->between($bufferStart, $bufferEnd);
-            });
-
-            if (!$hasBufferedData) {
-                Log::error("❌ Still no OHLCV data in buffered range: {$bufferStart->toDateString()} to {$bufferEnd->toDateString()}");
-                return;
-            }
-
-            Log::info("✅ OHLCV data successfully updated");
+        // Build per-pair consistent directions
+        $pairDirections = [];
+        foreach ($pairs as $p) {
+            $pairDirections[$p] = (rand(0, 1) === 1) ? 'buy' : 'sell';
         }
 
+        // Distribute netProfit across trades: generate positive weights for wins and losses
+        $winWeights = $winsNeeded > 0 ? array_map(fn() => mt_rand(1, 100) / 100, range(1, $winsNeeded)) : [];
+        $lossWeights = $lossesNeeded > 0 ? array_map(fn() => mt_rand(1, 100) / 100, range(1, $lossesNeeded)) : [];
+        $sumW = array_sum($winWeights) ?: 1;
+        $sumL = array_sum($lossWeights) ?: 1;
 
-            // Step 4: Filter candles in date range
-            $filteredOhlcv = $ohlcv->filter(function ($candle) {
-                $timestamp = Carbon::parse($candle['timestamp']);
-                return $timestamp->between($this->startDate, $this->endDate);
-            })->values();
+        // We prefer losses to be smaller on aggregate. We'll set loss divisor.
+        $lossDiv = 3.0;
+        $denom = $sumW - ($sumL / $lossDiv);
 
-            if ($filteredOhlcv->isEmpty()) {
-                Log::error("⚠️ No OHLCV candles available in specified date range.");
-                return;
+        $scaledWinTotal = 0.0;
+        $scaledLossTotal = 0.0;
+
+        if ($denom > 0) {
+            $A = $this->netProfit / $denom; // scale factor for wins
+            $scaledWinTotal = $A * $sumW;
+            $scaledLossTotal = ($A / $lossDiv) * $sumL;
+        } else {
+            // fallback: distribute netProfit only to wins
+            if ($winsNeeded > 0) {
+                $A = $this->netProfit / $sumW;
+                $scaledWinTotal = $A * $sumW;
+                $scaledLossTotal = 0;
+            } else {
+                // all losses (edge): distribute negative profits proportionally
+                $B = $this->netProfit < 0 ? ($this->netProfit / $sumL) : (-abs($this->netProfit) / $sumL);
+                $scaledWinTotal = 0;
+                $scaledLossTotal = $B * $sumL;
+            }
+        }
+
+        // Build per-trade profit amounts
+        $profits = [];
+        $winIndex = 0;
+        $lossIndex = 0;
+
+        foreach ($tradeTypes as $type) {
+            if ($type === 'win') {
+                $weight = $winWeights[$winIndex++] ?? 1;
+                $amount = ($sumW > 0) ? ($scaledWinTotal * ($weight / $sumW)) : 0;
+                $profits[] = round($amount, 2);
+            } else {
+                $weight = $lossWeights[$lossIndex++] ?? 1;
+                $amount = ($sumL > 0) ? ($scaledLossTotal * ($weight / $sumL)) : 0;
+                // losses are represented as negative amounts
+                $profits[] = round(-abs($amount), 2);
+            }
+        }
+
+        // Shuffle profits to mix distribution differently from tradeTypes order if desired
+        // but we already matched order by building in tradeTypes sequence.
+
+        $tradesCreated = 0;
+
+        // Base invested amount per trade (currency). Using a fixed amount simplifies ROI calculation.
+        $baseInvested = 100.00;
+
+        foreach ($tradeTypes as $idx => $type) {
+            if ($tradesCreated >= $this->tradeCount) break;
+
+            $pair = $pairs[array_rand($pairs)];
+            $direction = $pairDirections[$pair] ?? ((rand(0,1)===1)?'buy':'sell');
+
+            // pick random timestamps within range
+            $entryTimestamp = Carbon::parse($this->startDate)->addSeconds(rand(0, $this->endDate->diffInSeconds($this->startDate)));
+            $exitTimestamp = (clone $entryTimestamp)->addMinutes(rand(10, 60*24*5));
+            if (!$entryTimestamp->between($this->startDate, $this->endDate)) {
+                continue;
             }
 
-            // Proceed with trade generation using $filteredOhlcv...
-            Log::info("✅ OHLCV data ready. Proceeding with simulation on {$filteredOhlcv->count()} candles.");
-            
+            $profitAmount = $profits[$idx] ?? 0.0; // currency amount (positive for wins, negative for losses)
 
-            $trades = [];
-            $batchId = Str::uuid(); // 🔑 Create a unique batch ID
-            $winsNeeded = round($this->tradeCount * ($this->targetWinRate / 100));
-            $lossesNeeded = $this->tradeCount - $winsNeeded;
+            // compute ROI percentage relative to baseInvested
+            $roiPercent = $baseInvested > 0 ? ($profitAmount / $baseInvested) * 100 : 0;
 
-            // Target ROI range ±4%
-            $totalTargetRoi = $this->targetRoi;
-            $roiVariance = $totalTargetRoi * 0.04;
+            // synthesize entry/exit prices
+            $entryPrice = round(mt_rand(1000, 100000) / 100, 4); // 10.00 - 1000.00
+            $exitPrice = round($entryPrice * (1 + ($roiPercent / 100)), 4);
 
-            $actualTotalRoi = $this->randomBetween($totalTargetRoi - $roiVariance, $totalTargetRoi + $roiVariance);
+            $tradeData = [
+                'batch_id' => $batchId,
+                'trader_id' => $systemTrader->id,
+                'symbol' => $pair,
+                'market' => 'synthetic',
+                'type' => $direction,
+                'entry_price' => $entryPrice,
+                'exit_price' => $exitPrice,
+                'entry_timestamp' => $entryTimestamp->toDateTimeString(),
+                'exit_timestamp' => $exitTimestamp->toDateTimeString(),
+                'roi' => round($roiPercent, 2),
+                'status' => 'closed',
+                'source' => 'admin-synthetic',
+                // 'meta' may not exist in DB schema on all setups; avoid writing it if column missing
+                //'meta' => json_encode(['net_profit_alloc' => $profitAmount]),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
 
-            // Sum of ROIs across wins
-            $roiPerWinAvg = $actualTotalRoi / max(1, $winsNeeded);
-            $roiPerLossAvg = -($roiPerWinAvg / 3); // loss trades lose half of an average win
+            $trade = Trade::create($tradeData);
 
-            // Generate trade outcomes
-            $tradeTypes = array_merge(
-                array_fill(0, $winsNeeded, 'win'),
-                array_fill(0, $lossesNeeded, 'loss')
-            );
-            shuffle($tradeTypes);
-
-            foreach ($tradeTypes as $type) {
-                $candle = $filteredOhlcv->random();
-                $baseDate = Carbon::parse($candle['timestamp']);
-
-                $entryDate = $baseDate->copy()->addMinutes(rand(0, 720));
-                $exitDate = (clone $entryDate)->addDays(rand(1, 5))->addMinutes(rand(0, 720));
-
-                if (!$entryDate->between($this->startDate, $this->endDate)) {
-                    continue; // Skip trades outside range
+            // Create trade history for the selected user
+            $user = \App\Models\User::find($this->userId);
+            if ($user) {
+                // Update balance
+                $balance = $user->balance;
+                if (!$balance) {
+                    $balance = new \App\Models\Balance([
+                        'user_id' => $user->id,
+                        'main_balance' => 0,
+                        'trade_balance' => 0,
+                    ]);
                 }
 
-                $entryPrice = $this->randomBetween($candle['low'], $candle['high']);
+                $balance->trade_balance += $profitAmount;
+                $balance->save();
 
-                // Randomize ROI per trade with small variance (±25% of average ROI)
-                $roiVarianceFactor = 0.25;
-                $roi = $type === 'win'
-                    ? $this->randomBetween($roiPerWinAvg * (1 - $roiVarianceFactor), $roiPerWinAvg * (1 + $roiVarianceFactor))
-                    : $this->randomBetween($roiPerLossAvg * (1 - $roiVarianceFactor), $roiPerLossAvg * (1 + $roiVarianceFactor));
-
-                $exitPrice = $entryPrice * (1 + ($roi / 100));
-
-                $trades[] = [
-                    'batch_id' => $batchId, // 🆕 Set the batch_id
-                    'trader_id' => $this->traderUserId,
-                    'symbol' => $this->symbol,
-                    'market' => $this->marketType,
-                    'type' => 'buy',
-                    'entry_price' => round($entryPrice, 4),
-                    'exit_price' => round($exitPrice, 4),
-                    'entry_timestamp' => $entryDate->toDateTimeString(),
-                    'exit_timestamp' => $exitDate->toDateTimeString(),
-                    'roi' => round($roi, 2),
-                    'status' => 'closed',
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-                
+                // Save trade history record
+                \App\Models\TradeHistory::create([
+                    'user_id' => $user->id,
+                    'trader_id' => $systemTrader->id,
+                    'trade_id' => $trade->id,
+                    'amount_invested' => $baseInvested,
+                    'roi' => round($roiPercent, 2),
+                    'amount_returned' => round($baseInvested + $profitAmount, 2),
+                    'new_trade_balance' => round($balance->trade_balance, 2),
+                ]);
             }
-            
-            Log::info("Inserted " . count($trades) . " trades with simulated ROI totaling ~{$actualTotalRoi}% for {$this->symbol}");
 
-            foreach ($trades as $tradeData) {
-                $trade = Trade::create($tradeData);
-                // The observer will also run, but this is explicit
-                TradeHistoryService::generateHistoriesForTrade($trade);
-            }
-    }
+            $tradesCreated++;
+        }
 
-    private function randomBetween($min, $max)
-    {
-        return $min + mt_rand() / mt_getrandmax() * ($max - $min);
+        Log::info("Created {$tradesCreated} synthetic trades for user {$this->userId} (batch {$batchId}).");
     }
 }

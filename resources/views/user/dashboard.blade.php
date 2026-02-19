@@ -151,6 +151,38 @@
             </table>
         @endif
     </div>
+    
+    <!-- Recent Transactions -->
+    <div data-aos="fade-up" data-aos-delay="450" class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 mt-4">
+        <h2 class="text-lg font-semibold mb-2">Recent Transactions</h2>
+        @if($recentTransactions->isEmpty())
+            <p>No recent transactions.</p>
+        @else
+            <div x-data="{ open: false }">
+                <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2 rounded bg-gray-50 dark:bg-gray-900">
+                    <span>Show last 5 transactions</span>
+                    <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+                <div x-show="open" class="mt-3">
+                    <ul class="space-y-2">
+                        @foreach($recentTransactions as $tx)
+                            <li class="flex items-center justify-between border-b py-2">
+                                <div>
+                                    <div class="text-sm">{{ ucfirst($tx->type) }} — {{ $tx->user_note }}</div>
+                                    <div class="text-xs text-gray-500">{{ $tx->created_at->format('M d, Y H:i') }}</div>
+                                </div>
+                                <div class="text-sm {{ $tx->amount >= 0 ? 'text-green-600' : 'text-red-600' }}">
+                                    ${{ number_format($tx->amount, 2) }}
+                                </div>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        @endif
+    </div>
 </div>
 </x-app-layout>
 
