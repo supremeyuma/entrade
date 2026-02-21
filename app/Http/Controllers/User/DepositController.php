@@ -33,7 +33,7 @@ class DepositController extends Controller
         $orderId = uniqid('dep_');     
 
         $responseWithFee = Http::withHeaders([
-            'x-api-key' => config('services.nowpayments.api_key_com'),
+            'x-api-key' => config('services.nowpayments.api_key'),
         ])->post('https://api.nowpayments.io/v1/invoice', [
             'price_amount'   => $amountWithFee,
             'price_currency' => "usd",
