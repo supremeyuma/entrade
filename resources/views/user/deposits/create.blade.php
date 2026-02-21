@@ -1,9 +1,9 @@
 <x-layouts.app>
-<div class="max-w-lg mx-auto bg-white p-6 rounded shadow">
+<div data-aos="fade-up" data-aos-delay="100" class="max-w-lg mx-auto bg-white p-6 rounded shadow">
     <h2 class="text-xl font-bold mb-4">Make a Deposit</h2>
 
     @if(session('error'))
-        <div class="bg-red-100 text-red-700 p-2 rounded mb-3">{{ session('error') }}</div>
+        <div data-aos="fade-up" data-aos-delay="200" class="bg-red-100 text-red-700 p-2 rounded mb-3">{{ session('error') }}</div>
     @endif
 
     <form id="deposit-form" action="{{ route('user.deposit.store') }}" method="POST">
@@ -13,27 +13,26 @@
             <input type="number" name="amount" min="10" step="0.01" class="w-full border p-2 rounded" required>
         </div>
 
-        <div class="mb-4">
+        <!--<div class="mb-4">
             <label class="block mb-1 font-semibold">Currency</label>
             <select name="currency" class="w-full border p-2 rounded" required>
                 <option value="USD">USD</option>
                 <option value="EUR">EUR</option>
                 <option value="GBP">GBP</option>
                 <option value="JPY">JPY</option>
-                <!-- Add more if needed -->
             </select>
-        </div>
+        </div>-->
 
-        <div class="mb-4">
+        <!--<div class="mb-4">
             <label class="block mb-1 font-semibold">Crypto</label>
             <select name="crypto" class="w-full border p-2 rounded" required>
                 <option value="BTC">BTC</option>
                 <option value="ETH">ETH</option>
                 <option value="USDTTRC20">USDT - TRC20</option>
                 
-                <!-- Add more if needed -->
+               
             </select>
-        </div>
+        </div>-->
 
         <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
             Continue to Payment
