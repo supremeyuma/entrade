@@ -14,12 +14,11 @@
 </div>
 
 <nav class="px-4 py-6 space-y-2 text-gray-700 dark:text-gray-300" x-data="{ 
-    tradingMenuOpen: false, 
-    accountMenuOpen: false, 
-    adminMenuOpen: false,
-    faqMenuOpen: false,
-    settingsMenuOpen: false,
-    kycMenuOpen: false
+    tradingOpen: false, 
+    accountOpen: false, 
+    adminManageOpen: false,
+    adminTradesOpen: false,
+    adminFaqOpen: false
 }">
     {{-- User Links --}}
     @if($user && $user->hasRole('user'))
@@ -34,14 +33,14 @@
         <a href="{{ route('user.withdrawals.create') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Withdraw Funds</a>
 
         {{-- Trading Dropdown --}}
-        <div x-data="{ open: false }">
-            <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
+        <div>
+            <button @click="tradingOpen = !tradingOpen" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
                 <span class="flex items-center gap-2">Trading</span>
-                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <svg :class="{ 'rotate-180': tradingOpen }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
-            <div x-show="open" class="ml-4 mt-1 space-y-1">
+            <div x-show="tradingOpen" class="ml-4 mt-1 space-y-1">
                 <a href="{{ route('user.tradingDashboard') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade Dashboard</a>
                 <a href="{{ route('user.tradeHistory') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade History</a>
                 <a href="{{ route('user.leaderboard') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Leaderboard</a>
@@ -51,14 +50,14 @@
         </div>
 
         {{-- Account Dropdown --}}
-        <div x-data="{ open: false }">
-            <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
+        <div>
+            <button @click="accountOpen = !accountOpen" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
                 <span class="flex items-center gap-2">Account</span>
-                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <svg :class="{ 'rotate-180': accountOpen }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
-            <div x-show="open" class="ml-4 mt-1 space-y-1">
+            <div x-show="accountOpen" class="ml-4 mt-1 space-y-1">
                 <a href="{{ route('user.deposit.history') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Deposit History</a>
                 <a href="{{ route('user.transactions.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Transaction History</a>
                 <a href="{{ route('user.withdrawals.history') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Withdrawal History</a>
@@ -80,20 +79,20 @@
         <a href="{{ route('admin.trade-bot.index') }}" class="{{ request()->routeIs('admin.trade-bot.index') ? 'block px-3 py-2 rounded bg-gray-200 dark:bg-gray-700' : 'block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700' }}">Generate Trades</a>
 
         {{-- Admin Manage Dropdown --}}
-        <div x-data="{ open: false }">
-            <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
+        <div>
+            <button @click="adminManageOpen = !adminManageOpen" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
                 <span>Manage</span>
-                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <svg :class="{ 'rotate-180': adminManageOpen }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
-            <div x-show="open" class="ml-4 mt-1 space-y-1">
+            <div x-show="adminManageOpen" class="ml-4 mt-1 space-y-1">
                 <a href="{{ route('admin.traders.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Traders</a>
                 <a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Users</a>
                 <a href="{{ route('admin.deposits.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Deposits</a>
                 <a href="{{ route('admin.subscriptions.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Subscriptions</a>
-                <a href="{{ route('admin.trade_logs.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade Logs</a>
-                <a href="{{ route('admin.trade-outcomes.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade Outcomes</a>
+                {{--<a href="{{ route('admin.trade_logs.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade Logs</a>
+                <a href="{{ route('admin.trade-outcomes.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade Outcomes</a>--}}
                 <a href="{{ route('admin.wallets.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">User Wallets</a>
                 <a href="{{ route('admin.withdrawals.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Withdrawals</a>
                 <a href="{{ route('admin.referrals.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Referrals</a>
@@ -102,14 +101,14 @@
         </div>
 
         {{-- Trade Manage Dropdown --}}
-        <div x-data="{ open: false }">
-            <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
+        <div>
+            <button @click="adminTradesOpen = !adminTradesOpen" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
                 <span>Trades</span>
-                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <svg :class="{ 'rotate-180': adminTradesOpen }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
-            <div x-show="open" class="ml-4 mt-1 space-y-1">
+            <div x-show="adminTradesOpen" class="ml-4 mt-1 space-y-1">
                 <a href="{{ route('admin.trade-bot.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Generate Trade</a>
                 <a href="{{ route('admin.trade-bot.runs.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Bot History</a>
             </div>
@@ -118,14 +117,14 @@
 
 
         {{-- FAQ Management --}}
-        <div x-data="{ open: false }">
-            <button @click="open = !open" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
+        <div>
+            <button @click="adminFaqOpen = !adminFaqOpen" class="w-full flex items-center justify-between px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">
                 <span>FAQs</span>
-                <svg :class="{ 'rotate-180': open }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <svg :class="{ 'rotate-180': adminFaqOpen }" class="w-4 h-4 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 </svg>
             </button>
-            <div x-show="open" class="ml-4 mt-1 space-y-1">
+            <div x-show="adminFaqOpen" class="ml-4 mt-1 space-y-1">
                 <a href="{{ route('admin.faqs.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">FAQ List</a>
                 <a href="{{ route('admin.faq-categories.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">FAQ Categories</a>
             </div>
