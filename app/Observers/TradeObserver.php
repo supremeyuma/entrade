@@ -9,6 +9,6 @@ class TradeObserver
 {
     public function created(Trade $trade)
     {
-        TradeHistoryService::generateHistoriesForTrade($trade);
+        //TradeHistoryService::generateHistoriesForTrade($trade);
     }
 }
