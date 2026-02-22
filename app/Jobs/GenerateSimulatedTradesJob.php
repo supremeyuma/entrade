@@ -191,8 +191,8 @@ class GenerateSimulatedTradesJob implements ShouldQueue
                 $balance->trade_balance += $profitAmount;
                 $balance->save();
 
-                // For proper accounting: if no explicit allocation, use the actual balance change
-                // Otherwise use the allocated amount
+                // Determine amount invested for trade history
+                // Priority: explicit allocation > trade_balance > main_balance > old balance
                 $subscription = $user->traderSubscriptions()
                     ->where('trader_id', $trader->id)
                     ->first();
@@ -201,9 +201,16 @@ class GenerateSimulatedTradesJob implements ShouldQueue
                     // User has an explicit allocation
                     $amountInvested = $subscription->allocated_amount;
                     $amountReturned = round($subscription->allocated_amount + $profitAmount, 2);
+                } elseif ($oldTradeBalance > 0) {
+                    // Use existing trade balance (before profit was added)
+                    $amountInvested = $oldTradeBalance;
+                    $amountReturned = round($balance->trade_balance, 2);
+                } elseif ($balance->main_balance > 0) {
+                    // Use main balance if trade balance is empty
+                    $amountInvested = $balance->main_balance;
+                    $amountReturned = round($balance->main_balance + $profitAmount, 2);
                 } else {
-                    // User was auto-subscribed or has no allocation
-                    // Use balance difference as the invested/returned amounts
+                    // Fallback: no balance available, use old trade balance (likely 0)
                     $amountInvested = $oldTradeBalance;
                     $amountReturned = round($balance->trade_balance, 2);
                 }

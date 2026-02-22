@@ -54,7 +54,7 @@
 
             <div>
                 <label class="block text-sm font-medium text-gray-700">Net Profit (currency)</label>
-                <input type="number" name="net_profit" step="0.01" min="0" class="mt-1 block w-full rounded border-gray-300 shadow-sm" required>
+                <input type="number" name="net_profit" step="0.01"  class="mt-1 block w-full rounded border-gray-300 shadow-sm" required>
             </div>
 
             <!--<div>
