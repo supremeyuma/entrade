@@ -19,6 +19,7 @@ class Trader extends Model
         'bio',
         'profile_photo',
         'performance_metrics',
+        'trader_id',
 
     ];
 

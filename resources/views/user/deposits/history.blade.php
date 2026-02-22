@@ -19,13 +19,12 @@
                             class="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-2 py-1" />
                     </div>
                     <div>
-                        <label class="text-sm text-gray-700 dark:text-gray-200">Sort By</label>
-                        <select name="sort" onchange="this.form.submit()"
-                                class="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-2 py-1">
-                            <option value="">Newest First</option>
-                            <option value="date_asc" @selected(request('sort') === 'date_asc')>Oldest First</option>
-                            <option value="amount_asc" @selected(request('sort') === 'amount_asc')>Amount ↑</option>
-                            <option value="amount_desc" @selected(request('sort') === 'amount_desc')>Amount ↓</option>
+                        <label class="text-sm text-gray-700 dark:text-gray-200">Status</label>
+                        <select name="status" class="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-2 py-1">
+                            <option value="">All</option>
+                            <option value="waiting" @selected(request('status')==='waiting')>Waiting</option>
+                            <option value="finished" @selected(request('status')==='finished')>Finished</option>
+                            <option value="rejected" @selected(request('status')==='rejected')>Rejected</option>
                         </select>
                     </div>
                     <button type="submit"
@@ -39,27 +38,58 @@
                 <table class="min-w-full text-sm text-left">
                     <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase">
                         <tr>
-                            <th class="px-4 py-2">Date</th>
-                            <th class="px-4 py-2">Amount</th>
-                            <th class="px-4 py-2">Currency</th>
-                            <th class="px-4 py-2">Status</th>
-                            <th class="px-4 py-2">Invoice Link</th>
-                        </tr>
+                                @php
+                                    $sort = request('sort');
+                                    $dateSort = $sort === 'date_asc' ? 'date_desc' : 'date_asc';
+                                    $amountSort = $sort === 'amount_asc' ? 'amount_desc' : 'amount_asc';
+                                @endphp
+                                <th class="px-4 py-2">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => $dateSort]) }}" class="inline-flex items-center gap-1">
+                                        Date
+                                        @if($sort === 'date_asc')
+                                            <svg class="w-3 h-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                                                <path d="M5 12l5-5 5 5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </svg>
+                                        @elseif($sort === 'date_desc')
+                                            <svg class="w-3 h-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                                                <path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </svg>
+                                        @endif
+                                    </a>
+                                </th>
+                                <th class="px-4 py-2">
+                                    <a href="{{ request()->fullUrlWithQuery(['sort' => $amountSort]) }}" class="inline-flex items-center gap-1">
+                                        Amount
+                                        @if($sort === 'amount_asc')
+                                            <svg class="w-3 h-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                                                <path d="M5 12l5-5 5 5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </svg>
+                                        @elseif($sort === 'amount_desc')
+                                            <svg class="w-3 h-3" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false">
+                                                <path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"></path>
+                                            </svg>
+                                        @endif
+                                    </a>
+                                </th>
+                                <th class="px-4 py-2">Currency</th>
+                                <th class="px-4 py-2">Status</th>
+                                <th class="px-4 py-2">Invoice Link</th>
+                            </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                         @foreach ($deposits as $deposit)
-                            <tr>
-                                <td class="px-4 py-2">{{ $deposit->created_at->format('M d, Y') }}</td>
+                            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition" role="link" tabindex="0" data-href="{{ route('user.deposit.show', $deposit->id) }}">
+                                <td class="px-4 py-2">{{ $deposit->created_at->format('M d, Y H:i') }}</td>
                                 <td class="px-4 py-2">{{ number_format($deposit->amount, 2) }}</td>
                                 <td class="px-4 py-2">{{ strtoupper($deposit->currency) }}</td>
                                 <td class="px-4 py-2">
-                                    <span class="{{ $deposit->status === 'confirmed' ? 'text-green-600' : 'text-yellow-600' }}">
+                                    <span class="{{ $deposit->status === 'finished' ? 'text-green-600' : ($deposit->status === 'rejected' ? 'text-red-600' : 'text-yellow-600') }}">
                                         {{ ucfirst($deposit->status) }}
                                     </span>
                                 </td>
                                 <td class="px-4 py-2">
-                                    @if ($deposit->status === 'confirmed')
-                                        <a href="{{ $deposit->payment_url }}" target="_blank" class="text-blue-600 hover:text-blue-800 underline">View Invoice</a>
+                                    @if (!empty($deposit->invoice_url))
+                                        <a href="{{ $deposit->invoice_url }}" target="_blank" class="text-blue-600 hover:text-blue-800 underline">View Invoice</a>
                                     @else
                                         <span class="text-gray-400">N/A</span>
                                     @endif
@@ -68,6 +98,18 @@
                         @endforeach
                     </tbody>
                 </table>
+                <div class="p-4">
+                    {{ $deposits->links('pagination::tailwind') }}
+                </div>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        document.querySelectorAll('tr[data-href]').forEach(function (tr) {
+                            tr.addEventListener('click', function () { window.location = tr.dataset.href; });
+                            tr.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { window.location = tr.dataset.href; } });
+                        });
+                        document.querySelectorAll('table a').forEach(function (a) { a.addEventListener('click', function (e) { e.stopPropagation(); }); });
+                    });
+                </script>
             </div>
         @endif
     </div>

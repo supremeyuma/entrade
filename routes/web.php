@@ -174,6 +174,12 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::post('/kyc/{kyc}/approve', [AdminKycController::class, 'approve'])->name('kyc.approve');
     Route::post('/kyc/{kyc}/reject', [AdminKycController::class, 'reject'])->name('kyc.reject');
 
+    // Deposits (Admin)
+    Route::get('deposits', [\App\Http\Controllers\Admin\AdminDepositController::class, 'index'])->name('deposits.index');
+    Route::get('deposits/{deposit}', [\App\Http\Controllers\Admin\AdminDepositController::class, 'show'])->name('deposits.show');
+    Route::post('deposits/{deposit}/approve', [\App\Http\Controllers\Admin\AdminDepositController::class, 'approve'])->name('deposits.approve');
+    Route::post('deposits/{deposit}/reject', [\App\Http\Controllers\Admin\AdminDepositController::class, 'reject'])->name('deposits.reject');
+
     //Bot Routes
     Route::get('/trade-bot', [TradeBotController::class, 'index'])->name('trade-bot.index');
     Route::post('/trade-bot/generate', [TradeBotController::class, 'generate'])->name('trade-bot.generate');
@@ -289,6 +295,7 @@ Route::middleware(['auth', 'role:user'])->prefix('deposit')->name('user.deposit.
     Route::get('/success/{deposit}', fn() => view('user.deposits.success'))->name('success');
     Route::get('/cancel/{deposit}', fn() => view('user.deposits.cancel'))->name('cancel');
     Route::get('/history', [DepositController::class, 'history'])->name('history');
+    Route::get('/{deposit}', [DepositController::class, 'show'])->name('show');
 });
 
 // ------------------------

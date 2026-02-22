@@ -1,0 +1,3 @@
+                <a href="{{ route('admin.traders.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Traders</a>
+                <a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Users</a>
+                <a href="{{ route('admin.trade_logs.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade Logs</a>

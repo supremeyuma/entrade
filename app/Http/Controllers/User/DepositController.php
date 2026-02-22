@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\Deposit;
+use Carbon\Carbon;
 use Plisio\PlisioSdkLaravel\Payment;
 use Auth;
 use App\Mail\ChargeUrlMail;
@@ -117,6 +118,18 @@ class DepositController extends Controller
     {
         $query = auth()->user()->deposits();
 
+        // Status filter
+        if ($status = $request->input('status')) {
+            $query->where('status', $status);
+        } else {
+            // By default hide old unpaid (waiting) deposits older than 72 hours
+            $cutoff = Carbon::now()->subHours(72);
+            $query->where(function($q2) use ($cutoff) {
+                $q2->where('status', '!=', 'waiting')
+                   ->orWhere('created_at', '>=', $cutoff);
+            });
+        }
+
         if ($request->filled('from')) {
             $query->whereDate('created_at', '>=', $request->from);
         }
@@ -135,9 +148,21 @@ class DepositController extends Controller
             $query->orderByDesc('created_at');
         }
 
-        $deposits = $query->get();
+        $deposits = $query->paginate(15)->withQueryString();
 
         return view('user.deposits.history', compact('deposits'));
+    }
+
+    public function show($id)
+    {
+        $deposit = Deposit::with('user')->findOrFail($id);
+
+        // Ensure the authenticated user owns this deposit
+        if ($deposit->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        return view('user.deposits.show', compact('deposit'));
     }
 
 }

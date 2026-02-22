@@ -18,6 +18,9 @@ class Deposit extends Model
         'invoice_id',
         'status',
         'invoice_url',
+        'received_amount',
+        'admin_comment',
+        'credited',
     ];
 
     public function user()

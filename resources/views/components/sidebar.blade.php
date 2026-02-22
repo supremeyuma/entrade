@@ -90,6 +90,8 @@
             <div x-show="open" class="ml-4 mt-1 space-y-1">
                 <a href="{{ route('admin.traders.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Traders</a>
                 <a href="{{ route('admin.users.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Users</a>
+                <a href="{{ route('admin.deposits.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Deposits</a>
+                <a href="{{ route('admin.subscriptions.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Subscriptions</a>
                 <a href="{{ route('admin.trade_logs.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade Logs</a>
                 <a href="{{ route('admin.trade-outcomes.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade Outcomes</a>
                 <a href="{{ route('admin.wallets.index') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">User Wallets</a>
