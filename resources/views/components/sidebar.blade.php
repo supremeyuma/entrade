@@ -43,8 +43,8 @@
             <div x-show="tradingOpen" class="ml-4 mt-1 space-y-1">
                 <a href="{{ route('user.tradingDashboard') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade Dashboard</a>
                 <a href="{{ route('user.tradeHistory') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Trade History</a>
-                <a href="{{ route('user.leaderboard') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Leaderboard</a>
-                <a href="{{ route('user.traders.compare') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Compare Traders</a>
+                {{-- " class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Leaderboard</a>
+                <a href="{{ route('user.traders.compare') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Compare Traders</a>--}}
                 <a href="{{ route('user.trade.search') }}" class="block px-3 py-2 rounded hover:bg-indigo-100 dark:hover:bg-indigo-700">Search Traders</a>
             </div>
         </div>

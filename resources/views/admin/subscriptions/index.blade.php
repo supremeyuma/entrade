@@ -46,6 +46,14 @@
                                    class="inline-flex items-center px-3 py-1 text-sm font-medium text-white bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                     View
                                 </a>
+                                @if($sub->status === 'active')
+                                    <form action="{{ route('admin.subscriptions.cancel', $sub->id) }}" method="POST" class="inline" onsubmit="return confirm('Cancel this subscription?');">
+                                        @csrf
+                                        <button type="submit" class="inline-flex items-center px-3 py-1 ml-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

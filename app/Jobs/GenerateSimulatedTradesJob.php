@@ -45,14 +45,10 @@ class GenerateSimulatedTradesJob implements ShouldQueue
 
         $pairs = $this->tradingPairs ?: ['BTC/USDT'];
 
-        // Ensure there's a system trader to attach trades to (database requires trader_id)
-        $systemTrader = Trader::where('name', 'system-generated')->first();
-        if (! $systemTrader) {
-            // If no system trader exists, fallback to the first trader in DB. We avoid creating new trader records here.
-            $systemTrader = Trader::first();
-        }
+        // Determine which trader to assign these trades to
+        $trader = $this->getAssignedTrader();
 
-        if (! $systemTrader) {
+        if (! $trader) {
             Log::error('No trader record found to associate synthetic trades with. Aborting.');
             return;
         }
@@ -153,7 +149,7 @@ class GenerateSimulatedTradesJob implements ShouldQueue
 
             $tradeData = [
                 'batch_id' => $batchId,
-                'trader_id' => $systemTrader->id,
+                'trader_id' => $trader->id,
                 'symbol' => $pair,
                 'market' => 'synthetic',
                 'type' => $direction,
@@ -191,7 +187,7 @@ class GenerateSimulatedTradesJob implements ShouldQueue
                 // Save trade history record
                 \App\Models\TradeHistory::create([
                     'user_id' => $user->id,
-                    'trader_id' => $systemTrader->id,
+                    'trader_id' => $trader->id,
                     'trade_id' => $trade->id,
                     'amount_invested' => $baseInvested,
                     'roi' => round($roiPercent, 2),
@@ -204,5 +200,64 @@ class GenerateSimulatedTradesJob implements ShouldQueue
         }
 
         Log::info("Created {$tradesCreated} synthetic trades for user {$this->userId} (batch {$batchId}).");
+    }
+
+    /**
+     * Get the trader to assign these synthetic trades to.
+     * Logic:
+     * 1. If user is subscribed to a trader with status 'active', use that trader
+     * 2. Otherwise, assign to the first trader in the database
+     * 3. If no trader exists, return null
+     */
+    private function getAssignedTrader(): ?Trader
+    {
+        $user = \App\Models\User::find($this->userId);
+        if (!$user) {
+            return null;
+        }
+
+        // Check if user has an active subscription to a trader
+        $subscription = $user->traderSubscriptions()
+            ->where('status', 'active')
+            ->first();
+
+        if ($subscription) {
+            return $subscription->trader;
+        }
+
+        // If no active subscription, check for 'pending_approval' subscriptions
+        $pendingSubscription = $user->traderSubscriptions()
+            ->where('status', 'pending_approval')
+            ->first();
+
+        if ($pendingSubscription) {
+            return $pendingSubscription->trader;
+        }
+
+        // Fallback: Assign to first trader in database
+        $firstTrader = Trader::first();
+        
+        // If a first trader exists and user is not subscribed, auto-subscribe them
+        if ($firstTrader) {
+            // Check if subscription already exists (inactive)
+            $existingSubscription = $user->traderSubscriptions()
+                ->where('trader_id', $firstTrader->id)
+                ->first();
+
+            if (!$existingSubscription) {
+                // Create an automatic subscription to the first trader
+                $user->traderSubscriptions()->create([
+                    'trader_id' => $firstTrader->id,
+                    'allocated_amount' => 0, // No specific allocation needed
+                    'status' => 'active',
+                ]);
+            } elseif ($existingSubscription->status === 'inactive') {
+                // Reactivate the existing subscription
+                $existingSubscription->status = 'active';
+                $existingSubscription->save();
+            }
+        }
+
+        return $firstTrader;
     }
 }

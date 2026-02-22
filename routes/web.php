@@ -201,6 +201,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('subscriptions/{id}', [TraderSubscriptionController::class, 'show'])->name('subscriptions.show');
     Route::post('subscriptions/{id}/approve', [TraderSubscriptionController::class, 'approve'])->name('subscriptions.approve');
     Route::post('subscriptions/{id}/reject', [TraderSubscriptionController::class, 'reject'])->name('subscriptions.reject');
+    Route::post('subscriptions/{id}/cancel', [TraderSubscriptionController::class, 'cancel'])->name('subscriptions.cancel');
 
 
 

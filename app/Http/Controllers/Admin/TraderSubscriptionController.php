@@ -75,4 +75,28 @@ class TraderSubscriptionController extends Controller
 
         return redirect()->route('admin.subscriptions.index')->with('success', 'Subscription rejected.');
     }
+
+    public function cancel(Request $request, $id)
+    {
+        $subscription = UserTraderSubscription::with(['user', 'user.balance'])->findOrFail($id);
+
+        // If subscription was active and had an allocated amount, refund it to main balance
+        if ($subscription->status === 'active' && $subscription->allocated_amount) {
+            $balance = $subscription->user->balance;
+            $balance->trade_balance -= $subscription->allocated_amount;
+            $balance->main_balance += $subscription->allocated_amount;
+            $balance->save();
+        }
+
+        // Delete the subscription
+        $subscription->delete();
+
+        /*ActivityLogger::log(
+            'subscription_cancelled',
+            "Cancelled subscription for {$subscription->user->name} to trader {$subscription->trader->name}",
+            auth()->id()
+        );*/
+
+        return redirect()->route('admin.subscriptions.index')->with('success', 'Subscription cancelled successfully.');
+    }
 }

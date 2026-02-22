@@ -83,6 +83,22 @@
                         </button>
                     </form>
                 </div>
+            @elseif($subscription->status === 'active')
+                {{-- Cancel Active Subscription --}}
+                <div class="mt-6 bg-orange-50 dark:bg-orange-900/20 p-4 rounded-lg shadow-sm">
+                    <form action="{{ route('admin.subscriptions.cancel', $subscription->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this subscription?');">
+                        @csrf
+                        <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                            Cancelling this subscription will refund the allocated amount to the user's main balance.
+                        </p>
+                        <button
+                            type="submit"
+                            class="w-full inline-flex justify-center px-4 py-2 text-sm font-medium text-white bg-orange-600 hover:bg-orange-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500"
+                        >
+                            Cancel Subscription
+                        </button>
+                    </form>
+                </div>
             @endif
         </div>
     </div>
