@@ -68,35 +68,29 @@ class GenerateSimulatedTradesJob implements ShouldQueue
             $pairDirections[$p] = (rand(0, 1) === 1) ? 'buy' : 'sell';
         }
 
-        // Distribute netProfit across trades: generate positive weights for wins and losses
+        // Distribute netProfit accurately across trades
+        // Generate random weights for proportional distribution
         $winWeights = $winsNeeded > 0 ? array_map(fn() => mt_rand(1, 100) / 100, range(1, $winsNeeded)) : [];
         $lossWeights = $lossesNeeded > 0 ? array_map(fn() => mt_rand(1, 100) / 100, range(1, $lossesNeeded)) : [];
         $sumW = array_sum($winWeights) ?: 1;
         $sumL = array_sum($lossWeights) ?: 1;
 
-        // We prefer losses to be smaller on aggregate. We'll set loss divisor.
+        // Calculate profit distribution
+        // Strategy: losses are typically smaller than wins (loss divisor of 3.0)
         $lossDiv = 3.0;
-        $denom = $sumW - ($sumL / $lossDiv);
-
-        $scaledWinTotal = 0.0;
-        $scaledLossTotal = 0.0;
-
-        if ($denom > 0) {
-            $A = $this->netProfit / $denom; // scale factor for wins
-            $scaledWinTotal = $A * $sumW;
-            $scaledLossTotal = ($A / $lossDiv) * $sumL;
-        } else {
-            // fallback: distribute netProfit only to wins
-            if ($winsNeeded > 0) {
-                $A = $this->netProfit / $sumW;
-                $scaledWinTotal = $A * $sumW;
-                $scaledLossTotal = 0;
-            } else {
-                // all losses (edge): distribute negative profits proportionally
-                $B = $this->netProfit < 0 ? ($this->netProfit / $sumL) : (-abs($this->netProfit) / $sumL);
-                $scaledWinTotal = 0;
-                $scaledLossTotal = $B * $sumL;
-            }
+        
+        // Determine scale factors based on net profit and trade counts
+        $profit_for_wins = $this->netProfit;
+        $profit_for_losses = 0;
+        
+        if ($this->tradeCount > 0 && $this->netProfit < 0 && $lossesNeeded > 0) {
+            // If we need to generate losses, distribute negative profit to them
+            $profit_for_wins = 0;
+            $profit_for_losses = $this->netProfit;
+        } elseif ($this->tradeCount > 0 && $this->netProfit > 0 && $winsNeeded > 0 && $lossesNeeded > 0) {
+            // Split positive profit: most to wins, some to offset losses
+            $profit_for_wins = $this->netProfit;
+            $profit_for_losses = 0; // Losses just offset wins
         }
 
         // Build per-trade profit amounts
@@ -107,18 +101,30 @@ class GenerateSimulatedTradesJob implements ShouldQueue
         foreach ($tradeTypes as $type) {
             if ($type === 'win') {
                 $weight = $winWeights[$winIndex++] ?? 1;
-                $amount = ($sumW > 0) ? ($scaledWinTotal * ($weight / $sumW)) : 0;
+                // Distribute win profit proportionally
+                $amount = ($sumW > 0) ? ($profit_for_wins * ($weight / $sumW)) : 0;
                 $profits[] = round($amount, 2);
             } else {
                 $weight = $lossWeights[$lossIndex++] ?? 1;
-                $amount = ($sumL > 0) ? ($scaledLossTotal * ($weight / $sumL)) : 0;
-                // losses are represented as negative amounts
-                $profits[] = round(-abs($amount), 2);
+                // Distribute loss profit proportionally (negative or smaller positive)
+                if ($profit_for_losses < 0) {
+                    // Negative net profit: make these true losses
+                    $amount = ($sumL > 0) ? ($profit_for_losses * ($weight / $sumL)) : 0;
+                } else {
+                    // Positive net profit: make these small losses
+                    $amount = ($sumL > 0) ? (-($weight / $sumL) * ($profit_for_wins / $lossDiv)) : 0;
+                }
+                $profits[] = round($amount, 2);
             }
         }
 
-        // Shuffle profits to mix distribution differently from tradeTypes order if desired
-        // but we already matched order by building in tradeTypes sequence.
+        // Adjust the last profit to ensure exact total equals netProfit
+        if (count($profits) > 0) {
+            $totalProfit = array_sum($profits);
+            $difference = $this->netProfit - $totalProfit;
+            $lastIdx = count($profits) - 1;
+            $profits[$lastIdx] = round($profits[$lastIdx] + $difference, 2);
+        }
 
         $tradesCreated = 0;
 
