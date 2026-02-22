@@ -46,11 +46,11 @@ class TraderSubscriptionController extends Controller
         $subscription->admin_comment = $request->admin_comment;
         $subscription->save();
 
-        ActivityLogger::log(
+        /*ActivityLogger::log(
             'subscription_approved',
             "Approved subscription for {$subscription->user->name} to trader {$subscription->trader->name}",
             auth()->id()
-        );
+        );*/
 
         return redirect()->route('admin.subscriptions.index')->with('success', 'Subscription approved successfully.');
     }
@@ -67,11 +67,11 @@ class TraderSubscriptionController extends Controller
         $subscription->admin_comment = $request->admin_comment;
         $subscription->save();
 
-        ActivityLogger::log(
+        /*ActivityLogger::log(
             'subscription_rejected',
             "Rejected subscription request from {$subscription->user->name} to trader {$subscription->trader->name}",
             auth()->id()
-        );
+        );*/
 
         return redirect()->route('admin.subscriptions.index')->with('success', 'Subscription rejected.');
     }
