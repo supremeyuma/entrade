@@ -160,8 +160,6 @@ class GenerateSimulatedTradesJob implements ShouldQueue
                 'roi' => round($roiPercent, 2),
                 'status' => 'closed',
                 'source' => 'admin-synthetic',
-                // 'meta' may not exist in DB schema on all setups; avoid writing it if column missing
-                //'meta' => json_encode(['net_profit_alloc' => $profitAmount]),
                 'created_at' => now(),
                 'updated_at' => now(),
             ];
@@ -181,17 +179,38 @@ class GenerateSimulatedTradesJob implements ShouldQueue
                     ]);
                 }
 
+                // Store old balance before update
+                $oldTradeBalance = $balance->trade_balance;
+
+                // Add profit/loss to balance
                 $balance->trade_balance += $profitAmount;
                 $balance->save();
+
+                // For proper accounting: if no explicit allocation, use the actual balance change
+                // Otherwise use the base invested amount
+                $subscription = $user->traderSubscriptions()
+                    ->where('trader_id', $trader->id)
+                    ->first();
+
+                if ($subscription && $subscription->allocated_amount > 0) {
+                    // User has an explicit allocation
+                    $amountInvested = $subscription->allocated_amount;
+                    $amountReturned = round($subscription->allocated_amount + $profitAmount, 2);
+                } else {
+                    // User was auto-subscribed or has no allocation
+                    // Use balance difference as the invested/returned amounts
+                    $amountInvested = $oldTradeBalance;
+                    $amountReturned = round($balance->trade_balance, 2);
+                }
 
                 // Save trade history record
                 \App\Models\TradeHistory::create([
                     'user_id' => $user->id,
                     'trader_id' => $trader->id,
                     'trade_id' => $trade->id,
-                    'amount_invested' => $baseInvested,
+                    'amount_invested' => $amountInvested,
                     'roi' => round($roiPercent, 2),
-                    'amount_returned' => round($baseInvested + $profitAmount, 2),
+                    'amount_returned' => $amountReturned,
                     'new_trade_balance' => round($balance->trade_balance, 2),
                 ]);
             }
