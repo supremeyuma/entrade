@@ -59,6 +59,11 @@ return [
         'ipn_secret' => env('NOWPAYMENTS_IPN_SECRET'),
     ],
 
+    'nowpayments_com' => [
+        'api_key' => env('NOWPAYMENTS_API_KEY_COM'),
+        'ipn_secret' => env('NOWPAYMENTS_IPN_SECRET_COM'),
+    ],
+
 
 
 ];

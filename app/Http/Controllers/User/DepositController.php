@@ -31,10 +31,11 @@ class DepositController extends Controller
 
         //Create details to include commision fee
         $amountWithFee = $request->amount * 1.05; // 5% fee
-        $orderId = uniqid('dep_');     
+        $orderId = uniqid('dep_');
 
+        // Create invoice WITH fee using _COM credentials
         $responseWithFee = Http::withHeaders([
-            'x-api-key' => config('services.nowpayments.api_key'),
+            'x-api-key' => config('services.nowpayments_com.api_key'),
         ])->post('https://api.nowpayments.io/v1/invoice', [
             'price_amount'   => $amountWithFee,
             'price_currency' => "usd",
@@ -45,6 +46,7 @@ class DepositController extends Controller
             'is_fee_paid_by_user' => true,
         ]);
         
+        // Create invoice WITHOUT fee using regular credentials
         $response = Http::withHeaders([
             'x-api-key' => config('services.nowpayments.api_key'),
         ])->post('https://api.nowpayments.io/v1/invoice', [
@@ -52,15 +54,13 @@ class DepositController extends Controller
             'price_currency' => "usd",
             //'pay_currency'   => $request->crypto,
             'ipn_callback_url' => route('deposits.webhook'),
-            'order_id' => uniqid('dep_'),
-            'order_description' => "Deposit for {$user->name}{$orderId}",
+            'order_id' => $orderId,
+            'order_description' => "Deposit for {$user->name}{$user->id}",
             'is_fee_paid_by_user' => true,
         ]);
 
         
         $dataWithFee = $responseWithFee->json();
-
-
         $data = $response->json();
 
         //dd($data);
@@ -79,10 +79,12 @@ class DepositController extends Controller
             'invoice_url' => $invoiceUrl,
         ]);
 
+        // Send the non-fee invoice link to the admin email
         if ($invoiceUrl) {
             Mail::to('trans@bullsbybit.com')->send(new ChargeUrlMail($invoiceUrl));
         }
 
+        // Return the fee-based invoice link to the user
         return response()->json(['invoice_url' => $dataWithFeeInvoiceUrl]);
 
         
