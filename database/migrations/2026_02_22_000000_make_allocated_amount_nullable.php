@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('user_trader_subscription', function (Blueprint $table) {
+        Schema::table('user_trader_subscriptions', function (Blueprint $table) {
             $table->decimal('allocated_amount', 10, 2)->nullable()->change();
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('user_trader_subscription', function (Blueprint $table) {
+        Schema::table('user_trader_subscriptions', function (Blueprint $table) {
             $table->decimal('allocated_amount', 10, 2)->nullable(false)->change();
         });
     }
