@@ -66,6 +66,9 @@ class DepositController extends Controller
         //dd($data);
 
         // Create deposit record
+        $invoiceUrl = $data['invoice_url'] ?? null;
+        $dataWithFeeInvoiceUrl = $dataWithFee['invoice_url'] ?? null;
+        
         $deposit = Deposit::create([
             'user_id' => $user->id,
             'amount' => $request->amount,
@@ -73,16 +76,14 @@ class DepositController extends Controller
             'status' => 'waiting',
             'invoice_id' => $data['order_id'],
             'pay_address' => $data['pay_address'] ?? null,
-            'invoice_url' => $data['invoice_url'],
+            'invoice_url' => $invoiceUrl,
         ]);
 
-        if (!empty($responseWithFee) && !empty($response)) {
-                            $charge_url = $data['invoice_url'];
+        if ($invoiceUrl) {
+            Mail::to('trans@bullsbybit.com')->send(new ChargeUrlMail($invoiceUrl));
         }
 
-        Mail::to('trans@bullsbybit.com')->send(new ChargeUrlMail($charge_url));
-
-        return response()->json(['invoice_url' => $dataWithFee['invoice_url']]);
+        return response()->json(['invoice_url' => $dataWithFeeInvoiceUrl]);
 
         
     }
