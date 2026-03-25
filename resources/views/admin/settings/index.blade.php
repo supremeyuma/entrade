@@ -1,17 +1,35 @@
 <x-layouts.admin>
-    <div class="max-w-5xl mx-auto py-6 px-4">
-        <h1 class="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">Site Settings</h1>
+    @php
+        $isDark = session('theme', 'light') === 'dark';
+        $heroClasses = $isDark ? 'border-slate-800 bg-slate-950 text-white' : 'border-slate-200 bg-white text-slate-900';
+        $heroOverlayClasses = $isDark
+            ? 'bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.18),_transparent_30%),radial-gradient(circle_at_85%_20%,_rgba(56,189,248,0.18),_transparent_26%),linear-gradient(135deg,_#020617,_#0f172a_58%,_#111827)]'
+            : 'bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.10),_transparent_30%),radial-gradient(circle_at_85%_20%,_rgba(56,189,248,0.10),_transparent_26%),linear-gradient(135deg,_#ffffff,_#f8fafc_58%,_#eef2ff)]';
+        $surfaceClasses = $isDark ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-white';
+        $headingClasses = $isDark ? 'text-slate-100' : 'text-slate-900';
+        $mutedTextClasses = $isDark ? 'text-slate-400' : 'text-slate-500';
+    @endphp
+
+    <div class="space-y-3 sm:space-y-6 max-w-6xl mx-auto">
+        <section data-aos="fade-up" data-aos-delay="0" class="overflow-hidden rounded-[20px] sm:rounded-[28px] border shadow-xl transition duration-500 ease-out hover:-translate-y-1 hover:shadow-2xl {{ $heroClasses }}">
+            <div class="relative px-3.5 py-4 sm:px-8 sm:py-8">
+                <div class="absolute inset-0 {{ $heroOverlayClasses }}"></div>
+                <div class="relative">
+                    <p class="text-[11px] font-medium uppercase tracking-[0.18em] sm:tracking-[0.24em] {{ $mutedTextClasses }}">Admin</p>
+                    <h1 class="mt-1.5 text-xl font-semibold tracking-tight sm:mt-3 sm:text-4xl {{ $headingClasses }}">Site Settings</h1>
+                </div>
+            </div>
+        </section>
 
         @if(session('success'))
-            <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">{{ session('success') }}</div>
+            <div data-aos="fade-up" data-aos-delay="100" class="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">{{ session('success') }}</div>
         @endif
 
-        <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-6 sm:space-y-8">
+        <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-3 sm:space-y-6">
             @csrf
 
-            {{-- Referral Settings --}}
-            <div class="bg-white dark:bg-gray-800 rounded shadow p-4 sm:p-6">
-                <h2 class="text-lg font-semibold mb-4">Referral Settings</h2>
+            <div data-aos="fade-up" data-aos-delay="120" class="rounded-[20px] sm:rounded-[28px] border p-3.5 sm:p-6 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
+                <h2 class="mb-4 text-base sm:text-lg font-semibold {{ $headingClasses }}">Referral Settings</h2>
 
                 <x-inputs.toggle name="referral_enabled" label="Enable Referral"
                     :checked="filter_var($settings['referral_enabled'] ?? false, FILTER_VALIDATE_BOOLEAN)" />
@@ -19,7 +37,7 @@
                 <x-inputs.toggle name="referral_bonus_enabled" label="Enable Referral Bonus"
                     :checked="filter_var($settings['referral_bonus_enabled'] ?? false, FILTER_VALIDATE_BOOLEAN)" />
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
                     <x-inputs.select name="referral_bonus_type" label="Bonus Type"
                         :value="$settings['referral_bonus_type'] ?? 'flat'"
                         :options="['flat' => 'Flat', 'percentage' => 'Percentage']" />
@@ -43,9 +61,8 @@
                     :options="['manual' => 'Manual', 'approval' => 'Approval', 'auto' => 'Auto']" />
             </div>
 
-            {{-- User Reports Settings --}}
-            <div class="bg-white dark:bg-gray-800 rounded shadow p-4 sm:p-6">
-                <h2 class="text-lg font-semibold mb-4">User Report Settings</h2>
+            <div data-aos="fade-up" data-aos-delay="150" class="rounded-[20px] sm:rounded-[28px] border p-3.5 sm:p-6 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
+                <h2 class="mb-4 text-base sm:text-lg font-semibold {{ $headingClasses }}">User Report Settings</h2>
 
                 <x-inputs.toggle name="user_reports_enable_deposits" label="Include Deposits"
                     :checked="filter_var($settings['user_reports_enable_deposits'] ?? false, FILTER_VALIDATE_BOOLEAN)" />
@@ -58,12 +75,10 @@
 
                 <x-inputs.toggle name="user_reports_enable_referrals" label="Include Referrals"
                     :checked="filter_var($settings['user_reports_enable_referrals'] ?? false, FILTER_VALIDATE_BOOLEAN)" />
-
             </div>
 
-            {{-- UI & Theme --}}
-            <div class="bg-white dark:bg-gray-800 rounded shadow p-4 sm:p-6">
-                <h2 class="text-lg font-semibold mb-4">Theme & UI</h2>
+            <div data-aos="fade-up" data-aos-delay="180" class="rounded-[20px] sm:rounded-[28px] border p-3.5 sm:p-6 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
+                <h2 class="mb-4 text-base sm:text-lg font-semibold {{ $headingClasses }}">Theme & UI</h2>
 
                 <x-inputs.select name="theme.default" label="Default Theme"
                     :value="$settings['theme_default'] ?? 'light'"
@@ -73,16 +88,14 @@
                     :checked="filter_var($settings['theme_allow_user_override'] ?? false, FILTER_VALIDATE_BOOLEAN)" />
             </div>
 
-            {{-- Deposit/Withdrawal --}}
-            <div class="bg-white dark:bg-gray-800 rounded shadow p-4 sm:p-6">
-                <h2 class="text-lg font-semibold mb-4">Deposit/Withdrawal</h2>
+            <div data-aos="fade-up" data-aos-delay="210" class="rounded-[20px] sm:rounded-[28px] border p-3.5 sm:p-6 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
+                <h2 class="mb-4 text-base sm:text-lg font-semibold {{ $headingClasses }}">Deposit/Withdrawal</h2>
 
                 <x-inputs.toggle name="deposits_enabled" label="Enable Deposits"
                     :checked="filter_var($settings['deposits_enabled'] ?? false, FILTER_VALIDATE_BOOLEAN)" />
-
             </div>
 
-            <button class="btn btn-primary">Save Settings</button>
+            <button class="rounded-2xl bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-sky-500 hover:shadow-lg active:scale-[0.99]">Save Settings</button>
         </form>
     </div>
 </x-layouts.admin>

@@ -1,89 +1,129 @@
 <x-layouts.admin>
-    <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
-        <h1 class="mb-4 text-xl font-bold text-gray-800 dark:text-white sm:mb-6 sm:text-2xl">Trade Bot Run History</h1>
+    @php
+        $isDark = session('theme', 'light') === 'dark';
+        $heroClasses = $isDark ? 'border-slate-800 bg-slate-950 text-white' : 'border-slate-200 bg-white text-slate-900';
+        $heroOverlayClasses = $isDark
+            ? 'bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.18),_transparent_30%),radial-gradient(circle_at_85%_20%,_rgba(56,189,248,0.18),_transparent_26%),linear-gradient(135deg,_#020617,_#0f172a_58%,_#111827)]'
+            : 'bg-[radial-gradient(circle_at_top_left,_rgba(16,185,129,0.10),_transparent_30%),radial-gradient(circle_at_85%_20%,_rgba(56,189,248,0.10),_transparent_26%),linear-gradient(135deg,_#ffffff,_#f8fafc_58%,_#eef2ff)]';
+        $surfaceClasses = $isDark ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-white';
+        $subtleSurfaceClasses = $isDark ? 'bg-slate-800 text-slate-300' : 'bg-slate-50 text-slate-600';
+        $headingClasses = $isDark ? 'text-slate-100' : 'text-slate-900';
+        $mutedTextClasses = $isDark ? 'text-slate-400' : 'text-slate-500';
+        $inputClasses = $isDark
+            ? 'border-slate-700 bg-slate-800 text-slate-100 focus:border-emerald-400 focus:ring-emerald-500/20'
+            : 'border-slate-200 bg-slate-50 text-slate-900 focus:border-emerald-400 focus:ring-emerald-200';
+    @endphp
 
-        <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow-md rounded-lg">
-            <form method="GET" class="mb-4 flex flex-wrap items-end gap-3 sm:gap-4">
-                <input name="search" value="{{ request('search') }}" type="text"
-                    class="input input-bordered w-64" placeholder="Search config name or market">
+    <div class="space-y-3 sm:space-y-6">
+        <section data-aos="fade-up" class="overflow-hidden rounded-[20px] sm:rounded-[28px] border shadow-xl transition duration-500 ease-out hover:-translate-y-1 hover:shadow-2xl {{ $heroClasses }}">
+            <div class="relative px-3.5 py-4 sm:px-8 sm:py-8">
+                <div class="absolute inset-0 {{ $heroOverlayClasses }}"></div>
+                <div class="relative">
+                    <p class="text-[11px] font-medium uppercase tracking-[0.18em] sm:tracking-[0.24em] {{ $mutedTextClasses }}">Admin</p>
+                    <h1 class="mt-1.5 text-xl font-semibold tracking-tight sm:mt-3 sm:text-4xl {{ $headingClasses }}">Trade Bot Run History</h1>
+                    <p class="mt-1 text-xs sm:text-sm {{ $mutedTextClasses }}">Search historical runs with tighter filters and a denser mobile summary table.</p>
+                </div>
+            </div>
+        </section>
 
-                <select name="status" class="select select-bordered">
+        <section data-aos="fade-up" data-aos-delay="110" class="rounded-[20px] sm:rounded-[28px] border p-3.5 sm:p-6 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
+            <form method="GET" class="grid gap-3 md:grid-cols-2 xl:grid-cols-6">
+                <input name="search" value="{{ request('search') }}" type="text" class="w-full rounded-2xl border px-3 py-2.5 text-sm shadow-sm transition focus:outline-none focus:ring-2 {{ $inputClasses }}" placeholder="Search config name or market">
+
+                <select name="status" class="w-full rounded-2xl border px-3 py-2.5 text-sm shadow-sm transition focus:outline-none focus:ring-2 {{ $inputClasses }}">
                     <option value="">All Statuses</option>
                     <option value="pending" @selected(request('status') == 'pending')>Pending</option>
                     <option value="completed" @selected(request('status') == 'completed')>Completed</option>
                     <option value="failed" @selected(request('status') == 'failed')>Failed</option>
                 </select>
 
-                <input name="from" value="{{ request('from') }}" type="date" class="input input-bordered">
-                <input name="to" value="{{ request('to') }}" type="date" class="input input-bordered">
+                <input name="from" value="{{ request('from') }}" type="date" class="w-full rounded-2xl border px-3 py-2.5 text-sm shadow-sm transition focus:outline-none focus:ring-2 {{ $inputClasses }}">
+                <input name="to" value="{{ request('to') }}" type="date" class="w-full rounded-2xl border px-3 py-2.5 text-sm shadow-sm transition focus:outline-none focus:ring-2 {{ $inputClasses }}">
 
-                <select name="sort" class="select select-bordered">
+                <select name="sort" class="w-full rounded-2xl border px-3 py-2.5 text-sm shadow-sm transition focus:outline-none focus:ring-2 {{ $inputClasses }}">
                     <option value="newest" @selected(request('sort') == 'newest')>Newest First</option>
                     <option value="oldest" @selected(request('sort') == 'oldest')>Oldest First</option>
                     <option value="roi" @selected(request('sort') == 'roi')>Highest ROI Target</option>
                 </select>
 
-                <button class="btn btn-indigo" type="submit">Filter</button>
+                <button class="inline-flex items-center justify-center rounded-2xl bg-sky-600 px-4 py-2.5 text-sm font-semibold text-white transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-sky-500 hover:shadow-lg active:scale-[0.99]" type="submit">
+                    Filter
+                </button>
             </form>
+        </section>
 
+        <section data-aos="fade-up" data-aos-delay="170" class="overflow-x-auto rounded-[20px] sm:rounded-[28px] border shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
             <table class="min-w-full text-sm text-left">
-                <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
-                    <tr>
-                        <th class="px-4 py-3">ID</th>
-                        <th class="px-4 py-3">Market</th>
-                        <th class="px-4 py-3">ROI Target</th>
-                        <th class="px-4 py-3">Status</th>
-                        <th class="px-4 py-3">Trades</th>
-                        <th class="px-4 py-3">Avg ROI</th>
-                        <th class="px-4 py-3">Started</th>
-                        <th class="px-4 py-3">Completed</th>
-                        <th class="px-4 py-3">Completed</th>
-                        <th class="px-4 py-3">Repeat</th>
+                <thead class="{{ $subtleSurfaceClasses }}">
+                    <tr class="uppercase text-[11px] tracking-[0.16em]">
+                        <th class="px-3 py-2.5 sm:px-4">ID</th>
+                        <th class="px-3 py-2.5 sm:px-4">Market</th>
+                        <th class="px-3 py-2.5 sm:px-4">ROI Target</th>
+                        <th class="px-3 py-2.5 sm:px-4">Status</th>
+                        <th class="px-3 py-2.5 sm:px-4">Trades</th>
+                        <th class="px-3 py-2.5 sm:px-4">Avg ROI</th>
+                        <th class="px-3 py-2.5 sm:px-4">Started</th>
+                        <th class="px-3 py-2.5 sm:px-4">Completed</th>
+                        <th class="px-3 py-2.5 sm:px-4">Repeat</th>
+                        <th class="px-3 py-2.5 sm:px-4">Summary</th>
                     </tr>
                 </thead>
-                <tbody class="text-gray-800 dark:text-gray-100">
+                <tbody class="{{ $headingClasses }}">
                     @forelse ($runs as $run)
-                        <tr class="border-t border-gray-200 dark:border-gray-700">
-                            <td class="px-3 py-2 sm:px-4">{{ $run->id }}</td>
-                            <td class="px-3 py-2 sm:px-4">{{ $run->config->market ?? '-' }}</td>
-                            <td class="px-3 py-2 sm:px-4">{{ $run->config->target_roi ?? '-' }}%</td>
-                            <td class="px-3 py-2 sm:px-4">
-                                @if ($run->status === 'completed')
-                                    <span class="text-green-600 font-semibold">Completed</span>
-                                @elseif ($run->status === 'running')
-                                    <span class="text-yellow-500 font-semibold">Running</span>
+                        @php
+                            $config = $run->config ?? null;
+                            $stats = $run->stats ?? [];
+                        @endphp
+                        <tr class="border-t border-slate-200 transition duration-300 ease-out hover:bg-slate-50 dark:border-slate-800 dark:hover:bg-slate-800/70">
+                            <td class="px-3 py-3 sm:px-4 font-semibold">{{ $run->id }}</td>
+                            <td class="px-3 py-3 sm:px-4">{{ $config->market ?? '-' }}</td>
+                            <td class="px-3 py-3 sm:px-4">{{ $config->target_roi ?? '-' }}{{ $config?->target_roi !== null ? '%' : '' }}</td>
+                            <td class="px-3 py-3 sm:px-4">
+                                @php
+                                    $statusClass = match ($run->status) {
+                                        'completed' => 'bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300',
+                                        'running' => 'bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-300',
+                                        'pending' => 'bg-sky-100 text-sky-700 dark:bg-sky-500/10 dark:text-sky-300',
+                                        default => 'bg-rose-100 text-rose-700 dark:bg-rose-500/10 dark:text-rose-300',
+                                    };
+                                @endphp
+                                <span class="inline-flex rounded-full px-2.5 py-1 text-xs font-semibold {{ $statusClass }}">
+                                    {{ ucfirst($run->status) }}
+                                </span>
+                            </td>
+                            <td class="px-3 py-3 sm:px-4">{{ $run->trades_generated ?? '-' }}</td>
+                            <td class="px-3 py-3 sm:px-4">{{ $run->average_roi ?? '-' }}{{ $run->average_roi !== null ? '%' : '' }}</td>
+                            <td class="px-3 py-3 text-xs sm:px-4 sm:text-sm {{ $mutedTextClasses }}">{{ $run->started_at ?? '-' }}</td>
+                            <td class="px-3 py-3 text-xs sm:px-4 sm:text-sm {{ $mutedTextClasses }}">{{ $run->completed_at ?? '-' }}</td>
+                            <td class="px-3 py-3 sm:px-4">
+                                @if ($config)
+                                    <form method="POST" action="{{ route('admin.trade-bot.configs.rerun', $config) }}" onsubmit="return confirm('Are you sure you want to re-run this config?');">
+                                        @csrf
+                                        <button type="submit" class="inline-flex items-center rounded-2xl bg-sky-600 px-3 py-2 text-xs font-semibold text-white transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-sky-500 hover:shadow-lg active:scale-[0.99]">
+                                            Re-run
+                                        </button>
+                                    </form>
                                 @else
-                                    <span class="text-red-500 font-semibold">Failed</span>
+                                    <span class="text-xs {{ $mutedTextClasses }}">N/A</span>
                                 @endif
                             </td>
-                            <td class="px-3 py-2 sm:px-4">{{ $run->trades_generated ?? '-' }}</td>
-                            <td class="px-3 py-2 sm:px-4">{{ $run->average_roi ?? '-' }}%</td>
-                            <td class="px-3 py-2 sm:px-4">{{ $run->started_at ?? '-' }}</td>
-                            <td class="px-3 py-2 sm:px-4">{{ $run->completed_at ?? '-' }}</td>
-                            <td class="px-3 py-2 sm:px-4">
-                                <form method="POST" action="{{ route('admin.trade-bot.configs.rerun', $config) }}" onsubmit="return confirm('Are you sure you want to re-run this config?');">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm bg-blue-600 hover:bg-blue-700 text-white">Re-run</button>
-                                </form>
+                            <td class="px-3 py-3 text-xs sm:px-4 {{ $mutedTextClasses }}">
+                                <div>Total: {{ $stats['total_trades'] ?? '-' }}</div>
+                                <div>Win Rate: {{ $stats['win_rate'] ?? '-' }}{{ isset($stats['win_rate']) ? '%' : '' }}</div>
+                                <div>Avg ROI: {{ $stats['avg_roi'] ?? '-' }}{{ isset($stats['avg_roi']) ? '%' : '' }}</div>
+                                <div>Max Loss: {{ $stats['max_loss'] ?? '-' }}{{ isset($stats['max_loss']) ? '%' : '' }}</div>
+                                <div>From: {{ isset($stats['from']) ? optional($stats['from'])->format('Y-m-d') : '-' }}</div>
+                                <div>To: {{ isset($stats['to']) ? optional($stats['to'])->format('Y-m-d') : '-' }}</div>
                             </td>
-                            <td class="text-sm text-gray-700">
-                                <div>Total: {{ $run->stats['total_trades'] }}</div>
-                                <div>Win Rate: {{ $run->stats['win_rate'] }}%</div>
-                                <div>Avg ROI: {{ $run->stats['avg_roi'] }}%</div>
-                                <div>Max Loss: {{ $run->stats['max_loss'] }}%</div>
-                                <div>From: {{ optional($run->stats['from'])->format('Y-m-d') }}</div>
-                                <div>To: {{ optional($run->stats['to'])->format('Y-m-d') }}</div>
-                            </td>
-
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="8" class="px-4 py-4 text-center text-gray-500">No trade bot runs found.</td>
+                            <td colspan="10" class="px-4 py-8 text-center text-sm {{ $mutedTextClasses }}">No trade bot runs found.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
-        </div>
+        </section>
 
         <div class="mt-6">
             {{ $runs->links() }}
