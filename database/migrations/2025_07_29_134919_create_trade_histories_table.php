@@ -11,17 +11,43 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trade_histories', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('trade_id')->constrained()->onDelete('cascade');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('trader_id')->constrained('users')->onDelete('cascade'); // assuming traders are users
-            $table->decimal('amount_invested', 16, 2);
-            $table->decimal('roi', 5, 2); // ROI percentage e.g. 10.50%
-            $table->decimal('amount_returned', 16, 2); // amount user earned
-            $table->timestamps();
-        });
+        if (! Schema::hasTable('trade_histories')) {
+            Schema::create('trade_histories', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('trade_id')->nullable()->constrained()->nullOnDelete();
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->foreignId('trader_id')->constrained()->onDelete('cascade');
+                $table->decimal('amount_invested', 16, 2)->nullable();
+                $table->decimal('roi', 5, 2)->nullable();
+                $table->decimal('amount_returned', 16, 2)->nullable();
+                $table->decimal('new_trade_balance', 16, 2)->nullable();
+                $table->timestamps();
+            });
 
+            return;
+        }
+
+        Schema::table('trade_histories', function (Blueprint $table) {
+            if (! Schema::hasColumn('trade_histories', 'trade_id')) {
+                $table->foreignId('trade_id')->nullable()->after('id')->constrained()->nullOnDelete();
+            }
+
+            if (! Schema::hasColumn('trade_histories', 'amount_invested')) {
+                $table->decimal('amount_invested', 16, 2)->nullable()->after('change');
+            }
+
+            if (! Schema::hasColumn('trade_histories', 'roi')) {
+                $table->decimal('roi', 5, 2)->nullable()->after('amount_invested');
+            }
+
+            if (! Schema::hasColumn('trade_histories', 'amount_returned')) {
+                $table->decimal('amount_returned', 16, 2)->nullable()->after('roi');
+            }
+
+            if (! Schema::hasColumn('trade_histories', 'new_trade_balance')) {
+                $table->decimal('new_trade_balance', 16, 2)->nullable()->after('amount_returned');
+            }
+        });
     }
 
     /**
@@ -29,6 +55,22 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trade_histories');
+        if (! Schema::hasTable('trade_histories')) {
+            return;
+        }
+
+        Schema::table('trade_histories', function (Blueprint $table) {
+            $columns = array_filter([
+                Schema::hasColumn('trade_histories', 'trade_id') ? 'trade_id' : null,
+                Schema::hasColumn('trade_histories', 'amount_invested') ? 'amount_invested' : null,
+                Schema::hasColumn('trade_histories', 'roi') ? 'roi' : null,
+                Schema::hasColumn('trade_histories', 'amount_returned') ? 'amount_returned' : null,
+                Schema::hasColumn('trade_histories', 'new_trade_balance') ? 'new_trade_balance' : null,
+            ]);
+
+            if (! empty($columns)) {
+                $table->dropColumn($columns);
+            }
+        });
     }
 };

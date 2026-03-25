@@ -11,6 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (! Schema::hasTable('user_trader_subscriptions') && Schema::hasTable('user_trader_subscription')) {
+            Schema::rename('user_trader_subscription', 'user_trader_subscriptions');
+        }
+
         Schema::table('user_trader_subscriptions', function (Blueprint $table) {
             $table->decimal('allocated_amount', 10, 2)->nullable()->change();
         });
@@ -24,5 +28,9 @@ return new class extends Migration
         Schema::table('user_trader_subscriptions', function (Blueprint $table) {
             $table->decimal('allocated_amount', 10, 2)->nullable(false)->change();
         });
+
+        if (! Schema::hasTable('user_trader_subscription') && Schema::hasTable('user_trader_subscriptions')) {
+            Schema::rename('user_trader_subscriptions', 'user_trader_subscription');
+        }
     }
 };
