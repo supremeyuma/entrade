@@ -1,7 +1,7 @@
 <x-layouts.app>
-    <div class="max-w-lg mx-auto px-6 py-8">
-        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-2xl p-6">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+    <div class="max-w-lg mx-auto px-4 py-6 sm:px-6 sm:py-8">
+        <div class="rounded-2xl bg-white p-4 shadow-lg dark:bg-gray-800 sm:p-6">
+            <h1 class="mb-2 text-xl font-bold text-gray-900 dark:text-white sm:text-2xl">
                 Subscribe to {{ $trader->name }}
             </h1>
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">

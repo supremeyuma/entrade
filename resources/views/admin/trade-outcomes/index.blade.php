@@ -1,6 +1,6 @@
 <x-layouts.admin>
     <div class="px-4 sm:px-6 lg:px-8 py-6">
-        <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Trade Outcomes</h1>
+        <h1 class="mb-4 text-xl font-semibold text-gray-800 dark:text-gray-100 sm:mb-6 sm:text-2xl">Trade Outcomes</h1>
 
         @if(session('success'))
             <div class="mb-4 bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-100 px-4 py-3 rounded">
@@ -23,7 +23,7 @@
                     </select>
                 </div>
                 <div class="self-end">
-                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded shadow">
+                    <button type="submit" class="inline-flex min-h-[40px] items-center rounded bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700">
                         Filter
                     </button>
                 </div>
@@ -31,7 +31,7 @@
         </form>
 
         <div class="mb-4">
-            <a href="{{ route('admin.trade-outcomes.create') }}" class="inline-flex items-center px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded shadow">
+            <a href="{{ route('admin.trade-outcomes.create') }}" class="inline-flex min-h-[40px] items-center rounded bg-green-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-green-700">
                 + Add New Trade Outcome
             </a>
         </div>

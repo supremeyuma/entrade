@@ -1,9 +1,9 @@
 <x-layouts.app>
-    <div class="max-w-6xl mx-auto px-4 py-8">
-        <h1 class="text-2xl font-bold mb-6 text-gray-800">Trade History</h1>
+    <div class="max-w-6xl mx-auto px-4 py-6 sm:py-8">
+        <h1 class="mb-4 text-xl font-bold text-gray-800 sm:mb-6 sm:text-2xl">Trade History</h1>
 
          {{-- Filters --}}
-        <form method="GET" class="mb-6 flex flex-col sm:flex-row sm:items-end gap-4">
+        <form method="GET" class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-end sm:gap-4">
             <div>
                 <label for="start_date" class="block text-sm font-medium text-gray-700 dark:text-gray-200">Start Date</label>
                 <input type="date" name="start_date" id="start_date" value="{{ request('start_date') }}"
@@ -31,11 +31,11 @@
 
             <div class="flex gap-2 items-end">
                 <button type="submit"
-                        class="bg-indigo-600 text-white px-4 py-2 rounded-md shadow hover:bg-indigo-700">
+                        class="rounded-md bg-indigo-600 px-4 py-2 text-sm text-white shadow hover:bg-indigo-700">
                     Filter
                 </button>
                 <a href="{{ route('user.trade-history.export', request()->query()) }}"
-                class="bg-green-600 text-white px-4 py-2 rounded-md shadow hover:bg-green-700">
+                class="rounded-md bg-green-600 px-4 py-2 text-sm text-white shadow hover:bg-green-700">
                     Export CSV
                 </a>
             </div>

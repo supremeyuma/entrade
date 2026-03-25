@@ -1,8 +1,8 @@
 <x-layouts.admin>
     <div class="px-4 py-6 max-w-3xl">
-        <h1 class="text-2xl font-bold mb-6">Edit User</h1>
+        <h1 class="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">Edit User</h1>
 
-        <form method="POST" action="{{ route('admin.users.update', $user) }}" class="bg-white dark:bg-gray-800 p-6 rounded shadow space-y-6">
+        <form method="POST" action="{{ route('admin.users.update', $user) }}" class="bg-white dark:bg-gray-800 rounded shadow space-y-4 p-4 sm:space-y-6 sm:p-6">
             @csrf
             @method('PUT')
 

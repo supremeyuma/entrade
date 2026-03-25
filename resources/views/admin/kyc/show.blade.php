@@ -1,6 +1,6 @@
 <x-layouts.admin>
-    <div class="p-6 max-w-3xl mx-auto">
-        <h1 class="text-2xl font-bold mb-6">KYC Review</h1>
+    <div class="max-w-3xl mx-auto p-4 sm:p-6">
+        <h1 class="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">KYC Review</h1>
 
         <div class="space-y-4">
             <p><strong>User:</strong> {{ $kyc->user->name }} ({{ $kyc->user->email }})</p>
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="mt-6 flex space-x-4">
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:space-x-4">
             <form method="POST" action="{{ route('admin.kyc.approve', $kyc) }}">
                 @csrf
                 <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Approve</button>

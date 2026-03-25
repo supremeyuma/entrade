@@ -7,7 +7,7 @@
             this.showModal = true;
         }
     }">
-        <h1 class="text-2xl font-bold mb-6">All Users</h1>
+        <h1 class="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">All Users</h1>
 
         <div class="bg-white dark:bg-gray-800 rounded shadow overflow-x-auto">
             <table class="w-full table-auto text-left text-sm">
@@ -68,7 +68,7 @@
                 x-transition:leave="transition ease-in duration-200 transform"
                 x-transition:leave-start="opacity-100 scale-100"
                 x-transition:leave-end="opacity-0 scale-95"
-                class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-xl w-full max-w-xl relative z-50"
+                class="relative z-50 w-full max-w-xl rounded-lg bg-white p-4 shadow-xl dark:bg-gray-900 sm:p-6"
             >
                 <h2 class="text-xl font-semibold mb-4">Adjust User Funds</h2>
 

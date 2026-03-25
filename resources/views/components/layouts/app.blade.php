@@ -60,12 +60,22 @@
         </div>
     </header>
 
+    @auth
+        <div
+            x-cloak
+            x-show="sidebarOpen"
+            x-transition.opacity
+            class="fixed inset-0 z-30 bg-black/30 md:hidden"
+            @click="sidebarOpen = false"
+        ></div>
+    @endauth
+
     <!-- Main wrapper: sidebar + content -->
     <div class="flex flex-1 max-w-7xl mx-auto w-full px-4 py-8 space-x-4">
         <!-- Sidebar -->
         @auth
             <aside
-                class="fixed md:static inset-y-0 left-0 w-64 transform bg-white dark:bg-gray-800 md:translate-x-0 z-40 transition-transform duration-200 ease-in-out"
+                class="fixed md:static inset-y-0 left-0 w-64 transform overflow-y-auto bg-white pt-20 dark:bg-gray-800 md:pt-0 md:translate-x-0 z-40 transition-transform duration-200 ease-in-out"
                 :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
                 <x-sidebar />
             </aside>

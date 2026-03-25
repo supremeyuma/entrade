@@ -1,6 +1,6 @@
 <x-layouts.app>
-    <div class="max-w-xl mx-auto py-10 px-4">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Confirm Withdrawal</h2>
+    <div class="max-w-xl mx-auto px-4 py-6 sm:py-10">
+        <h2 class="mb-4 text-xl font-bold text-gray-800 dark:text-white sm:mb-6 sm:text-2xl">Confirm Withdrawal</h2>
 
         @if ($errors->any())
             <div class="mb-4 bg-red-100 text-red-800 p-4 rounded">
@@ -12,7 +12,7 @@
             </div>
         @endif
 
-        <div class="bg-white dark:bg-gray-800 rounded shadow p-6 space-y-4 text-sm">
+        <div class="bg-white dark:bg-gray-800 rounded shadow p-4 sm:p-6 space-y-3 sm:space-y-4 text-sm">
             <div><strong>Cryptocurrency:</strong> {{ $withdrawal->cryptocurrency }}</div>
             <div><strong>Amount:</strong> {{ $withdrawal->amount }}</div>
             <div><strong>Network:</strong> {{ $withdrawal->network ?? 'N/A' }}</div>
@@ -38,7 +38,7 @@
             @endif
 
             <div class="flex justify-end">
-                <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Confirm Withdrawal</button>
+                <button class="w-full rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 sm:w-auto">Confirm Withdrawal</button>
             </div>
         </form>
     </div>

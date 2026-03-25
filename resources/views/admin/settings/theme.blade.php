@@ -1,12 +1,12 @@
 <x-layouts/admin>
-<div class="container">
-    <h2>Theme Settings</h2>
+<div class="mx-auto max-w-3xl px-4 py-6">
+    <h2 class="mb-4 text-xl font-semibold sm:text-2xl">Theme Settings</h2>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif
 
-    <form method="POST" action="{{ route('admin.theme.settings.update') }}">
+    <form method="POST" action="{{ route('admin.theme.settings.update') }}" class="rounded bg-white p-4 shadow sm:p-6">
         @csrf
 
         <div class="form-group">
@@ -26,7 +26,7 @@
             </select>
         </div>
 
-        <button class="btn btn-primary mt-3" type="submit">Save Settings</button>
+        <button class="mt-3 w-full rounded bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700 sm:w-auto" type="submit">Save Settings</button>
     </form>
 </div>
 </x-layouts/admin>

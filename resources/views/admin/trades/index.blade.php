@@ -1,6 +1,6 @@
 <x-layouts.admin>
-<div class="container mx-auto px-4 py-8">
-        <h1 class="text-2xl font-bold mb-6">Trade Logs</h1>
+<div class="container mx-auto px-4 py-6 sm:py-8">
+        <h1 class="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">Trade Logs</h1>
 
         <a href="{{ route('admin.trade-logs.create') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-6 inline-block">
             Add Trade

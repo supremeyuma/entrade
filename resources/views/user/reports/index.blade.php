@@ -1,8 +1,8 @@
 <x-layouts.app>
-<div class="container mt-4">
-    <h4 class="mb-3">Generate Report</h4>
+<div class="mx-auto mt-4 max-w-3xl px-4 py-6">
+    <h4 class="mb-3 text-lg font-semibold sm:text-xl">Generate Report</h4>
 
-    <form action="{{ route('user.reports.generate') }}" method="POST">
+    <form action="{{ route('user.reports.generate') }}" method="POST" class="rounded bg-white p-4 shadow sm:p-6">
         @csrf
         <div class="form-group">
             <label>Select Sections to Include:</label><br>
@@ -25,7 +25,7 @@
         </div>
 
         <div class="form-group mt-3">
-            <button class="btn btn-primary">Download Report</button>
+            <button class="w-full rounded bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700 sm:w-auto">Download Report</button>
         </div>
     </form>
 </div>

@@ -1,8 +1,8 @@
 <x-layouts.app>
 <div class="container mx-auto px-4 py-6">
-    <h1 class="text-3xl font-bold mb-6">Trader Leaderboard</h1>
+    <h1 class="mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl">Trader Leaderboard</h1>
 
-    <form method="GET" class="mb-6 grid grid-cols-1 md:grid-cols-6 gap-4 items-end">
+    <form method="GET" class="mb-6 grid grid-cols-1 items-end gap-3 md:grid-cols-6 md:gap-4">
         <div>
             <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name or ID"
                 class="input input-bordered w-full" />

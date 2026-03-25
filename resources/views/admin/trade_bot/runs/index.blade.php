@@ -1,9 +1,9 @@
 <x-layouts.admin>
-    <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-6">Trade Bot Run History</h1>
+    <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
+        <h1 class="mb-4 text-xl font-bold text-gray-800 dark:text-white sm:mb-6 sm:text-2xl">Trade Bot Run History</h1>
 
         <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow-md rounded-lg">
-            <form method="GET" class="flex flex-wrap gap-4 mb-4 items-end">
+            <form method="GET" class="mb-4 flex flex-wrap items-end gap-3 sm:gap-4">
                 <input name="search" value="{{ request('search') }}" type="text"
                     class="input input-bordered w-64" placeholder="Search config name or market">
 
@@ -44,10 +44,10 @@
                 <tbody class="text-gray-800 dark:text-gray-100">
                     @forelse ($runs as $run)
                         <tr class="border-t border-gray-200 dark:border-gray-700">
-                            <td class="px-4 py-2">{{ $run->id }}</td>
-                            <td class="px-4 py-2">{{ $run->config->market ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $run->config->target_roi ?? '-' }}%</td>
-                            <td class="px-4 py-2">
+                            <td class="px-3 py-2 sm:px-4">{{ $run->id }}</td>
+                            <td class="px-3 py-2 sm:px-4">{{ $run->config->market ?? '-' }}</td>
+                            <td class="px-3 py-2 sm:px-4">{{ $run->config->target_roi ?? '-' }}%</td>
+                            <td class="px-3 py-2 sm:px-4">
                                 @if ($run->status === 'completed')
                                     <span class="text-green-600 font-semibold">Completed</span>
                                 @elseif ($run->status === 'running')
@@ -56,11 +56,11 @@
                                     <span class="text-red-500 font-semibold">Failed</span>
                                 @endif
                             </td>
-                            <td class="px-4 py-2">{{ $run->trades_generated ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $run->average_roi ?? '-' }}%</td>
-                            <td class="px-4 py-2">{{ $run->started_at ?? '-' }}</td>
-                            <td class="px-4 py-2">{{ $run->completed_at ?? '-' }}</td>
-                            <td class="px-4 py-2">
+                            <td class="px-3 py-2 sm:px-4">{{ $run->trades_generated ?? '-' }}</td>
+                            <td class="px-3 py-2 sm:px-4">{{ $run->average_roi ?? '-' }}%</td>
+                            <td class="px-3 py-2 sm:px-4">{{ $run->started_at ?? '-' }}</td>
+                            <td class="px-3 py-2 sm:px-4">{{ $run->completed_at ?? '-' }}</td>
+                            <td class="px-3 py-2 sm:px-4">
                                 <form method="POST" action="{{ route('admin.trade-bot.configs.rerun', $config) }}" onsubmit="return confirm('Are you sure you want to re-run this config?');">
                                     @csrf
                                     <button type="submit" class="btn btn-sm bg-blue-600 hover:bg-blue-700 text-white">Re-run</button>

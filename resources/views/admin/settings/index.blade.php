@@ -1,16 +1,16 @@
 <x-layouts.admin>
     <div class="max-w-5xl mx-auto py-6 px-4">
-        <h1 class="text-2xl font-bold mb-6">Site Settings</h1>
+        <h1 class="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">Site Settings</h1>
 
         @if(session('success'))
             <div class="mb-4 p-3 bg-green-100 text-green-800 rounded">{{ session('success') }}</div>
         @endif
 
-        <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-8">
+        <form action="{{ route('admin.settings.update') }}" method="POST" class="space-y-6 sm:space-y-8">
             @csrf
 
             {{-- Referral Settings --}}
-            <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+            <div class="bg-white dark:bg-gray-800 rounded shadow p-4 sm:p-6">
                 <h2 class="text-lg font-semibold mb-4">Referral Settings</h2>
 
                 <x-inputs.toggle name="referral_enabled" label="Enable Referral"
@@ -44,7 +44,7 @@
             </div>
 
             {{-- User Reports Settings --}}
-            <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+            <div class="bg-white dark:bg-gray-800 rounded shadow p-4 sm:p-6">
                 <h2 class="text-lg font-semibold mb-4">User Report Settings</h2>
 
                 <x-inputs.toggle name="user_reports_enable_deposits" label="Include Deposits"
@@ -62,7 +62,7 @@
             </div>
 
             {{-- UI & Theme --}}
-            <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+            <div class="bg-white dark:bg-gray-800 rounded shadow p-4 sm:p-6">
                 <h2 class="text-lg font-semibold mb-4">Theme & UI</h2>
 
                 <x-inputs.select name="theme.default" label="Default Theme"
@@ -74,7 +74,7 @@
             </div>
 
             {{-- Deposit/Withdrawal --}}
-            <div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
+            <div class="bg-white dark:bg-gray-800 rounded shadow p-4 sm:p-6">
                 <h2 class="text-lg font-semibold mb-4">Deposit/Withdrawal</h2>
 
                 <x-inputs.toggle name="deposits_enabled" label="Enable Deposits"

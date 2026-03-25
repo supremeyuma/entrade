@@ -1,8 +1,8 @@
 <x-layouts.admin>
-<div class="container">
-    <h1 class="mb-4">Add Trade Outcome</h1>
+<div class="mx-auto max-w-3xl px-4 py-6">
+    <h1 class="mb-4 text-xl font-semibold sm:text-2xl">Add Trade Outcome</h1>
 
-    <form action="{{ route('admin.trade-outcomes.store') }}" method="POST">
+    <form action="{{ route('admin.trade-outcomes.store') }}" method="POST" class="rounded bg-white p-4 shadow sm:p-6">
         @csrf
 
         <div class="form-group mb-3">
@@ -36,7 +36,7 @@
             @enderror
         </div>
 
-        <button type="submit" class="btn btn-primary">Add Outcome</button>
+        <button type="submit" class="mt-2 w-full rounded bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700 sm:w-auto">Add Outcome</button>
     </form>
 </div>
 </x-layouts.admin>

@@ -1,6 +1,6 @@
 <x-layouts.app>
-    <div class="max-w-4xl mx-auto p-6">
-        <h2 class="text-2xl font-semibold mb-4 text-gray-800">My Copied Traders</h2>
+    <div class="max-w-4xl mx-auto p-4 sm:p-6">
+        <h2 class="mb-4 text-xl font-semibold text-gray-800 sm:text-2xl">My Copied Traders</h2>
 
         <div class="bg-white shadow rounded-lg p-4 mb-6">
             <p class="text-gray-700">💰 <span class="font-semibold">Main Balance:</span> ${{ number_format($user->balance->main_balance, 2) }}</p>
@@ -22,12 +22,12 @@
                 </div>
             @endif
 
-            <h3 class="text-xl font-medium mb-4">Your Trader Subscriptions</h3>
+            <h3 class="mb-4 text-lg font-medium sm:text-xl">Your Trader Subscriptions</h3>
 
             @foreach ($user->traderSubscriptions as $subscription)
                 @if($subscription->status == 'active')
-                    <div class="bg-white shadow rounded-lg p-5 mb-6">
-                        <div class="flex items-center justify-between mb-3">
+                    <div class="mb-4 rounded-lg bg-white p-4 shadow sm:mb-6 sm:p-5">
+                        <div class="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h4 class="text-lg font-semibold text-indigo-600">{{ $subscription->trader->name }}</h4>
                                 <p class="text-sm text-gray-600">Allocated Amount: ${{ $subscription->allocated_amount }}</p>
@@ -53,7 +53,7 @@
                             </div>
                             <div class="flex items-end">
                                 <button type="submit"
-                                        class="w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+                                        class="w-full rounded bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700">
                                     Update Allocation
                                 </button>
                             </div>
@@ -61,8 +61,8 @@
                     </div>
 
                 @elseif($subscription->status == 'pending_approval')
-                    <div class="bg-white shadow rounded-lg p-5 mb-6">
-                        <div class="flex items-center justify-between mb-3">
+                    <div class="mb-4 rounded-lg bg-white p-4 shadow sm:mb-6 sm:p-5">
+                        <div class="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h4 class="text-lg font-semibold text-indigo-600">{{ $subscription->trader->name }}</h4>
                                 <p class="text-sm text-gray-600">Allocated Amount: ${{ $subscription->allocated_amount }}</p>
@@ -81,8 +81,8 @@
                 
 
                 @else
-                    <div class="bg-white shadow rounded-lg p-5 mb-6">
-                        <div class="flex items-center justify-between mb-3">
+                    <div class="mb-4 rounded-lg bg-white p-4 shadow sm:mb-6 sm:p-5">
+                        <div class="mb-3 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                             <div>
                                 <h4 class="text-lg font-semibold text-indigo-600">{{ $subscription->trader->name }} is not ACTIVE</h4>
                                 <!--<p class="text-sm text-gray-600">Allocated Amount: ${{ $subscription->allocated_amount }}</p>-->
@@ -103,7 +103,7 @@
                             </div>
                             <div class="flex items-end">
                                 <button type="submit"
-                                        class="w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">
+                                        class="w-full rounded bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700">
                                     Update Allocation
                                 </button>
                             </div>
@@ -112,9 +112,9 @@
                 @endif
             @endforeach
 
-            <h3 class="text-xl font-medium mb-4 mt-10">Transfer Funds Between Balances</h3>
+            <h3 class="mt-8 mb-4 text-lg font-medium sm:mt-10 sm:text-xl">Transfer Funds Between Balances</h3>
 
-            <form action="{{ route('user.transferFunds') }}" method="POST" class="bg-white shadow rounded-lg p-5">
+            <form action="{{ route('user.transferFunds') }}" method="POST" class="rounded-lg bg-white p-4 shadow sm:p-5">
                 @csrf
                 <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
@@ -133,7 +133,7 @@
                 </div>
                 <div class="mt-4">
                     <button type="submit"
-                            class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                            class="w-full rounded bg-green-600 px-4 py-2 text-sm text-white hover:bg-green-700">
                         Transfer Funds
                     </button>
                 </div>

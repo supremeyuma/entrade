@@ -1,8 +1,8 @@
 <x-layouts.admin>
-    <div class="max-w-6xl mx-auto p-6" x-data="{ search: '' }">
-        <div class="flex justify-between items-center mb-4">
-            <h1 class="text-2xl font-bold">FAQs</h1>
-            <div class="space-x-2">
+    <div class="max-w-6xl mx-auto p-4 sm:p-6" x-data="{ search: '' }">
+        <div class="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h1 class="text-xl font-bold sm:text-2xl">FAQs</h1>
+            <div class="flex flex-wrap gap-2">
                 <a href="{{ route('admin.faqs.export.csv') }}" class="bg-indigo-600 text-white px-3 py-1 rounded text-sm">Export CSV</a>
                 <a href="{{ route('admin.faqs.export.json') }}" class="bg-indigo-600 text-white px-3 py-1 rounded text-sm">Export JSON</a>
                 <form action="{{ route('admin.faqs.import') }}" method="POST" enctype="multipart/form-data" class="inline-flex space-x-2">
@@ -31,8 +31,9 @@
             />
         </div>
 
-        <div class="bg-white dark:bg-gray-800 shadow rounded p-4">
-            <table class="min-w-full bg-white dark:bg-gray-800 rounded shadow overflow-hidden">
+        <div class="rounded bg-white p-4 shadow dark:bg-gray-800">
+            <div class="overflow-x-auto">
+            <table class="min-w-full overflow-hidden rounded bg-white shadow dark:bg-gray-800">
                 <thead>
                     <tr class="text-left text-sm text-gray-600 dark:text-gray-300">
                         <th class="py-2 px-3">Pos</th>
@@ -88,6 +89,7 @@
                     @endif
                 </tbody>
             </table>
+            </div>
         </div>
     </div>
 

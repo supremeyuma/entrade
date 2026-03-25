@@ -1,27 +1,27 @@
 <x-layouts.admin>
     <div class="px-4 py-6">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <h1 class="mb-4 text-xl font-bold text-gray-900 dark:text-white sm:mb-6 sm:text-2xl">
             Subscription Request
         </h1>
 
-        <div class="bg-white dark:bg-gray-800 shadow rounded-xl p-6 max-w-2xl">
+        <div class="max-w-2xl rounded-xl bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
             {{-- Request Details --}}
             <dl class="divide-y divide-gray-200 dark:divide-gray-700">
-                <div class="flex justify-between py-3">
+                <div class="flex flex-col gap-1 py-3 sm:flex-row sm:justify-between">
                     <dt class="font-medium text-gray-700 dark:text-gray-300">User</dt>
                     <dd class="text-gray-900 dark:text-gray-100">{{ $subscription->user->name }}</dd>
                 </div>
-                <div class="flex justify-between py-3">
+                <div class="flex flex-col gap-1 py-3 sm:flex-row sm:justify-between">
                     <dt class="font-medium text-gray-700 dark:text-gray-300">Trader</dt>
                     <dd class="text-gray-900 dark:text-gray-100">{{ $subscription->trader->name }}</dd>
                 </div>
-                <div class="flex justify-between py-3">
+                <div class="flex flex-col gap-1 py-3 sm:flex-row sm:justify-between">
                     <dt class="font-medium text-gray-700 dark:text-gray-300">Amount</dt>
                     <dd class="text-gray-900 dark:text-gray-100">
                         ${{ number_format($subscription->allocated_amount, 2) }}
                     </dd>
                 </div>
-                <div class="flex justify-between py-3">
+                <div class="flex flex-col gap-1 py-3 sm:flex-row sm:justify-between">
                     <dt class="font-medium text-gray-700 dark:text-gray-300">Status</dt>
                     <dd>
                         @php

@@ -1,5 +1,5 @@
 <x-layouts.admin>
-<h1 class="text-2xl mb-4">{{ isset($tradeLog) ? 'Edit' : 'Add' }} Trade Log</h1>
+<h1 class="mb-4 text-xl sm:text-2xl">{{ isset($tradeLog) ? 'Edit' : 'Add' }} Trade Log</h1>
 
     <form action="{{ isset($tradeLog) ? route('admin.trade-logs.update', $tradeLog) : route('admin.trade-logs.store') }}" method="POST">
         @csrf

@@ -1,13 +1,13 @@
 <x-layouts.app>
-    <div class="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-        <h2 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">Deposit History</h2>
+    <div class="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
+        <h2 class="mb-4 text-xl font-semibold text-gray-800 dark:text-white sm:mb-6 sm:text-2xl">Deposit History</h2>
 
         @if ($deposits->isEmpty())
             <div class="text-gray-600 dark:text-gray-300">You have no deposit history yet.</div>
         @else
 
         <!--FILTER FORM-->
-        <form method="GET" class="mb-4 flex flex-wrap items-center gap-3">
+        <form method="GET" class="mb-4 flex flex-wrap items-end gap-3">
                     <div>
                         <label class="text-sm text-gray-700 dark:text-gray-200">From</label>
                         <input type="date" name="from" value="{{ request('from') }}"
@@ -28,7 +28,7 @@
                         </select>
                     </div>
                     <button type="submit"
-                            class="ml-auto bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700 transition">
+                            class="w-full rounded bg-blue-600 px-4 py-2 text-sm text-white transition hover:bg-blue-700 sm:ml-auto sm:w-auto sm:py-1.5">
                         Filter
                     </button>
                 </form>
@@ -43,7 +43,7 @@
                                     $dateSort = $sort === 'date_asc' ? 'date_desc' : 'date_asc';
                                     $amountSort = $sort === 'amount_asc' ? 'amount_desc' : 'amount_asc';
                                 @endphp
-                                <th class="px-4 py-2">
+                                <th class="px-3 py-2 sm:px-4">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => $dateSort]) }}" class="inline-flex items-center gap-1">
                                         Date
                                         @if($sort === 'date_asc')
@@ -57,7 +57,7 @@
                                         @endif
                                     </a>
                                 </th>
-                                <th class="px-4 py-2">
+                                <th class="px-3 py-2 sm:px-4">
                                     <a href="{{ request()->fullUrlWithQuery(['sort' => $amountSort]) }}" class="inline-flex items-center gap-1">
                                         Amount
                                         @if($sort === 'amount_asc')
@@ -71,23 +71,23 @@
                                         @endif
                                     </a>
                                 </th>
-                                <th class="px-4 py-2">Currency</th>
-                                <th class="px-4 py-2">Status</th>
-                                <th class="px-4 py-2">Invoice Link</th>
+                                <th class="px-3 py-2 sm:px-4">Currency</th>
+                                <th class="px-3 py-2 sm:px-4">Status</th>
+                                <th class="px-3 py-2 sm:px-4">Invoice Link</th>
                             </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                         @foreach ($deposits as $deposit)
                             <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition" role="link" tabindex="0" data-href="{{ route('user.deposit.show', $deposit->id) }}">
-                                <td class="px-4 py-2">{{ $deposit->created_at->format('M d, Y H:i') }}</td>
-                                <td class="px-4 py-2">{{ number_format($deposit->amount, 2) }}</td>
-                                <td class="px-4 py-2">{{ strtoupper($deposit->currency) }}</td>
-                                <td class="px-4 py-2">
+                                <td class="px-3 py-2 sm:px-4">{{ $deposit->created_at->format('M d, Y H:i') }}</td>
+                                <td class="px-3 py-2 sm:px-4">{{ number_format($deposit->amount, 2) }}</td>
+                                <td class="px-3 py-2 sm:px-4">{{ strtoupper($deposit->currency) }}</td>
+                                <td class="px-3 py-2 sm:px-4">
                                     <span class="{{ $deposit->status === 'finished' ? 'text-green-600' : ($deposit->status === 'rejected' ? 'text-red-600' : 'text-yellow-600') }}">
                                         {{ ucfirst($deposit->status) }}
                                     </span>
                                 </td>
-                                <td class="px-4 py-2">
+                                <td class="px-3 py-2 sm:px-4">
                                     @if (!empty($deposit->invoice_url))
                                         <a href="{{ $deposit->invoice_url }}" target="_blank" class="text-blue-600 hover:text-blue-800 underline">View Invoice</a>
                                     @else
@@ -98,7 +98,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class="p-4">
+                <div class="p-3 sm:p-4">
                     {{ $deposits->links('pagination::tailwind') }}
                 </div>
                 <script>

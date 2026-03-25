@@ -1,9 +1,9 @@
 <x-layouts.admin>
     <div class="px-4 sm:px-6 lg:px-8 py-6">
-        <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">Activity Logs</h1>
+        <h1 class="mb-4 text-xl font-semibold text-gray-800 dark:text-gray-100 sm:mb-6 sm:text-2xl">Activity Logs</h1>
 
         {{-- Filter Form --}}
-        <form method="GET" class="mb-6 grid grid-cols-1 sm:grid-cols-3 gap-4">
+        <form method="GET" class="mb-4 grid grid-cols-1 gap-3 sm:mb-6 sm:grid-cols-3 sm:gap-4">
             <input
                 type="text"
                 name="user_id"
@@ -20,7 +20,7 @@
             >
             <button
                 type="submit"
-                class="inline-flex justify-center items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-md shadow"
+                class="inline-flex min-h-[40px] items-center justify-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-indigo-700"
             >
                 Filter
             </button>

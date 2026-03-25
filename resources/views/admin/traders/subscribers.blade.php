@@ -1,6 +1,6 @@
 <x-layouts.admin>
     <div class="px-4 sm:px-6 lg:px-8 py-6">
-        <h1 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">
+        <h1 class="mb-4 text-xl font-semibold text-gray-800 dark:text-gray-100 sm:mb-6 sm:text-2xl">
             Subscribers for {{ $trader->name }}
         </h1>
 

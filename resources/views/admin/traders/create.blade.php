@@ -1,6 +1,6 @@
 <x-layouts.admin>
     <div class="px-4 py-6 max-w-3xl mx-auto">
-        <h1 class="text-2xl font-bold mb-6">{{ isset($trader) ? 'Edit Trader' : 'Add Trader' }}</h1>
+        <h1 class="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">{{ isset($trader) ? 'Edit Trader' : 'Add Trader' }}</h1>
 
         <form action="{{ isset($trader) ? route('admin.traders.update', $trader) : route('admin.traders.store') }}"
               method="POST" enctype="multipart/form-data" x-data="previewPhoto()">
@@ -30,7 +30,7 @@
 
             <div class="mb-6 border-t pt-4">
                 <h2 class="font-semibold mb-2">Performance Metrics</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <div>
                         <label>Total Trades</label>
                         <input type="number" name="performance[total_trades]" step="1" class="input"

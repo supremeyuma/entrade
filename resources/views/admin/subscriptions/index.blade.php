@@ -1,6 +1,6 @@
 <x-layouts.admin>
     <div class="px-4 py-6">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+        <h1 class="mb-4 text-xl font-bold text-gray-900 dark:text-white sm:mb-6 sm:text-2xl">
             Trader Subscription Requests
         </h1>
 

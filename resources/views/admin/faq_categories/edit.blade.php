@@ -1,8 +1,8 @@
 <x-layouts.admin>
-    <div class="max-w-xl mx-auto p-6">
-        <h1 class="text-xl font-semibold mb-6">Edit FAQ Category</h1>
+    <div class="max-w-xl mx-auto p-4 sm:p-6">
+        <h1 class="mb-4 text-lg font-semibold sm:mb-6 sm:text-xl">Edit FAQ Category</h1>
 
-        <form action="{{ route('admin.faq-categories.update', $faqCategory) }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.faq-categories.update', $faqCategory) }}" method="POST" class="space-y-4 sm:space-y-6">
             @csrf @method('PUT')
 
             <x-inputs.text name="title" label="Title" :value="$faqCategory->title" required />

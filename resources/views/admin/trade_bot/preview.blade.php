@@ -1,10 +1,10 @@
 <x-layouts.admin>
-    <div class="max-w-6xl mx-auto py-10 px-4">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-white">Equity Curve Preview</h2>
+    <div class="max-w-6xl mx-auto px-4 py-6 sm:py-10">
+        <h2 class="mb-4 text-xl font-bold text-gray-800 dark:text-white sm:mb-6 sm:text-2xl">Equity Curve Preview</h2>
 
         <canvas id="equityChart" height="100"></canvas>
 
-        <h3 class="text-xl font-semibold mt-10 mb-2 text-gray-800 dark:text-white">Live Job Log</h3>
+        <h3 class="mt-8 mb-2 text-lg font-semibold text-gray-800 dark:text-white sm:mt-10 sm:text-xl">Live Job Log</h3>
             <pre id="logBox" class="bg-black text-green-400 p-4 rounded-md max-h-80 overflow-y-auto text-sm font-mono shadow-inner">Loading logs...</pre>
 
 

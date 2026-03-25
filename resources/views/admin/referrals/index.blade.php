@@ -1,6 +1,6 @@
 <x-layouts.admin>
     <div class="px-4 sm:px-6 lg:px-8 py-6">
-        <h2 class="text-2xl font-semibold text-gray-800 dark:text-gray-100 mb-6">All Referrals</h2>
+        <h2 class="mb-4 text-xl font-semibold text-gray-800 dark:text-gray-100 sm:mb-6 sm:text-2xl">All Referrals</h2>
 
         <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded-lg shadow">
             <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">

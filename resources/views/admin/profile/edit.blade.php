@@ -1,12 +1,12 @@
 <x-admin.layout>
-<div class="max-w-7xl mx-auto py-6">
-    <h2 class="text-2xl font-semibold">Edit Profile</h2>
+<div class="max-w-7xl mx-auto px-4 py-6">
+    <h2 class="text-xl font-semibold sm:text-2xl">Edit Profile</h2>
 
     <form method="POST" action="{{ route('admin.profile.update') }}" class="mt-6">
         @csrf
         @method('PATCH')
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6">
             <!-- Name -->
             <div>
                 <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>

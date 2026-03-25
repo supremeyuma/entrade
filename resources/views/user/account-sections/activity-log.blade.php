@@ -1,12 +1,12 @@
-<div class="bg-white dark:bg-gray-800 p-6 rounded shadow">
-    <h2 class="text-xl font-semibold mb-4">Activity Log</h2>
+<div class="rounded bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
+    <h2 class="mb-4 text-lg font-semibold sm:text-xl">Activity Log</h2>
     @if ($logs->isEmpty())
         <p class="text-sm text-gray-500 dark:text-gray-400">No activity recorded yet.</p>
     @else
         <ul class="divide-y divide-gray-200 dark:divide-gray-700 text-sm">
             @foreach ($logs as $log)
                 <li class="py-3">
-                    <div class="flex justify-between items-center">
+                    <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                         <div>
                             <p class="font-medium">{{ ucfirst($log->action_type) }}</p>
                             <p class="text-gray-500 dark:text-gray-400">{{ $log->description }}</p>

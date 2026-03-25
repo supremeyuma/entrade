@@ -1,5 +1,5 @@
-<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-6">
-    <h2 class="text-xl font-semibold">Identity Verification (KYC)</h2>
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 sm:p-6 space-y-4 sm:space-y-6">
+    <h2 class="text-lg font-semibold sm:text-xl">Identity Verification (KYC)</h2>
 
     {{-- Flash Message --}}
     @if(session('kyc_success'))
@@ -19,7 +19,7 @@
     @endif
 
     <!-- Current Status -->
-    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded border">
+    <div class="rounded border bg-gray-50 p-3 dark:bg-gray-700 sm:p-4">
         <p class="text-sm">
             <strong>Status:</strong>
             @if($kyc && $kyc->status === 'verified')
@@ -51,7 +51,7 @@
                 <input type="file" name="proof_of_address" accept="image/*,application/pdf"
                        class="block w-full text-sm text-gray-700 dark:text-white border rounded dark:bg-gray-700">
             </div>
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+            <button type="submit" class="w-full rounded bg-blue-600 px-4 py-2 text-sm text-white transition hover:bg-blue-700 sm:w-auto">
                 Submit for Verification
             </button>
         </form>

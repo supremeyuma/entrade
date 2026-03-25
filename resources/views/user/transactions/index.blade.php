@@ -1,8 +1,9 @@
 <x-layouts.app>
-<div class="container mx-auto px-4">
-    <h1 class="text-2xl font-bold mb-4">Transaction History</h1>
+<div class="container mx-auto px-4 py-6">
+    <h1 class="mb-4 text-xl font-bold sm:text-2xl">Transaction History</h1>
 
     <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4">
+        <div class="overflow-x-auto">
         <table class="w-full text-sm">
             <thead>
                 <tr class="border-b text-left">
@@ -29,6 +30,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
 
         <div class="mt-4">
             {{ $transactions->links() }}

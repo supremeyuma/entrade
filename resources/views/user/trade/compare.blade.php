@@ -1,6 +1,6 @@
 <x-layouts.app>
-<div class="container mx-auto px-4 py-6 max-w-6xl">
-    <h1 class="text-3xl font-bold mb-6">Trader Comparison</h1>
+<div class="container mx-auto max-w-6xl px-4 py-6">
+    <h1 class="mb-4 text-2xl font-bold sm:mb-6 sm:text-3xl">Trader Comparison</h1>
 
     @if($traders->isEmpty())
         <p>No traders selected for comparison.</p>

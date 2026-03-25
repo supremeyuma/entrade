@@ -1,11 +1,11 @@
 <x-layouts.app>
     <div x-data="walletForm()">
         {{-- Main Content --}}
-        <div class="max-w-5xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between mb-6">
-                <h1 class="text-2xl font-bold text-gray-800 dark:text-gray-100">My Wallets</h1>
+        <div class="max-w-5xl mx-auto px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
+            <div class="mb-4 flex flex-col gap-3 sm:mb-6 sm:flex-row sm:items-center sm:justify-between">
+                <h1 class="text-xl font-bold text-gray-800 dark:text-gray-100 sm:text-2xl">My Wallets</h1>
                 <button @click="openModal = true"
-                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200">
+                    class="w-full rounded-lg bg-blue-600 px-4 py-2 text-sm text-white transition duration-200 hover:bg-blue-700 sm:w-auto">
                     Add Wallet
                 </button>
             </div>
@@ -20,18 +20,18 @@
                 <table class="min-w-full text-sm text-left relative">
                     <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase text-xs">
                         <tr>
-                            <th class="px-6 py-3">Cryptocurrency</th>
-                            <th class="px-6 py-3">Wallet Address</th>
-                            <th class="px-6 py-3">Network</th>
-                            <th class="px-6 py-3">Label</th>
-                            <th class="px-6 py-3">Actions</th>
+                            <th class="px-3 py-3 sm:px-6">Cryptocurrency</th>
+                            <th class="px-3 py-3 sm:px-6">Wallet Address</th>
+                            <th class="px-3 py-3 sm:px-6">Network</th>
+                            <th class="px-3 py-3 sm:px-6">Label</th>
+                            <th class="px-3 py-3 sm:px-6">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700 text-gray-800 dark:text-gray-100">
                         @forelse($wallets as $wallet)
                             <tr>
-                                <td class="px-6 py-4">{{ $wallet->cryptocurrency }}</td>
-                                <td class="px-6 py-4 break-words relative overflow-visible">
+                                <td class="px-3 py-3 sm:px-6 sm:py-4">{{ $wallet->cryptocurrency }}</td>
+                                <td class="px-3 py-3 sm:px-6 sm:py-4 break-words relative overflow-visible">
                                     <div class="flex items-center space-x-2" x-data="{ copied: false }">
                                         <span x-text="copied ? 'Copied!' : '{{ $wallet->wallet_address }}'" class="truncate max-w-xs"></span>
 
@@ -57,9 +57,9 @@
                                     </div>
                                 </td>
 
-                                <td class="px-6 py-4">{{ $wallet->network ?? '—' }}</td>
-                                <td class="px-6 py-4">{{ $wallet->label ?? '—' }}</td>
-                                <td class="px-6 py-4 space-x-2">
+                                <td class="px-3 py-3 sm:px-6 sm:py-4">{{ $wallet->network ?? '—' }}</td>
+                                <td class="px-3 py-3 sm:px-6 sm:py-4">{{ $wallet->label ?? '—' }}</td>
+                                <td class="px-3 py-3 sm:px-6 sm:py-4 space-x-2">
                                     <button @click="editWallet({{ $wallet }})" class="text-blue-600 hover:underline">Edit</button>
                                     <form action="{{ route('user.wallets.destroy', $wallet) }}" method="POST" class="inline">
                                         @csrf
@@ -69,7 +69,7 @@
                                 </td>
                             </tr>
                         @empty
-                            <tr><td colspan="5" class="text-center px-6 py-4 text-gray-500">You haven't added any wallets yet.</td></tr>
+                            <tr><td colspan="5" class="px-3 py-4 text-center text-gray-500 sm:px-6">You haven't added any wallets yet.</td></tr>
                         @endforelse
                     </tbody>
                 </table>
@@ -79,7 +79,7 @@
         {{-- Modal --}}
         <div x-show="openModal" x-cloak
              class="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
-            <div class="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg w-full max-w-lg relative">
+            <div class="relative w-full max-w-lg rounded-lg bg-white p-4 shadow-lg dark:bg-gray-900 sm:p-6">
                 <button @click="resetForm" class="absolute top-2 right-2 text-gray-400 hover:text-red-500 text-xl">&times;</button>
 
                 <h2 class="text-xl font-semibold mb-4" x-text="editing ? 'Edit Wallet' : 'Add Wallet'"></h2>

@@ -1,6 +1,6 @@
 
 <x-layouts.app>
-    <div class="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
         {{-- Flash + Errors --}}
         @if (session('success'))
             <div class="mb-4 bg-green-100 text-green-800 p-4 rounded">{{ session('success') }}</div>
@@ -16,14 +16,14 @@
         @endif
 
         {{-- Withdrawal History --}}
-        <div class="mt-10">
-            <h3 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Withdrawal History</h3>
+        <div class="mt-6 sm:mt-10">
+            <h3 class="mb-4 text-lg font-semibold text-gray-800 dark:text-white sm:text-xl">Withdrawal History</h3>
                 @if ($withdrawals->isEmpty())
                     <div class="text-gray-600 dark:text-gray-300">You have no withdrawal history yet.</div>
                 @else
 
             <!--FILTER FORM-->
-            <form method="GET" class="mb-4 flex flex-wrap items-center gap-3">
+            <form method="GET" class="mb-4 flex flex-wrap items-end gap-3">
                     <div>
                         <label class="text-sm text-gray-700 dark:text-gray-200">From</label>
                         <input type="date" name="from" value="{{ request('from') }}"
@@ -45,7 +45,7 @@
                         </select>
                     </div>
                     <button type="submit"
-                            class="ml-auto bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700 transition">
+                            class="w-full rounded bg-blue-600 px-4 py-2 text-sm text-white transition hover:bg-blue-700 sm:ml-auto sm:w-auto sm:py-1.5">
                         Filter
                     </button>
                 </form>
@@ -54,21 +54,21 @@
                 <table class="min-w-full text-sm text-left">
                     <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase">
                         <tr>
-                            <th class="px-4 py-2">Date</th>
-                            <th class="px-4 py-2">Crypto</th>
-                            <th class="px-4 py-2">Amount</th>
-                            <th class="px-4 py-2">To</th>
-                            <th class="px-4 py-2">Status</th>
+                            <th class="px-3 py-2 sm:px-4">Date</th>
+                            <th class="px-3 py-2 sm:px-4">Crypto</th>
+                            <th class="px-3 py-2 sm:px-4">Amount</th>
+                            <th class="px-3 py-2 sm:px-4">To</th>
+                            <th class="px-3 py-2 sm:px-4">Status</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
                         @forelse ($withdrawals as $withdrawal)
                             <tr>
-                                <td class="px-4 py-2">{{ $withdrawal->created_at->format('Y-m-d H:i') }}</td>
-                                <td class="px-4 py-2">{{ $withdrawal->cryptocurrency }}</td>
-                                <td class="px-4 py-2">{{ $withdrawal->amount }}</td>
-                                <td class="px-4 py-2 truncate">{{ $withdrawal->wallet_address }}</td>
-                                <td class="px-4 py-2">
+                                <td class="px-3 py-2 sm:px-4">{{ $withdrawal->created_at->format('Y-m-d H:i') }}</td>
+                                <td class="px-3 py-2 sm:px-4">{{ $withdrawal->cryptocurrency }}</td>
+                                <td class="px-3 py-2 sm:px-4">{{ $withdrawal->amount }}</td>
+                                <td class="px-3 py-2 sm:px-4 truncate">{{ $withdrawal->wallet_address }}</td>
+                                <td class="px-3 py-2 sm:px-4">
                                     <span class="px-2 py-1 rounded text-xs font-medium
                                         @class([
                                             'bg-yellow-100 text-yellow-800' => $withdrawal->status === 'pending',

@@ -9,25 +9,25 @@
         @endif
 
         <div class="mb-6 flex flex-wrap items-center justify-between gap-2">
-            <h1 class="text-2xl font-bold">Trader: {{ $trader->name }}</h1>
+            <h1 class="text-xl font-bold sm:text-2xl">Trader: {{ $trader->name }}</h1>
             <div class="flex gap-2">
-                <a href="{{ route('admin.traders.edit', $trader) }}" class="bg-indigo-600 text-white px-4 py-2 rounded shadow hover:bg-indigo-700">Edit</a>
+                <a href="{{ route('admin.traders.edit', $trader) }}" class="rounded bg-indigo-600 px-4 py-2 text-sm text-white shadow hover:bg-indigo-700">Edit</a>
 
                 <form method="POST" action="{{ route('admin.traders.destroy', $trader) }}" onsubmit="return confirm('Are you sure?');">
                     @csrf @method('DELETE')
-                    <button class="bg-red-600 text-white px-4 py-2 rounded shadow hover:bg-red-700">Delete</button>
+                    <button class="rounded bg-red-600 px-4 py-2 text-sm text-white shadow hover:bg-red-700">Delete</button>
                 </form>
 
                 <form method="POST" action="{{ route('admin.traders.toggle-active', $trader) }}">
                     @csrf
-                    <button class="bg-yellow-500 text-white px-4 py-2 rounded shadow hover:bg-yellow-600">
+                    <button class="rounded bg-yellow-500 px-4 py-2 text-sm text-white shadow hover:bg-yellow-600">
                         {{ $trader->is_active ? 'Deactivate' : 'Activate' }}
                     </button>
                 </form>
 
                 <form method="POST" action="{{ route('admin.traders.toggle-featured', $trader) }}">
                     @csrf
-                    <button class="bg-purple-600 text-white px-4 py-2 rounded shadow hover:bg-purple-700">
+                    <button class="rounded bg-purple-600 px-4 py-2 text-sm text-white shadow hover:bg-purple-700">
                         {{ $trader->is_featured ? 'Unfeature' : 'Feature' }}
                     </button>
                 </form>
@@ -35,7 +35,7 @@
         </div>
 
         {{-- Stats --}}
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
+        <div class="mb-8 grid grid-cols-1 gap-4 md:grid-cols-5">
             <div class="bg-white dark:bg-gray-800 shadow p-4 rounded">
                 <h2 class="text-sm text-gray-500 dark:text-gray-400">Total Trades</h2>
                 <div class="text-xl font-bold">{{ $trader->trades->count() }}</div>
@@ -82,30 +82,30 @@
 
         {{-- Trade History --}}
         <div class="mt-10">
-            <h2 class="text-xl font-semibold mb-4">Trade History</h2>
+            <h2 class="mb-4 text-lg font-semibold sm:text-xl">Trade History</h2>
             <div class="overflow-x-auto bg-white dark:bg-gray-800 rounded shadow">
                 <table class="table-auto w-full text-sm">
                     <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 sticky top-0">
                         <tr>
-                            <th class="px-4 py-2">Type</th>
-                            <th class="px-4 py-2">Pair</th>
-                            <th class="px-4 py-2">Entry</th>
-                            <th class="px-4 py-2">Exit</th>
-                            <th class="px-4 py-2">Profit/Loss</th>
-                            <th class="px-4 py-2">Opened</th>
-                            <th class="px-4 py-2">Closed</th>
+                            <th class="px-3 py-2 sm:px-4">Type</th>
+                            <th class="px-3 py-2 sm:px-4">Pair</th>
+                            <th class="px-3 py-2 sm:px-4">Entry</th>
+                            <th class="px-3 py-2 sm:px-4">Exit</th>
+                            <th class="px-3 py-2 sm:px-4">Profit/Loss</th>
+                            <th class="px-3 py-2 sm:px-4">Opened</th>
+                            <th class="px-3 py-2 sm:px-4">Closed</th>
                         </tr>
                     </thead>
                     <tbody>
                         @forelse ($trades as $trade)
                             <tr class="border-t dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
-                                <td class="px-4 py-2 capitalize">{{ $trade->type }}</td>
-                                <td class="px-4 py-2">{{ $trade->pair ?? $trade->symbol }}</td>
-                                <td class="px-4 py-2">{{ $trade->entry_price }}</td>
-                                <td class="px-4 py-2">{{ $trade->exit_price }}</td>
-                                <td class="px-4 py-2 {{ $trade->roi >= 0 ? 'text-green-600' : 'text-red-600' }}">{{ $trade->roi }}</td>
-                                <td class="px-4 py-2">{{ $trade->entry_timestamp }}</td>
-                                <td class="px-4 py-2">{{ $trade->exit_timestamp }}</td>
+                                <td class="px-3 py-2 sm:px-4 capitalize">{{ $trade->type }}</td>
+                                <td class="px-3 py-2 sm:px-4">{{ $trade->pair ?? $trade->symbol }}</td>
+                                <td class="px-3 py-2 sm:px-4">{{ $trade->entry_price }}</td>
+                                <td class="px-3 py-2 sm:px-4">{{ $trade->exit_price }}</td>
+                                <td class="px-3 py-2 sm:px-4 {{ $trade->roi >= 0 ? 'text-green-600' : 'text-red-600' }}">{{ $trade->roi }}</td>
+                                <td class="px-3 py-2 sm:px-4">{{ $trade->entry_timestamp }}</td>
+                                <td class="px-3 py-2 sm:px-4">{{ $trade->exit_timestamp }}</td>
                             </tr>
                         @empty
                             <tr>

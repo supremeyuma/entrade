@@ -1,6 +1,6 @@
 <x-layouts.app>
-<div class="container mx-auto px-4 py-6 max-w-4xl">
-    <h1 class="text-3xl font-bold mb-4">{{ $trader->name }} (ID: {{ $trader->trader_id }})</h1>
+<div class="container mx-auto max-w-4xl px-4 py-6">
+    <h1 class="mb-4 text-2xl font-bold sm:text-3xl">{{ $trader->name }} (ID: {{ $trader->trader_id }})</h1>
 
     
     <div class="mb-6">

@@ -1,5 +1,5 @@
 <x-layouts.app>
-<div data-aos="fade-up" data-aos-delay="100" class="max-w-lg mx-auto bg-white p-6 rounded shadow">
+<div data-aos="fade-up" data-aos-delay="100" class="max-w-lg mx-auto rounded bg-white p-4 shadow sm:p-6">
     <h2 class="text-xl font-bold mb-4">Make a Deposit</h2>
 
     @if(session('error'))
@@ -34,7 +34,7 @@
             </select>
         </div>-->
 
-        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+        <button type="submit" class="w-full rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600 sm:w-auto">
             Continue to Payment
         </button>
     </form>

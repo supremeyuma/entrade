@@ -1,6 +1,6 @@
 <x-layouts.admin>
-    <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-bold mb-6">Generate Historical Trades</h1>
+    <div class="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <h1 class="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">Generate Historical Trades</h1>
 
         {{-- Flash Success Message --}}
         @if (session('success'))
@@ -21,7 +21,7 @@
         @endif
 
 
-        <form action="{{ route('admin.trade-bot.generate') }}" method="POST" id="tradeBotForm" class="space-y-6 bg-white p-6 rounded-lg shadow">
+        <form action="{{ route('admin.trade-bot.generate') }}" method="POST" id="tradeBotForm" class="space-y-4 rounded-lg bg-white p-4 shadow sm:space-y-6 sm:p-6">
             @csrf
 
             <div>

@@ -1,8 +1,8 @@
 <x-layouts.admin>
     <div class="px-4 py-6">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Deposit #{{ $deposit->id }}</h1>
+        <h1 class="mb-4 text-xl font-bold text-gray-900 dark:text-white sm:mb-6 sm:text-2xl">Deposit #{{ $deposit->id }}</h1>
 
-        <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6 max-w-2xl">
+        <div class="max-w-2xl rounded-xl bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
             <dl class="divide-y divide-gray-200 dark:divide-gray-700">
                 <div class="flex justify-between py-3">
                     <dt class="font-medium text-gray-700 dark:text-gray-300">User</dt>

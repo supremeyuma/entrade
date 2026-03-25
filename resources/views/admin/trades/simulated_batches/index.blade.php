@@ -1,8 +1,8 @@
 <x-layouts.admin>
-    <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-bold mb-6">Simulated Trade Batches</h1>
+    <div class="max-w-7xl mx-auto px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
+        <h1 class="mb-4 text-xl font-bold sm:mb-6 sm:text-2xl">Simulated Trade Batches</h1>
 
-        <form method="GET" class="flex flex-wrap gap-4 mb-4 items-end">
+        <form method="GET" class="mb-4 flex flex-wrap items-end gap-3 sm:gap-4">
             <input name="search" value="{{ request('search') }}" type="text" class="input input-bordered" placeholder="Search by trader">
             <input name="from" value="{{ request('from') }}" type="date" class="input input-bordered">
             <input name="to" value="{{ request('to') }}" type="date" class="input input-bordered">

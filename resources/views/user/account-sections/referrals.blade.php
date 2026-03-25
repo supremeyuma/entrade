@@ -1,5 +1,5 @@
-<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-6">
-    <h2 class="text-xl font-semibold">Referral Settings</h2>
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 sm:p-6 space-y-4 sm:space-y-6">
+    <h2 class="text-lg font-semibold sm:text-xl">Referral Settings</h2>
 
     @if(session('referral_success'))
         <div class="bg-green-100 text-green-800 dark:bg-green-700 dark:text-white px-4 py-3 rounded">
@@ -10,13 +10,13 @@
     <!-- Referral Link -->
     <div>
         <label class="block text-sm font-medium mb-1">Your Referral Link</label>
-        <div class="flex items-center space-x-2">
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center sm:space-x-2">
             <input type="text" readonly value="{{ route('register', ['ref' => $user->referral_code]) }}"
-                   class="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white">
+                   class="w-full border rounded px-3 py-2 dark:bg-gray-700 dark:text-white sm:px-4">
             <button type="button"
                     x-data="{}"
                     @click="navigator.clipboard.writeText('{{ route('register', ['ref' => $user->referral_code]) }}')"
-                    class="px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                    class="w-full rounded bg-blue-600 px-3 py-2 text-sm text-white transition hover:bg-blue-700 sm:w-auto">
                 Copy
             </button>
         </div>

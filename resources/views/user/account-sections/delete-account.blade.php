@@ -1,5 +1,5 @@
-<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-4">
-    <h2 class="text-xl font-semibold text-red-600">Delete Your Account</h2>
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 sm:p-6 space-y-4">
+    <h2 class="text-lg font-semibold text-red-600 sm:text-xl">Delete Your Account</h2>
 
     <p class="text-sm text-gray-600 dark:text-gray-300">
         Deleting your account is irreversible. All your data, including trades, balances, and referrals, will be permanently deleted. 
@@ -34,7 +34,7 @@
 
         <button type="submit"
                 onclick="return confirm('Are you sure you want to delete your account permanently?')"
-                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded">
+                class="w-full rounded bg-red-600 px-4 py-2 text-sm text-white hover:bg-red-700 sm:w-auto">
             Permanently Delete Account
         </button>
     </form>

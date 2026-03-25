@@ -1,6 +1,6 @@
 <x-layouts.app>
-    <div class="max-w-3xl mx-auto p-6 bg-white rounded shadow">
-        <h1 class="text-2xl font-bold mb-4">Manually Add Trade History</h1>
+    <div class="max-w-3xl mx-auto rounded bg-white p-4 shadow sm:p-6">
+        <h1 class="mb-4 text-xl font-bold sm:text-2xl">Manually Add Trade History</h1>
 
         @if(session('success'))
             <div class="bg-green-100 text-green-800 p-3 rounded mb-4">{{ session('success') }}</div>

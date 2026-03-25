@@ -1,8 +1,8 @@
 <x-layouts.admin>
-    <div class="max-w-3xl mx-auto p-6">
-        <h1 class="text-xl font-semibold mb-6">Edit FAQ</h1>
+    <div class="max-w-3xl mx-auto p-4 sm:p-6">
+        <h1 class="mb-4 text-lg font-semibold sm:mb-6 sm:text-xl">Edit FAQ</h1>
 
-        <form action="{{ route('admin.faqs.update', $faq) }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.faqs.update', $faq) }}" method="POST" class="space-y-4 sm:space-y-6">
             @csrf @method('PUT')
 
             <x-inputs.select name="faq_category_id" label="Category" :options="$categories->pluck('title', 'id')" :value="$faq->faq_category_id" required />
@@ -31,7 +31,7 @@
 
 
             <div class="pt-4">
-                <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">Update FAQ</button>
+                <button class="w-full rounded bg-indigo-600 px-4 py-2 text-sm text-white hover:bg-indigo-700 sm:w-auto">Update FAQ</button>
             </div>
         </form>
     </div>

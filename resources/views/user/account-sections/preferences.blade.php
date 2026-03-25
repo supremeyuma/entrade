@@ -1,5 +1,5 @@
-<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-6">
-    <h2 class="text-xl font-semibold">Preferences</h2>
+<div class="bg-white dark:bg-gray-800 shadow rounded-lg p-4 sm:p-6 space-y-4 sm:space-y-6">
+    <h2 class="text-lg font-semibold sm:text-xl">Preferences</h2>
 
     {{-- Flash + Error Messages --}}
     @if(session('pref_success'))
@@ -25,7 +25,7 @@
         {{-- Language --}}
         <div>
             <label class="block text-sm font-medium mb-1">Preferred Language</label>
-            <select name="language" class="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white">
+            <select name="language" class="w-full border rounded px-3 py-2 dark:bg-gray-700 dark:text-white sm:px-4">
                 <option value="">Select language</option>
                 <option value="en" {{ $settings?->language === 'en' ? 'selected' : '' }}>English</option>
                 <option value="fr" {{ $settings?->language === 'fr' ? 'selected' : '' }}>French</option>
@@ -37,7 +37,7 @@
         {{-- Timezone --}}
         <div>
             <label class="block text-sm font-medium mb-1">Preferred Timezone</label>
-            <select name="timezone" class="w-full px-4 py-2 border rounded dark:bg-gray-700 dark:text-white">
+            <select name="timezone" class="w-full border rounded px-3 py-2 dark:bg-gray-700 dark:text-white sm:px-4">
                 @foreach(timezone_identifiers_list() as $tz)
                     <option value="{{ $tz }}" {{ $settings?->timezone === $tz ? 'selected' : '' }}>
                         {{ $tz }}
@@ -84,7 +84,7 @@
 
         <div>
             <button type="submit"
-                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                    class="w-full rounded bg-blue-600 px-4 py-2 text-sm text-white transition hover:bg-blue-700 sm:w-auto">
                 Save Preferences
             </button>
         </div>

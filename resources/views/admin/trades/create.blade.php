@@ -1,8 +1,8 @@
 <x-layouts.admin>
     <div class="px-4 py-6 max-w-3xl">
-        <h1 class="text-2xl font-bold mb-4">Add Trade for {{ $trader->name }}</h1>
+        <h1 class="mb-4 text-xl font-bold sm:text-2xl">Add Trade for {{ $trader->name }}</h1>
 
-        <form method="POST" action="{{ route('admin.traders.trades.store', $trader) }}" class="space-y-4 bg-white dark:bg-gray-800 p-6 rounded shadow">
+        <form method="POST" action="{{ route('admin.traders.trades.store', $trader) }}" class="space-y-4 rounded bg-white p-4 shadow dark:bg-gray-800 sm:p-6">
             @csrf
 
             <div>
@@ -23,7 +23,7 @@
                 </select>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                     <label class="block text-sm font-medium mb-1">Entry Price</label>
                     <input type="number" name="entry_price" step="0.0001" required class="input w-full">
@@ -34,7 +34,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                     <label class="block text-sm font-medium mb-1">Lot Size</label>
                     <input type="number" name="lot_size" step="0.01" class="input w-full">
@@ -45,7 +45,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                     <label class="block text-sm font-medium mb-1">Stop Loss</label>
                     <input type="number" name="stop_loss" step="0.0001" class="input w-full">
@@ -56,7 +56,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <div>
                     <label class="block text-sm font-medium mb-1">Opened At</label>
                     <input type="datetime-local" name="opened_at" class="input w-full">

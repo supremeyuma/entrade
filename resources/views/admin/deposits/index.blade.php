@@ -1,6 +1,6 @@
 <x-layouts.admin>
     <div class="px-4 py-6">
-        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Deposits</h1>
+        <h1 class="mb-4 text-xl font-bold text-gray-900 dark:text-white sm:mb-6 sm:text-2xl">Deposits</h1>
 
         <form method="GET" class="mb-4 grid grid-cols-1 sm:grid-cols-4 gap-2">
             <input type="text" name="q" placeholder="Search user or invoice" value="{{ request('q') }}" class="px-3 py-2 rounded border" />

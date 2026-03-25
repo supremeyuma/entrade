@@ -1,7 +1,8 @@
 <x-layouts/admin>
-<h1 class="text-xl font-bold mb-4">Edit Role for {{ $user->name }}</h1>
+<div class="mx-auto max-w-2xl px-4 py-6">
+<h1 class="mb-4 text-xl font-bold sm:text-2xl">Edit Role for {{ $user->name }}</h1>
 
-    <form method="POST" action="{{ route('admin.users.updateRole', $user) }}">
+    <form method="POST" action="{{ route('admin.users.updateRole', $user) }}" class="rounded bg-white p-4 shadow sm:p-6">
         @csrf
 
         <div class="mb-4">
@@ -18,6 +19,7 @@
             @enderror
         </div>
 
-        <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">Update Role</button>
+        <button type="submit" class="w-full rounded bg-blue-600 px-4 py-2 text-sm text-white hover:bg-blue-700 sm:w-auto">Update Role</button>
     </form>
+</div>
 </x-layouts/admin>
