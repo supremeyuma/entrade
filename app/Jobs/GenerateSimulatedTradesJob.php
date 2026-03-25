@@ -20,6 +20,8 @@ class GenerateSimulatedTradesJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private const MAX_STORED_ROI = 999.99;
+
     protected $tradingPairs;
     protected $netProfit;
     protected $targetWinRate;
@@ -128,9 +130,6 @@ class GenerateSimulatedTradesJob implements ShouldQueue
 
         $tradesCreated = 0;
 
-        // Base invested amount per trade (currency). Using a fixed amount simplifies ROI calculation.
-        $baseInvested = 100.00;
-
         foreach ($tradeTypes as $idx => $type) {
             if ($tradesCreated >= $this->tradeCount) break;
 
@@ -146,33 +145,8 @@ class GenerateSimulatedTradesJob implements ShouldQueue
 
             $profitAmount = $profits[$idx] ?? 0.0; // currency amount (positive for wins, negative for losses)
 
-            // compute ROI percentage relative to baseInvested
-            $roiPercent = $baseInvested > 0 ? ($profitAmount / $baseInvested) * 100 : 0;
-
-            // synthesize entry/exit prices
-            $entryPrice = round(mt_rand(1000, 100000) / 100, 4); // 10.00 - 1000.00
-            $exitPrice = round($entryPrice * (1 + ($roiPercent / 100)), 4);
-
-            $tradeData = [
-                'batch_id' => $batchId,
-                'trader_id' => $trader->id,
-                'symbol' => $pair,
-                'market' => 'synthetic',
-                'type' => $direction,
-                'entry_price' => $entryPrice,
-                'exit_price' => $exitPrice,
-                'entry_timestamp' => $entryTimestamp->toDateTimeString(),
-                'exit_timestamp' => $exitTimestamp->toDateTimeString(),
-                'roi' => round($roiPercent, 2),
-                'status' => 'closed',
-                'source' => 'admin-synthetic',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-
-            $trade = Trade::create($tradeData);
-
-            // Update user balance with profit/loss and create trade history
+            // Update user balance and determine the invested amount before creating the trade,
+            // so ROI is based on the same capital shown in trade history.
             $user = \App\Models\User::find($this->userId);
             if ($user) {
                 $balance = $user->balance;
@@ -186,10 +160,6 @@ class GenerateSimulatedTradesJob implements ShouldQueue
 
                 // Store old balance before update
                 $oldTradeBalance = $balance->trade_balance;
-
-                // Add profit/loss to balance
-                $balance->trade_balance += $profitAmount;
-                $balance->save();
 
                 // Determine amount invested for trade history
                 // Priority: explicit allocation > trade_balance > main_balance > old balance
@@ -212,6 +182,37 @@ class GenerateSimulatedTradesJob implements ShouldQueue
                 } else {
                     // Fallback: no balance available, use old trade balance (likely 0)
                     $amountInvested = $oldTradeBalance;
+                    $amountReturned = round($oldTradeBalance + $profitAmount, 2);
+                }
+
+                $storedRoi = $this->calculateStoredRoi($profitAmount, $amountInvested);
+
+                // synthesize entry/exit prices using the stored ROI value
+                $entryPrice = round(mt_rand(1000, 100000) / 100, 4); // 10.00 - 1000.00
+                $exitPrice = round($entryPrice * (1 + ($storedRoi / 100)), 4);
+
+                $trade = Trade::create([
+                    'batch_id' => $batchId,
+                    'trader_id' => $trader->id,
+                    'symbol' => $pair,
+                    'market' => 'synthetic',
+                    'type' => $direction,
+                    'entry_price' => $entryPrice,
+                    'exit_price' => $exitPrice,
+                    'entry_timestamp' => $entryTimestamp->toDateTimeString(),
+                    'exit_timestamp' => $exitTimestamp->toDateTimeString(),
+                    'roi' => $storedRoi,
+                    'status' => 'closed',
+                    'source' => 'admin-synthetic',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                // Add profit/loss to balance after capturing the invested baseline
+                $balance->trade_balance += $profitAmount;
+                $balance->save();
+
+                if ($oldTradeBalance > 0 && (!isset($subscription) || !($subscription && $subscription->allocated_amount > 0))) {
                     $amountReturned = round($balance->trade_balance, 2);
                 }
 
@@ -221,7 +222,7 @@ class GenerateSimulatedTradesJob implements ShouldQueue
                     'trader_id' => $trader->id,
                     'trade_id' => $trade->id,
                     'amount_invested' => $amountInvested,
-                    'roi' => round($roiPercent, 2),
+                    'roi' => $storedRoi,
                     'amount_returned' => $amountReturned,
                     'new_trade_balance' => round($balance->trade_balance, 2),
                 ]);
@@ -231,6 +232,17 @@ class GenerateSimulatedTradesJob implements ShouldQueue
         }
 
         Log::info("Created {$tradesCreated} synthetic trades for user {$this->userId} (batch {$batchId}).");
+    }
+
+    private function calculateStoredRoi(float $profitAmount, float $amountInvested): float
+    {
+        if ($amountInvested <= 0.0) {
+            return 0.0;
+        }
+
+        $roiPercent = round(($profitAmount / $amountInvested) * 100, 2);
+
+        return max(min($roiPercent, self::MAX_STORED_ROI), -self::MAX_STORED_ROI);
     }
 
     /**
