@@ -37,9 +37,11 @@
     @endphp
 
     <div class="space-y-4 sm:space-y-6">
-        <section class="overflow-hidden rounded-[24px] sm:rounded-[28px] border shadow-xl {{ $heroClasses }}">
+        <section data-aos="fade-up" data-aos-delay="0" class="overflow-hidden rounded-[24px] sm:rounded-[28px] border shadow-xl transition duration-500 ease-out hover:-translate-y-1 hover:shadow-2xl {{ $heroClasses }}">
             <div class="relative px-4 py-5 sm:px-8 sm:py-8">
                 <div class="absolute inset-0 {{ $heroOverlayClasses }}"></div>
+                <div class="pointer-events-none absolute -right-10 top-6 h-24 w-24 rounded-full bg-cyan-400/10 blur-2xl animate-pulse"></div>
+                <div class="pointer-events-none absolute -left-6 bottom-0 h-20 w-20 rounded-full bg-emerald-400/10 blur-2xl animate-pulse"></div>
 
                 <div class="relative flex flex-col gap-4 sm:gap-6 lg:flex-row lg:items-end lg:justify-between">
                     <div>
@@ -50,16 +52,16 @@
                     </div>
 
                     <div class="grid gap-2 sm:gap-3 sm:grid-cols-2 lg:min-w-[360px]">
-                        <a href="{{ route('user.deposit.create') }}" class="rounded-xl sm:rounded-2xl border px-3 py-2.5 sm:px-4 sm:py-3 text-center text-xs sm:text-sm font-semibold transition {{ $outlineButtonClasses }}">
+                        <a href="{{ route('user.deposit.create') }}" class="rounded-xl sm:rounded-2xl border px-3 py-2.5 sm:px-4 sm:py-3 text-center text-xs sm:text-sm font-semibold transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.99] {{ $outlineButtonClasses }}">
                             Deposit Funds
                         </a>
-                        <a href="{{ route('user.withdrawals.create') }}" class="rounded-xl sm:rounded-2xl border px-3 py-2.5 sm:px-4 sm:py-3 text-center text-xs sm:text-sm font-semibold transition {{ $outlineButtonClasses }}">
+                        <a href="{{ route('user.withdrawals.create') }}" class="rounded-xl sm:rounded-2xl border px-3 py-2.5 sm:px-4 sm:py-3 text-center text-xs sm:text-sm font-semibold transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.99] {{ $outlineButtonClasses }}">
                             Withdraw
                         </a>
-                        <a href="{{ route('user.tradingDashboard') }}" class="rounded-xl sm:rounded-2xl border px-3 py-2.5 sm:px-4 sm:py-3 text-center text-xs sm:text-sm font-semibold transition {{ $outlineButtonClasses }}">
+                        <a href="{{ route('user.tradingDashboard') }}" class="rounded-xl sm:rounded-2xl border px-3 py-2.5 sm:px-4 sm:py-3 text-center text-xs sm:text-sm font-semibold transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.99] {{ $outlineButtonClasses }}">
                             Trade Dashboard
                         </a>
-                        <a href="{{ route('user.trade.search') }}" class="rounded-xl sm:rounded-2xl border px-3 py-2.5 sm:px-4 sm:py-3 text-center text-xs sm:text-sm font-semibold transition {{ $outlineButtonClasses }}">
+                        <a href="{{ route('user.trade.search') }}" class="rounded-xl sm:rounded-2xl border px-3 py-2.5 sm:px-4 sm:py-3 text-center text-xs sm:text-sm font-semibold transition duration-300 ease-out hover:-translate-y-0.5 hover:shadow-lg active:scale-[0.99] {{ $outlineButtonClasses }}">
                             Find Traders
                         </a>
                     </div>
@@ -67,58 +69,58 @@
             </div>
         </section>
 
-        <section class="grid gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-4">
-            <div class="rounded-[20px] sm:rounded-[24px] border p-4 sm:p-5 shadow-sm {{ $surfaceClasses }}">
+        <section data-aos="fade-up" data-aos-delay="100" class="grid gap-3 sm:gap-4 md:grid-cols-2 xl:grid-cols-4">
+            <div class="rounded-[20px] sm:rounded-[24px] border p-4 sm:p-5 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
                 <p class="text-xs sm:text-sm {{ $bodyTextClasses }}">Main Balance</p>
                 <p class="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-semibold {{ $headingClasses }}">${{ number_format($main_balance, 2) }}</p>
             </div>
 
-            <div class="rounded-[20px] sm:rounded-[24px] border p-4 sm:p-5 shadow-sm {{ $surfaceClasses }}">
+            <div class="rounded-[20px] sm:rounded-[24px] border p-4 sm:p-5 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
                 <p class="text-xs sm:text-sm {{ $bodyTextClasses }}">Trade Balance</p>
                 <p class="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-semibold {{ $headingClasses }}">${{ number_format($trade_balance, 2) }}</p>
             </div>
 
-            <div class="rounded-[20px] sm:rounded-[24px] border p-4 sm:p-5 shadow-sm {{ $surfaceClasses }}">
+            <div class="rounded-[20px] sm:rounded-[24px] border p-4 sm:p-5 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
                 <p class="text-xs sm:text-sm {{ $bodyTextClasses }}">Net Profit</p>
                 <p class="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-semibold {{ $netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
                     {{ $formatSignedCurrency($netProfit) }}
                 </p>
             </div>
 
-            <div class="rounded-[20px] sm:rounded-[24px] border p-4 sm:p-5 shadow-sm {{ $surfaceClasses }}">
+            <div class="rounded-[20px] sm:rounded-[24px] border p-4 sm:p-5 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
                 <p class="text-xs sm:text-sm {{ $bodyTextClasses }}">Active Traders</p>
                 <p class="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-semibold {{ $headingClasses }}">{{ $activeSubscriptions->count() }}</p>
             </div>
         </section>
 
-        <section class="grid gap-4 sm:gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-            <div class="rounded-[24px] sm:rounded-[28px] border p-4 sm:p-6 shadow-sm {{ $surfaceClasses }}">
+        <section data-aos="fade-up" data-aos-delay="180" class="grid gap-4 sm:gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+            <div class="rounded-[24px] sm:rounded-[28px] border p-4 sm:p-6 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg sm:text-xl font-semibold {{ $headingClasses }}">Overview</h2>
-                    <a href="{{ route('user.tradingDashboard') }}" class="text-xs sm:text-sm font-medium {{ $mutedTextClasses }} hover:text-slate-900 dark:hover:text-slate-100">
+                    <a href="{{ route('user.tradingDashboard') }}" class="text-xs sm:text-sm font-medium transition duration-300 hover:-translate-y-0.5 {{ $mutedTextClasses }} hover:text-slate-900 dark:hover:text-slate-100">
                         Open trade dashboard
                     </a>
                 </div>
 
                 <div class="mt-4 sm:mt-5 grid gap-3 sm:gap-4 sm:grid-cols-2">
-                    <div class="rounded-2xl sm:rounded-3xl p-4 sm:p-5 {{ $subtleSurfaceClasses }}">
+                    <div class="rounded-2xl sm:rounded-3xl p-4 sm:p-5 transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lg {{ $subtleSurfaceClasses }}">
                         <p class="text-xs sm:text-sm {{ $bodyTextClasses }}">Allocated Capital</p>
                         <p class="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-semibold {{ $headingClasses }}">${{ number_format($copiedCapital, 2) }}</p>
                     </div>
 
-                    <div class="rounded-2xl sm:rounded-3xl p-4 sm:p-5 {{ $subtleSurfaceClasses }}">
+                    <div class="rounded-2xl sm:rounded-3xl p-4 sm:p-5 transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lg {{ $subtleSurfaceClasses }}">
                         <p class="text-xs sm:text-sm {{ $bodyTextClasses }}">Average ROI</p>
                         <p class="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-semibold {{ $averageRoi >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
                             {{ number_format($averageRoi, 2) }}%
                         </p>
                     </div>
 
-                    <div class="rounded-2xl sm:rounded-3xl p-4 sm:p-5 {{ $subtleSurfaceClasses }}">
+                    <div class="rounded-2xl sm:rounded-3xl p-4 sm:p-5 transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lg {{ $subtleSurfaceClasses }}">
                         <p class="text-xs sm:text-sm {{ $bodyTextClasses }}">Win Rate</p>
                         <p class="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-semibold {{ $headingClasses }}">{{ number_format($winRate, 1) }}%</p>
                     </div>
 
-                    <div class="rounded-2xl sm:rounded-3xl p-4 sm:p-5 {{ $subtleSurfaceClasses }}">
+                    <div class="rounded-2xl sm:rounded-3xl p-4 sm:p-5 transition duration-300 ease-out hover:-translate-y-1 hover:shadow-lg {{ $subtleSurfaceClasses }}">
                         <p class="text-xs sm:text-sm {{ $bodyTextClasses }}">30D P/L</p>
                         <p class="mt-1.5 sm:mt-2 text-xl sm:text-2xl font-semibold {{ $thirtyDayProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
                             {{ $formatSignedCurrency($thirtyDayProfit) }}
@@ -131,7 +133,7 @@
                         <h3 class="text-xs sm:text-sm font-medium uppercase tracking-[0.16em] {{ $mutedTextClasses }}">Active Allocations</h3>
                         <div class="mt-3 space-y-2.5 sm:space-y-3">
                             @foreach ($activeSubscriptions->take(3) as $subscription)
-                                <div class="flex items-center justify-between rounded-xl sm:rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 {{ $subtleSurfaceClasses }}">
+                                <div class="flex items-center justify-between rounded-xl sm:rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 transition duration-300 ease-out hover:translate-x-1 hover:shadow-md {{ $subtleSurfaceClasses }}">
                                     <p class="text-sm sm:text-base font-medium {{ $headingClasses }}">{{ $subscription->trader->name ?? 'Trader' }}</p>
                                     <p class="text-xs sm:text-sm font-semibold {{ $secondaryTextClasses }}">${{ number_format($subscription->allocated_amount ?? 0, 2) }}</p>
                                 </div>
@@ -141,17 +143,17 @@
                 @endif
             </div>
 
-            <div class="rounded-[24px] sm:rounded-[28px] border p-4 sm:p-6 shadow-sm {{ $surfaceClasses }}">
+            <div class="rounded-[24px] sm:rounded-[28px] border p-4 sm:p-6 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl {{ $surfaceClasses }}">
                 <div class="flex items-center justify-between">
                     <h2 class="text-lg sm:text-xl font-semibold {{ $headingClasses }}">Recent Transactions</h2>
-                    <a href="{{ route('user.transactions.index') }}" class="text-xs sm:text-sm font-medium {{ $mutedTextClasses }} hover:text-slate-900 dark:hover:text-slate-100">
+                    <a href="{{ route('user.transactions.index') }}" class="text-xs sm:text-sm font-medium transition duration-300 hover:-translate-y-0.5 {{ $mutedTextClasses }} hover:text-slate-900 dark:hover:text-slate-100">
                         View all
                     </a>
                 </div>
 
                 <div class="mt-4 sm:mt-5 space-y-2.5 sm:space-y-3">
                     @forelse ($recentTransactions as $tx)
-                        <div class="flex items-start justify-between gap-3 sm:gap-4 rounded-xl sm:rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 {{ $subtleSurfaceClasses }}">
+                        <div class="flex items-start justify-between gap-3 sm:gap-4 rounded-xl sm:rounded-2xl px-3 py-2.5 sm:px-4 sm:py-3 transition duration-300 ease-out hover:translate-x-1 hover:shadow-md {{ $subtleSurfaceClasses }}">
                             <div>
                                 <p class="text-sm sm:text-base font-medium {{ $headingClasses }}">{{ ucfirst($tx->type ?? 'Transaction') }}</p>
                                 <p class="mt-1 text-xs {{ $bodyTextClasses }}">{{ $tx->user_note ?? $tx->category ?? '-' }}</p>
