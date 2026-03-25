@@ -1,95 +1,115 @@
+@php
+    $isDark = session('theme') === 'dark';
+    $heroClasses = $isDark ? 'border-slate-800 bg-slate-950 text-slate-100 shadow-black/20' : 'border-slate-200 bg-white text-slate-900';
+    $heroOverlayClasses = $isDark
+        ? 'bg-[radial-gradient(circle_at_top_left,_rgba(34,197,94,0.16),_transparent_30%),radial-gradient(circle_at_85%_20%,_rgba(56,189,248,0.16),_transparent_26%),linear-gradient(135deg,_rgba(2,6,23,0.98),_rgba(15,23,42,0.92)_58%,_rgba(30,41,59,0.94))]'
+        : 'bg-[radial-gradient(circle_at_top_left,_rgba(34,197,94,0.10),_transparent_30%),radial-gradient(circle_at_85%_20%,_rgba(56,189,248,0.10),_transparent_26%),linear-gradient(135deg,_#ffffff,_#f8fafc_58%,_#eef2ff)]';
+    $surfaceClasses = $isDark ? 'border-slate-800 bg-slate-900' : 'border-slate-200 bg-white';
+    $subtleSurfaceClasses = $isDark ? 'bg-slate-800/80 text-slate-400' : 'bg-slate-50 text-slate-500';
+    $bodyTextClasses = $isDark ? 'text-slate-300' : 'text-slate-600';
+    $inputClasses = $isDark
+        ? 'border-slate-700 bg-slate-800 text-slate-100 focus:border-emerald-400 focus:ring-emerald-500/20'
+        : 'border-slate-200 bg-slate-50 text-slate-900 focus:border-emerald-400 focus:ring-emerald-200';
+@endphp
 
 <x-layouts.app>
-    <div class="max-w-4xl mx-auto px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
-        {{-- Flash + Errors --}}
-        @if (session('success'))
-            <div class="mb-4 bg-green-100 text-green-800 p-4 rounded">{{ session('success') }}</div>
-        @endif
-        @if ($errors->any())
-            <div class="mb-4 bg-red-100 text-red-800 p-4 rounded">
-                <ul class="list-disc ml-5">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+    <div class="mx-auto max-w-5xl px-4 py-6 sm:py-8">
+        <div class="space-y-4 sm:space-y-6">
+            <section data-aos="fade-up" data-aos-delay="0" class="relative overflow-hidden rounded-[24px] border shadow-xl transition duration-300 ease-out hover:-translate-y-1 hover:shadow-2xl sm:rounded-[28px] {{ $heroClasses }}">
+                <div class="absolute inset-0 {{ $heroOverlayClasses }}"></div>
+                <div class="relative px-5 py-6 sm:px-7 sm:py-8">
+                    <p class="text-[11px] font-medium uppercase tracking-[0.24em] {{ $isDark ? 'text-slate-400' : 'text-slate-500' }}">Funding</p>
+                    <h2 class="mt-3 text-2xl font-semibold tracking-tight sm:text-3xl">Withdrawal History</h2>
+                    <p class="mt-2 text-sm {{ $bodyTextClasses }}">Filter your withdrawals by date or amount and track current statuses.</p>
+                </div>
+            </section>
 
-        {{-- Withdrawal History --}}
-        <div class="mt-6 sm:mt-10">
-            <h3 class="mb-4 text-lg font-semibold text-gray-800 dark:text-white sm:text-xl">Withdrawal History</h3>
-                @if ($withdrawals->isEmpty())
-                    <div class="text-gray-600 dark:text-gray-300">You have no withdrawal history yet.</div>
-                @else
+            @if (session('success'))
+                <div data-aos="fade-up" data-aos-delay="120" class="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">{{ session('success') }}</div>
+            @endif
 
-            <!--FILTER FORM-->
-            <form method="GET" class="mb-4 flex flex-wrap items-end gap-3">
-                    <div>
-                        <label class="text-sm text-gray-700 dark:text-gray-200">From</label>
-                        <input type="date" name="from" value="{{ request('from') }}"
-                            class="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-2 py-1" />
-                    </div>
-                    <div>
-                        <label class="text-sm text-gray-700 dark:text-gray-200">To</label>
-                        <input type="date" name="to" value="{{ request('to') }}"
-                            class="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-2 py-1" />
-                    </div>
-                    <div>
-                        <label class="text-sm text-gray-700 dark:text-gray-200">Sort By</label>
-                        <select name="sort" onchange="this.form.submit()"
-                                class="rounded border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white px-2 py-1">
-                            <option value="">Newest First</option>
-                            <option value="date_asc" @selected(request('sort') === 'date_asc')>Oldest First</option>
-                            <option value="amount_asc" @selected(request('sort') === 'amount_asc')>Amount ↑</option>
-                            <option value="amount_desc" @selected(request('sort') === 'amount_desc')>Amount ↓</option>
-                        </select>
-                    </div>
-                    <button type="submit"
-                            class="w-full rounded bg-blue-600 px-4 py-2 text-sm text-white transition hover:bg-blue-700 sm:ml-auto sm:w-auto sm:py-1.5">
-                        Filter
-                    </button>
-                </form>
-                 <!--FILTER FORM END-->
-            <div class="bg-white dark:bg-gray-800 shadow rounded-lg overflow-x-auto">
-                <table class="min-w-full text-sm text-left">
-                    <thead class="bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 uppercase">
-                        <tr>
-                            <th class="px-3 py-2 sm:px-4">Date</th>
-                            <th class="px-3 py-2 sm:px-4">Crypto</th>
-                            <th class="px-3 py-2 sm:px-4">Amount</th>
-                            <th class="px-3 py-2 sm:px-4">To</th>
-                            <th class="px-3 py-2 sm:px-4">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-                        @forelse ($withdrawals as $withdrawal)
+            @if ($errors->any())
+                <div data-aos="fade-up" data-aos-delay="140" class="rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:bg-rose-500/10 dark:text-rose-300">
+                    <ul class="list-disc pl-5">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            @if ($withdrawals->isEmpty())
+                <div data-aos="fade-up" data-aos-delay="160" class="rounded-[24px] border p-5 text-sm shadow-sm {{ $surfaceClasses }} {{ $bodyTextClasses }}">You have no withdrawal history yet.</div>
+            @else
+                <section data-aos="fade-up" data-aos-delay="160" class="rounded-[24px] border p-4 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl sm:rounded-[28px] sm:p-6 {{ $surfaceClasses }}">
+                    <form method="GET" class="flex flex-wrap items-end gap-3">
+                        <div>
+                            <label class="mb-1 block text-sm {{ $bodyTextClasses }}">From</label>
+                            <input type="date" name="from" value="{{ request('from') }}"
+                                class="rounded-2xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 {{ $inputClasses }}" />
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-sm {{ $bodyTextClasses }}">To</label>
+                            <input type="date" name="to" value="{{ request('to') }}"
+                                class="rounded-2xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 {{ $inputClasses }}" />
+                        </div>
+                        <div>
+                            <label class="mb-1 block text-sm {{ $bodyTextClasses }}">Sort By</label>
+                            <select name="sort" onchange="this.form.submit()"
+                                    class="rounded-2xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 {{ $inputClasses }}">
+                                <option value="">Newest First</option>
+                                <option value="date_asc" @selected(request('sort') === 'date_asc')>Oldest First</option>
+                                <option value="amount_asc" @selected(request('sort') === 'amount_asc')>Amount Up</option>
+                                <option value="amount_desc" @selected(request('sort') === 'amount_desc')>Amount Down</option>
+                            </select>
+                        </div>
+                        <button type="submit"
+                                class="w-full rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-emerald-500 hover:shadow-lg active:scale-[0.99] sm:ml-auto sm:w-auto sm:px-5 sm:py-3">
+                            Filter
+                        </button>
+                    </form>
+                </section>
+
+                <div data-aos="fade-up" data-aos-delay="200" class="overflow-x-auto rounded-[24px] border shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl sm:rounded-[28px] {{ $surfaceClasses }}">
+                    <table class="min-w-full text-left text-sm">
+                        <thead class="{{ $subtleSurfaceClasses }}">
                             <tr>
-                                <td class="px-3 py-2 sm:px-4">{{ $withdrawal->created_at->format('Y-m-d H:i') }}</td>
-                                <td class="px-3 py-2 sm:px-4">{{ $withdrawal->cryptocurrency }}</td>
-                                <td class="px-3 py-2 sm:px-4">{{ $withdrawal->amount }}</td>
-                                <td class="px-3 py-2 sm:px-4 truncate">{{ $withdrawal->wallet_address }}</td>
-                                <td class="px-3 py-2 sm:px-4">
-                                    <span class="px-2 py-1 rounded text-xs font-medium
-                                        @class([
-                                            'bg-yellow-100 text-yellow-800' => $withdrawal->status === 'pending',
-                                            'bg-green-100 text-green-800' => $withdrawal->status === 'completed',
-                                            'bg-red-100 text-red-800' => $withdrawal->status === 'rejected',
-                                            'bg-blue-100 text-blue-800' => $withdrawal->status === 'approved',
-                                        ])
-                                    ">
-                                        {{ ucfirst($withdrawal->status) }}
-                                    </span>
-                                </td>
+                                <th class="px-3 py-2 sm:px-4">Date</th>
+                                <th class="px-3 py-2 sm:px-4">Crypto</th>
+                                <th class="px-3 py-2 sm:px-4">Amount</th>
+                                <th class="px-3 py-2 sm:px-4">To</th>
+                                <th class="px-3 py-2 sm:px-4">Status</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="text-center text-gray-500 py-4">No withdrawals yet.</td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
-            </div>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200 dark:divide-slate-800 {{ $bodyTextClasses }}">
+                            @forelse ($withdrawals as $withdrawal)
+                                <tr class="transition duration-300 ease-out hover:bg-slate-50 dark:hover:bg-slate-800/70">
+                                    <td class="px-3 py-2 sm:px-4">{{ $withdrawal->created_at->format('Y-m-d H:i') }}</td>
+                                    <td class="px-3 py-2 sm:px-4">{{ $withdrawal->cryptocurrency }}</td>
+                                    <td class="px-3 py-2 sm:px-4">{{ $withdrawal->amount }}</td>
+                                    <td class="truncate px-3 py-2 sm:px-4">{{ $withdrawal->wallet_address }}</td>
+                                    <td class="px-3 py-2 sm:px-4">
+                                        <span class="rounded-full px-2 py-1 text-xs font-medium
+                                            @class([
+                                                'bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300' => $withdrawal->status === 'pending',
+                                                'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-300' => $withdrawal->status === 'completed',
+                                                'bg-rose-100 text-rose-800 dark:bg-rose-500/10 dark:text-rose-300' => $withdrawal->status === 'rejected',
+                                                'bg-sky-100 text-sky-800 dark:bg-sky-500/10 dark:text-sky-300' => $withdrawal->status === 'approved',
+                                            ])
+                                        ">
+                                            {{ ucfirst($withdrawal->status) }}
+                                        </span>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="py-4 text-center text-sm {{ $bodyTextClasses }}">No withdrawals yet.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         </div>
-        @endif
-        </div>
-    </x-layouts.app>
+    </div>
+</x-layouts.app>

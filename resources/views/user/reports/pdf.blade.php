@@ -4,14 +4,66 @@
     <meta charset="utf-8">
     <title>User Report</title>
     <style>
-        body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #000; padding: 6px; text-align: left; }
-        h3 { margin-top: 40px; }
+        body {
+            font-family: DejaVu Sans, sans-serif;
+            font-size: 12px;
+            color: #0f172a;
+            margin: 32px;
+        }
+
+        .heading {
+            margin-bottom: 18px;
+        }
+
+        .eyebrow {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: #64748b;
+        }
+
+        h2 {
+            margin: 6px 0 4px;
+            font-size: 22px;
+        }
+
+        p.meta {
+            margin: 0;
+            color: #475569;
+        }
+
+        h3 {
+            margin-top: 34px;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th,
+        td {
+            border: 1px solid #cbd5e1;
+            padding: 7px 8px;
+            text-align: left;
+        }
+
+        th {
+            background: #f8fafc;
+            color: #334155;
+        }
     </style>
 </head>
 <body>
-    <h2>User Report for {{ $user->name }}</h2>
+    <div class="heading">
+        <div class="eyebrow">User Report</div>
+        <h2>{{ $user->name }}</h2>
+        <p class="meta">Generated account summary report</p>
+    </div>
 
     @if(!empty($data['deposits']))
         <h3>Deposits</h3>
