@@ -59,6 +59,15 @@
                                 <a href="{{ route('admin.users.show', $user) }}"
                                    class="mr-3 text-sky-600 hover:underline">View</a>
 
+                                @if ($user->hasRole('user'))
+                                    <form action="{{ route('admin.users.impersonate', $user) }}" method="POST" class="mr-3 inline">
+                                        @csrf
+                                        <button type="submit" class="text-emerald-600 hover:underline">
+                                            Login as User
+                                        </button>
+                                    </form>
+                                @endif
+
                                 <button
                                     @click="openModal({{ $user->id }})"
                                     class="text-amber-600 hover:underline">

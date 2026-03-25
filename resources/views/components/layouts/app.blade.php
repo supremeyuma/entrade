@@ -60,6 +60,45 @@
         </div>
     </header>
 
+    @if (session('success') || session('error') || session('info') || session()->has('impersonator_id'))
+        <div class="w-full border-b border-slate-200 bg-white dark:border-slate-700 dark:bg-slate-900">
+            <div class="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-3">
+                @if (session()->has('impersonator_id'))
+                    <div class="flex flex-col gap-3 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-100 sm:flex-row sm:items-center sm:justify-between">
+                        <div>
+                            You are currently browsing as <strong>{{ auth()->user()?->name }}</strong>.
+                        </div>
+                        <form method="POST" action="{{ route('impersonation.destroy') }}">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="inline-flex rounded-xl bg-amber-600 px-4 py-2 font-semibold text-white transition hover:bg-amber-500">
+                                Return to Admin
+                            </button>
+                        </form>
+                    </div>
+                @endif
+
+                @if (session('success'))
+                    <div class="rounded-2xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="rounded-2xl bg-rose-50 px-4 py-3 text-sm text-rose-700 dark:bg-rose-500/10 dark:text-rose-300">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                @if (session('info'))
+                    <div class="rounded-2xl bg-sky-50 px-4 py-3 text-sm text-sky-700 dark:bg-sky-500/10 dark:text-sky-300">
+                        {{ session('info') }}
+                    </div>
+                @endif
+            </div>
+        </div>
+    @endif
+
     @auth
         <div
             x-cloak

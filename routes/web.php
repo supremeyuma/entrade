@@ -49,6 +49,7 @@ use App\Http\Controllers\Admin\TradeBotRunController;
 use App\Http\Controllers\Admin\TradeBotController;
 use App\Http\Controllers\Admin\AdminTradeHistoryController;
 use App\Http\Controllers\Admin\TraderSubscriptionController;
+use App\Http\Controllers\Admin\UserImpersonationController;
 use App\Http\Controllers\KycController;
 
 
@@ -116,6 +117,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('ad
     Route::get('users/{user}/edit-role', [AdminUserController::class, 'editRole'])->name('users.editRole');
     Route::post('users/{user}/update-role', [AdminUserController::class, 'updateRole'])->name('users.updateRole');
     Route::post('/users/{user}/funds', [UserFundsController::class, 'store'])->name('users.funds.store');
+    Route::post('/users/{user}/impersonate', [UserImpersonationController::class, 'store'])->name('users.impersonate');
     Route::get('/admin/users/{user}/trade-histories', [AdminUserController::class, 'tradeHistory'])->name('users.tradeHistories');
 
 
@@ -321,6 +323,8 @@ Route::middleware('auth')->prefix('traders')->name('traders.')->group(function (
     Route::post('/remove-from-compare/{traderId}', [TraderCompareController::class, 'removeFromCompare'])->name('removeFromCompare');
     Route::get('/compare', [TraderCompareController::class, 'showCompare'])->name('compare');
 });
+
+Route::middleware('auth')->delete('/impersonation', [UserImpersonationController::class, 'destroy'])->name('impersonation.destroy');
 
 // ------------------------
 // Miscellaneous

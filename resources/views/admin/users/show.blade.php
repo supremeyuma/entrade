@@ -40,6 +40,16 @@
                 Edit User
             </a>
 
+            @if ($user->hasRole('user'))
+                <form action="{{ route('admin.users.impersonate', $user) }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="inline-flex rounded-2xl bg-sky-600 px-4 py-2 text-sm font-semibold text-white transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-sky-500 hover:shadow-lg active:scale-[0.99]">
+                        Login as User
+                    </button>
+                </form>
+            @endif
+
             <a href="{{ route('admin.users.tradeHistories', $user) }}"
             class="inline-flex rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-emerald-500 hover:shadow-lg active:scale-[0.99]">
                 View Trade History
