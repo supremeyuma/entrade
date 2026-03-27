@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\TradeHistory;
 use App\Models\Trader;
 use App\Http\Controllers\Controller;
+use League\Csv\Writer;
 
 class TradeHistoryController extends Controller
 {
@@ -54,13 +55,12 @@ class TradeHistoryController extends Controller
         $histories = $query->get();
 
         $csv = Writer::createFromString('');
-        $csv->insertOne(['Date', 'Trader', 'ROI (%)', 'Profit/Loss', 'Prev Balance', 'New Balance']);
+        $csv->insertOne(['Date', 'Trader', 'Profit/Loss', 'Prev Balance', 'New Balance']);
 
         foreach ($histories as $history) {
             $csv->insertOne([
                 $history->created_at->format('Y-m-d H:i'),
                 $history->trader->name,
-                $history->roi,
                 $history->profit_loss_amount,
                 $history->amount_invested,
                 $history->amount_returned,

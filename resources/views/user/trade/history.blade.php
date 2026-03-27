@@ -73,7 +73,6 @@
                             <th class="px-3 py-2 sm:px-4 sm:py-3">Trader</th>
                             <th class="px-3 py-2 sm:px-4 sm:py-3">Pair</th>
                             <th class="px-3 py-2 sm:px-4 sm:py-3">Side</th>
-                            <th class="px-3 py-2 text-right sm:px-4 sm:py-3">Outcome (%)</th>
                             <th class="px-3 py-2 text-right sm:px-4 sm:py-3">Profit/Loss</th>
                             <th class="px-3 py-2 sm:px-4 sm:py-3">Entry / Exit</th>
                         </tr>
@@ -89,11 +88,8 @@
                                     {{ $history->trade->symbol }}
                                 </td>
                                 <td class="px-3 py-2 sm:px-4 sm:py-3">{{ $history->trade->type ?? $history->trade->trade_type ?? 'N/A' }}</td>
-                                <td class="px-3 py-2 text-right font-semibold sm:px-4 sm:py-3 {{ $history->roi >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
-                                    {{ $history->roi }}%
-                                </td>
-                                <td class="px-3 py-2 text-right sm:px-4 sm:py-3">
-                                    {{ number_format($history->profit_loss_amount, 2) }}
+                                <td class="px-3 py-2 text-right font-semibold sm:px-4 sm:py-3 {{ $history->profit_loss_amount >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400' }}">
+                                    ${{ number_format($history->profit_loss_amount, 2) }}
                                 </td>
                                 <td class="px-3 py-2 sm:px-4 sm:py-3">
                                     {{ $history->trade->entry_timestamp ? \Carbon\Carbon::parse($history->trade->entry_timestamp)->format('Y-m-d H:i') : '-' }}
