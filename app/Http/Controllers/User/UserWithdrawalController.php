@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Models\UserWallet;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
-use App\Models\WithdrawalSetting;
 use App\Models\Withdrawal;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
+use App\Models\WithdrawalSetting;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\WithdrawalConfirmationMail;
@@ -56,11 +56,41 @@ class UserWithdrawalController extends Controller
         ));
     }
 
+    public function quote(Request $request): JsonResponse
+    {
+        $request->validate([
+            'cryptocurrency' => 'required|string|exists:withdrawal_settings,cryptocurrency',
+            'usd_amount' => 'required|numeric|min:0.01',
+        ]);
+
+        $rate = $this->getCryptoUsdRate($request->cryptocurrency);
+
+        if (! $rate) {
+            return response()->json([
+                'message' => 'Unable to fetch a live conversion rate right now.',
+            ], 422);
+        }
+
+        $cryptoAmount = round(((float) $request->usd_amount) / $rate, 8);
+        $setting = WithdrawalSetting::where('cryptocurrency', $request->cryptocurrency)->first();
+        $fee = $setting
+            ? round($setting->fixed_fee + ($setting->percent_fee / 100) * $cryptoAmount, 8)
+            : 0.0;
+
+        return response()->json([
+            'usd_amount' => round((float) $request->usd_amount, 2),
+            'rate' => round($rate, 8),
+            'crypto_amount' => $cryptoAmount,
+            'fee' => $fee,
+            'net_amount' => round(max($cryptoAmount - $fee, 0), 8),
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
             'cryptocurrency' => 'required|string|exists:withdrawal_settings,cryptocurrency',
-            'amount' => 'required|numeric|min:0.00000001',
+            'usd_amount' => 'required|numeric|min:0.01',
             'wallet_address' => 'required|string',
             'network' => 'nullable|string',
             'code' => 'nullable|string',
@@ -68,7 +98,21 @@ class UserWithdrawalController extends Controller
 
         $user = Auth::user();
         $setting = WithdrawalSetting::where('cryptocurrency', $request->cryptocurrency)->firstOrFail();
-        $amount = $request->amount;
+        $usdAmount = round((float) $request->usd_amount, 2);
+
+        if ($usdAmount > $user->balance) {
+            return back()->withErrors(['usd_amount' => 'Insufficient balance.'])->withInput();
+        }
+
+        $rate = $this->getCryptoUsdRate($request->cryptocurrency);
+
+        if (! $rate) {
+            return back()->withErrors([
+                'cryptocurrency' => 'Unable to fetch a live conversion rate for the selected cryptocurrency.',
+            ])->withInput();
+        }
+
+        $amount = round($usdAmount / $rate, 8);
 
         // Validate network is allowed
         $allowed = $setting->networks ?? [];
@@ -87,11 +131,6 @@ class UserWithdrawalController extends Controller
         // calculate fee
         $fee = $setting->fixed_fee + ($setting->percent_fee / 100) * $amount;
 
-        // check balance
-        if ($amount > $user->balance) {
-            return back()->withErrors(['amount' => 'Insufficient balance.'])->withInput();
-        }
-
         // If user selected a saved wallet, ensure the wallet's crypto & network match
         if ($request->wallet_address) {
             $wallet = $user->wallets()->where('wallet_address', $request->wallet_address)->first();
@@ -109,6 +148,8 @@ class UserWithdrawalController extends Controller
             'user_id' => $user->id,
             'cryptocurrency' => $request->cryptocurrency,
             'amount' => $amount,
+            'usd_amount' => $usdAmount,
+            'exchange_rate' => $rate,
             'fee' => $fee,
             'wallet_address' => $request->wallet_address,
             'network' => $request->network,
@@ -130,7 +171,7 @@ class UserWithdrawalController extends Controller
             ->firstOrFail();
 
         if ($withdrawal->confirmed_at) {
-            return redirect()->route('user.withdrawals.index')
+            return redirect()->route('user.withdrawals.history')
                 ->with('success', 'Already confirmed.');
         }
 
@@ -141,7 +182,7 @@ class UserWithdrawalController extends Controller
     {
         $request->validate([
             'token' => 'required|uuid',
-            'code' => 'required|string',
+            'code' => 'nullable|string',
         ]);
 
         $withdrawal = Withdrawal::where('confirmation_token', $request->token)
@@ -152,7 +193,7 @@ class UserWithdrawalController extends Controller
 
         if ($withdrawal->attempts >= 3) {
             $withdrawal->update(['status' => 'cancelled', 'cancelled_at' => now()]);
-            return redirect()->route('user.withdrawals.index')
+            return redirect()->route('user.withdrawals.history')
                 ->withErrors(['error' => 'Too many invalid attempts. Withdrawal cancelled.']);
         }
 
@@ -166,13 +207,13 @@ class UserWithdrawalController extends Controller
             ]);
         }
 
-        if ($user->balance < $withdrawal->amount) {
+        if ($user->balance < ($withdrawal->usd_amount ?? $withdrawal->amount)) {
             $withdrawal->update(['status' => 'cancelled', 'cancelled_at' => now()]);
-            return redirect()->route('user.withdrawals.index')
+            return redirect()->route('user.withdrawals.history')
                 ->withErrors(['error' => 'Insufficient balance at confirmation time. Withdrawal cancelled.']);
         }
 
-        $user->decrement('balance', $withdrawal->amount);
+        $user->decrement('balance', $withdrawal->usd_amount ?? $withdrawal->amount);
 
         $withdrawal->update([
             'confirmed_at' => now(),
@@ -180,7 +221,7 @@ class UserWithdrawalController extends Controller
             'status' => 'pending', 
         ]);
 
-        return redirect()->route('user.withdrawals.index')
+        return redirect()->route('user.withdrawals.history')
             ->with('success', 'Withdrawal confirmed and submitted.');
     }
 
@@ -209,5 +250,44 @@ class UserWithdrawalController extends Controller
         $withdrawals = $query->get();
 
         return view('user.withdrawals.history', compact('withdrawals'));
+    }
+
+    private function getCryptoUsdRate(string $cryptocurrency): ?float
+    {
+        $stablecoins = ['USDT', 'USDC', 'DAI', 'BUSD'];
+
+        if (in_array(strtoupper($cryptocurrency), $stablecoins, true)) {
+            return 1.0;
+        }
+
+        return Cache::remember(
+            'withdrawal_quote_' . strtoupper($cryptocurrency),
+            now()->addMinutes(2),
+            function () use ($cryptocurrency) {
+                $baseUrl = rtrim((string) config('services.polygon.base_url'), '/');
+                $apiKey = config('services.polygon.api_key');
+
+                if (! $baseUrl || ! $apiKey) {
+                    return null;
+                }
+
+                $response = Http::timeout(10)->get(
+                    "{$baseUrl}/v2/aggs/ticker/X:" . strtoupper($cryptocurrency) . "USD/prev",
+                    [
+                        'adjusted' => 'true',
+                        'apiKey' => $apiKey,
+                    ]
+                );
+
+                if ($response->failed()) {
+                    return null;
+                }
+
+                $payload = $response->json();
+                $close = $payload['results'][0]['c'] ?? null;
+
+                return is_numeric($close) ? (float) $close : null;
+            }
+        );
     }
 }

@@ -10,6 +10,8 @@ class Withdrawal extends Model
         'user_id',
         'cryptocurrency',
         'amount',
+        'usd_amount',
+        'exchange_rate',
         'fee',
         'wallet_address',
         'network',

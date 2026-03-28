@@ -257,6 +257,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user
     //Withdrawals
     Route::get('/withdrawals/create', [UserWithdrawalController::class, 'create'])->name('withdrawals.create');
     Route::get('/withdrawals/history', [UserWithdrawalController::class, 'history'])->name('withdrawals.history');
+    Route::get('/withdrawals/quote', [UserWithdrawalController::class, 'quote'])->name('withdrawals.quote');
     Route::post('/withdrawals', [UserWithdrawalController::class, 'store'])->name('withdrawals.store');
     Route::get('/user/withdrawals/confirm/{token}', [UserWithdrawalController::class, 'confirm'])->name('withdrawals.confirm');
     Route::post('/user/withdrawals/confirm', [UserWithdrawalController::class, 'processConfirmation'])->name('withdrawals.confirm.process');

@@ -1,6 +1,8 @@
 <p>Hi {{ $withdrawal->user->name }},</p>
 
-<p>You requested a withdrawal of {{ $withdrawal->amount }} {{ $withdrawal->cryptocurrency }}.</p>
+<p>You requested a withdrawal of ${{ number_format($withdrawal->usd_amount ?? $withdrawal->amount, 2) }} USD.</p>
+
+<p>This converts to approximately {{ number_format($withdrawal->amount, 8, '.', ',') }} {{ $withdrawal->cryptocurrency }} at a rate of 1 {{ $withdrawal->cryptocurrency }} = ${{ number_format($withdrawal->exchange_rate ?? 0, 2, '.', ',') }}.</p>
 
 <p>To confirm, click below:</p>
 

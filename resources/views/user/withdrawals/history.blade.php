@@ -86,15 +86,20 @@
                                 <tr class="transition duration-300 ease-out hover:bg-slate-50 dark:hover:bg-slate-800/70">
                                     <td class="px-3 py-2 sm:px-4">{{ $withdrawal->created_at->format('Y-m-d H:i') }}</td>
                                     <td class="px-3 py-2 sm:px-4">{{ $withdrawal->cryptocurrency }}</td>
-                                    <td class="px-3 py-2 sm:px-4">{{ $withdrawal->amount }}</td>
+                                    <td class="px-3 py-2 sm:px-4">
+                                        <div>${{ number_format($withdrawal->usd_amount ?? $withdrawal->amount, 2) }} USD</div>
+                                        <div class="text-xs {{ $isDark ? 'text-slate-400' : 'text-slate-500' }}">{{ number_format($withdrawal->amount, 8, '.', ',') }} {{ $withdrawal->cryptocurrency }}</div>
+                                    </td>
                                     <td class="truncate px-3 py-2 sm:px-4">{{ $withdrawal->wallet_address }}</td>
                                     <td class="px-3 py-2 sm:px-4">
                                         <span class="rounded-full px-2 py-1 text-xs font-medium
                                             @class([
+                                                'bg-slate-100 text-slate-800 dark:bg-slate-500/10 dark:text-slate-300' => $withdrawal->status === 'unconfirmed',
                                                 'bg-amber-100 text-amber-800 dark:bg-amber-500/10 dark:text-amber-300' => $withdrawal->status === 'pending',
                                                 'bg-emerald-100 text-emerald-800 dark:bg-emerald-500/10 dark:text-emerald-300' => $withdrawal->status === 'completed',
                                                 'bg-rose-100 text-rose-800 dark:bg-rose-500/10 dark:text-rose-300' => $withdrawal->status === 'rejected',
                                                 'bg-sky-100 text-sky-800 dark:bg-sky-500/10 dark:text-sky-300' => $withdrawal->status === 'approved',
+                                                'bg-slate-200 text-slate-700 dark:bg-slate-700/60 dark:text-slate-200' => $withdrawal->status === 'cancelled',
                                             ])
                                         ">
                                             {{ ucfirst($withdrawal->status) }}

@@ -17,7 +17,7 @@ class AdminWithdrawalController extends Controller
     public function update(Request $request, Withdrawal $withdrawal)
     {
         $request->validate([
-            'status' => 'required|in:pending,approved,rejected,completed',
+            'status' => 'required|in:unconfirmed,pending,approved,rejected,completed,cancelled',
             'admin_note' => 'nullable|string',
         ]);
 

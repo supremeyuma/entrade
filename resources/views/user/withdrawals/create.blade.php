@@ -88,16 +88,39 @@
         </div>
 
         <div>
-          <label class="mb-1 block text-sm font-medium {{ $bodyTextClasses }}">Amount <span class="text-rose-500">*</span></label>
-          <input type="number" name="amount" x-model.number="form.amount" @input="updateFee()"
-                 min="0" step="0.00000001"
-                 class="w-full rounded-2xl border px-3 py-2 text-sm focus:outline-none focus:ring-2 sm:px-4 sm:py-3 {{ $inputClasses }}" required>
+          <label class="mb-1 block text-sm font-medium {{ $bodyTextClasses }}">Amount (USD) <span class="text-rose-500">*</span></label>
+          <div class="relative">
+            <span class="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 text-sm {{ $mutedTextClasses }}">$</span>
+            <input type="number" name="usd_amount" x-model.number="form.usd_amount" @input="queueQuoteRefresh()"
+                 min="0" step="0.01"
+                 class="w-full rounded-2xl border px-3 py-2 pl-8 text-sm focus:outline-none focus:ring-2 sm:px-4 sm:py-3 sm:pl-10 {{ $inputClasses }}" required>
+          </div>
+          <p class="mt-2 text-xs {{ $mutedTextClasses }}">Enter the amount in USD. We will convert it to <span class="font-semibold" x-text="form.cryptocurrency || 'your selected crypto'"></span> before submission.</p>
+          <div class="mt-3 rounded-2xl border border-emerald-200/60 bg-emerald-50/80 px-4 py-3 text-sm text-emerald-900 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-100" x-cloak>
+            <template x-if="quoteLoading">
+              <div>Fetching live conversion quote...</div>
+            </template>
+            <template x-if="!quoteLoading && convertedAmountDisplay">
+              <div class="space-y-1">
+                <div class="font-semibold">You will receive approximately <span x-text="convertedAmountDisplay"></span> <span x-text="form.cryptocurrency"></span>.</div>
+                <div class="text-xs text-emerald-800/80 dark:text-emerald-200/80">1 <span x-text="form.cryptocurrency || 'coin'"></span> = $<span x-text="exchangeRateDisplay"></span></div>
+              </div>
+            </template>
+            <template x-if="!quoteLoading && quoteError">
+              <div class="text-rose-700 dark:text-rose-300" x-text="quoteError"></div>
+            </template>
+            <template x-if="!quoteLoading && !convertedAmountDisplay && !quoteError">
+              <div class="{{ $mutedTextClasses }}">Choose a wallet or cryptocurrency, then enter a USD amount to see the live crypto conversion.</div>
+            </template>
+          </div>
+          <input type="hidden" name="amount" :value="convertedAmountRaw">
+          <input type="hidden" name="exchange_rate" :value="quote.rate || ''">
         </div>
 
-        <template x-if="form.cryptocurrency && form.amount > 0">
+        <template x-if="form.cryptocurrency && convertedAmountRaw > 0">
           <div class="rounded-3xl bg-slate-50 p-3 text-sm text-slate-700 dark:bg-slate-800 dark:text-slate-100">
-            <div>Fee: <span x-text="feeDisplay"></span></div>
-            <div>Net Amount: <span x-text="netAmountDisplay"></span></div>
+            <div>Fee: <span x-text="feeDisplay"></span> <span x-text="form.cryptocurrency"></span></div>
+            <div>Net Amount: <span x-text="netAmountDisplay"></span> <span x-text="form.cryptocurrency"></span></div>
           </div>
         </template>
 
@@ -112,6 +135,7 @@
 
         <div class="flex justify-end">
           <button type="submit"
+                  :disabled="quoteLoading || (form.usd_amount > 0 && !convertedAmountRaw)"
                   class="w-full rounded-2xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition duration-300 ease-out hover:-translate-y-0.5 hover:bg-emerald-500 hover:shadow-lg active:scale-[0.99] sm:w-auto sm:px-5 sm:py-3">
             Submit Withdrawal
           </button>
@@ -127,20 +151,34 @@
           wallet_address: @json(old('wallet_address', '')),
           cryptocurrency: @json(old('cryptocurrency', '')),
           network: @json(old('network', '')),
-          amount: Number(@json(old('amount', 0))),
+          usd_amount: Number(@json(old('usd_amount', 0))),
         },
         feeSettings: @json($feeSettings),
         walletInfo: @json($walletInfo),
         cryptoNetworks: @json($cryptoNetworks),
+        quoteUrl: @json(route('user.withdrawals.quote')),
+        quote: {
+          rate: Number(@json(old('exchange_rate', 0))),
+          crypto_amount: Number(@json(old('amount', 0))),
+        },
+        quoteError: '',
+        quoteLoading: false,
+        quoteTimeout: null,
+        quoteRequestId: 0,
 
         get isWalletSelected() {
           return this.form.wallet_address !== '';
+        },
+
+        get convertedAmountRaw() {
+          return this.quote.crypto_amount || 0;
         },
 
         onWalletChange() {
           if (!this.form.wallet_address) {
             this.form.cryptocurrency = '';
             this.form.network = '';
+            this.resetQuote();
             return;
           }
           let info = this.walletInfo[this.form.wallet_address];
@@ -148,10 +186,12 @@
             this.form.cryptocurrency = info.cryptocurrency;
             this.form.network = info.network;
           }
+          this.queueQuoteRefresh();
         },
 
         onCryptoChange() {
           this.form.network = '';
+          this.queueQuoteRefresh();
         },
 
         networkOptions() {
@@ -162,7 +202,7 @@
 
         get fee() {
           let s = this.feeSettings[this.form.cryptocurrency] || { fixed: 0, percent: 0 };
-          let amount = this.form.amount || 0;
+          let amount = this.convertedAmountRaw || 0;
           return (s.fixed || 0) + (s.percent ? (s.percent / 100) * amount : 0);
         },
 
@@ -171,7 +211,86 @@
         },
 
         get netAmountDisplay() {
-          return (this.form.amount - this.fee).toFixed(8);
+          return Math.max(this.convertedAmountRaw - this.fee, 0).toFixed(8);
+        },
+
+        get convertedAmountDisplay() {
+          return this.convertedAmountRaw > 0 ? this.convertedAmountRaw.toFixed(8) : '';
+        },
+
+        get exchangeRateDisplay() {
+          return this.quote.rate > 0
+            ? Number(this.quote.rate).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 8 })
+            : '';
+        },
+
+        resetQuote() {
+          this.quote = { rate: 0, crypto_amount: 0 };
+          this.quoteError = '';
+          this.quoteLoading = false;
+        },
+
+        queueQuoteRefresh() {
+          window.clearTimeout(this.quoteTimeout);
+
+          if (!this.form.cryptocurrency || !this.form.usd_amount || this.form.usd_amount <= 0) {
+            this.resetQuote();
+            return;
+          }
+
+          this.quoteTimeout = window.setTimeout(() => this.refreshQuote(), 180);
+        },
+
+        async refreshQuote() {
+          if (!this.form.cryptocurrency || !this.form.usd_amount || this.form.usd_amount <= 0) {
+            this.resetQuote();
+            return;
+          }
+
+          const requestId = ++this.quoteRequestId;
+          const params = new URLSearchParams({
+            cryptocurrency: this.form.cryptocurrency,
+            usd_amount: this.form.usd_amount,
+          });
+
+          this.quoteLoading = true;
+          this.quoteError = '';
+
+          try {
+            const response = await fetch(`${this.quoteUrl}?${params.toString()}`, {
+              headers: {
+                'Accept': 'application/json',
+              },
+            });
+
+            const payload = await response.json();
+
+            if (requestId !== this.quoteRequestId) {
+              return;
+            }
+
+            if (!response.ok) {
+              this.resetQuote();
+              this.quoteError = payload.message || 'Unable to fetch a live conversion quote.';
+              return;
+            }
+
+            this.quote = {
+              rate: Number(payload.rate || 0),
+              crypto_amount: Number(payload.crypto_amount || 0),
+            };
+          } catch (error) {
+            if (requestId !== this.quoteRequestId) {
+              return;
+            }
+
+            this.resetQuote();
+            this.quoteError = 'Unable to fetch a live conversion quote.';
+          } finally {
+            if (requestId === this.quoteRequestId) {
+              this.quoteLoading = false;
+            }
+          }
         },
 
         updateFee() {
@@ -189,6 +308,10 @@
                 this.form.network = info.network;
               }
             }
+          }
+
+          if (this.form.cryptocurrency && this.form.usd_amount > 0 && !this.quote.rate) {
+            this.queueQuoteRefresh();
           }
         },
       };

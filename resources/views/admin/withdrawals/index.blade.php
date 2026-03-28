@@ -56,7 +56,7 @@
                                 <form method="POST" action="{{ route('admin.withdrawals.update', $withdrawal) }}" class="grid gap-2">
                                     @csrf @method('PUT')
                                     <select name="status" class="rounded-2xl border px-3 py-2 text-xs sm:text-sm focus:outline-none focus:ring-2 {{ $inputClasses }}">
-                                        @foreach (['pending', 'approved', 'rejected', 'completed'] as $status)
+                                        @foreach (['unconfirmed', 'pending', 'approved', 'rejected', 'completed', 'cancelled'] as $status)
                                             <option value="{{ $status }}" {{ $withdrawal->status === $status ? 'selected' : '' }}>
                                                 {{ ucfirst($status) }}
                                             </option>

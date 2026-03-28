@@ -36,11 +36,13 @@
 
             <div data-aos="fade-up" data-aos-delay="160" class="space-y-3 rounded-[24px] border p-4 text-sm shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl sm:rounded-[28px] sm:space-y-4 sm:p-6 {{ $surfaceClasses }}">
                 <div><strong class="{{ $headingClasses }}">Cryptocurrency:</strong> <span class="{{ $bodyTextClasses }}">{{ $withdrawal->cryptocurrency }}</span></div>
-                <div><strong class="{{ $headingClasses }}">Amount:</strong> <span class="{{ $bodyTextClasses }}">{{ $withdrawal->amount }}</span></div>
+                <div><strong class="{{ $headingClasses }}">Requested Amount:</strong> <span class="{{ $bodyTextClasses }}">${{ number_format($withdrawal->usd_amount ?? $withdrawal->amount, 2) }} USD</span></div>
+                <div><strong class="{{ $headingClasses }}">Crypto Amount:</strong> <span class="{{ $bodyTextClasses }}">{{ number_format($withdrawal->amount, 8, '.', ',') }} {{ $withdrawal->cryptocurrency }}</span></div>
+                <div><strong class="{{ $headingClasses }}">Rate:</strong> <span class="{{ $bodyTextClasses }}">1 {{ $withdrawal->cryptocurrency }} = ${{ number_format($withdrawal->exchange_rate ?? 0, 2, '.', ',') }}</span></div>
                 <div><strong class="{{ $headingClasses }}">Network:</strong> <span class="{{ $bodyTextClasses }}">{{ $withdrawal->network ?? 'N/A' }}</span></div>
                 <div><strong class="{{ $headingClasses }}">To:</strong> <span class="{{ $bodyTextClasses }}">{{ $withdrawal->wallet_address }}</span></div>
-                <div><strong class="{{ $headingClasses }}">Fee:</strong> <span class="{{ $bodyTextClasses }}">{{ $withdrawal->fee }}</span></div>
-                <div><strong class="{{ $headingClasses }}">Net Amount:</strong> <span class="{{ $bodyTextClasses }}">{{ $withdrawal->amount - $withdrawal->fee }}</span></div>
+                <div><strong class="{{ $headingClasses }}">Fee:</strong> <span class="{{ $bodyTextClasses }}">{{ number_format($withdrawal->fee, 8, '.', ',') }} {{ $withdrawal->cryptocurrency }}</span></div>
+                <div><strong class="{{ $headingClasses }}">Net Amount:</strong> <span class="{{ $bodyTextClasses }}">{{ number_format($withdrawal->amount - $withdrawal->fee, 8, '.', ',') }} {{ $withdrawal->cryptocurrency }}</span></div>
             </div>
 
             <form action="{{ route('user.withdrawals.confirm.process') }}" method="POST" data-aos="fade-up" data-aos-delay="200" class="space-y-4 rounded-[24px] border p-4 shadow-sm transition duration-300 ease-out hover:-translate-y-1 hover:shadow-xl sm:rounded-[28px] sm:p-6 {{ $surfaceClasses }}">
