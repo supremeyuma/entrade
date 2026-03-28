@@ -35,7 +35,12 @@ class AdminWithdrawalController extends Controller
             $withdrawal->confirmed_at &&
             $previousStatus !== 'rejected'
         ) {
-            $withdrawal->user->increment('balance', $withdrawal->amount);
+            $balance = $withdrawal->user->balance()->firstOrCreate([], [
+                'main_balance' => 0,
+                'trade_balance' => 0,
+            ]);
+
+            $balance->increment('main_balance', $withdrawal->usd_amount ?? $withdrawal->amount);
         }
 
         return redirect()->back()->with('success', 'Withdrawal status updated.');

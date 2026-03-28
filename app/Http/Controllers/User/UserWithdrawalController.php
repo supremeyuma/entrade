@@ -97,10 +97,11 @@ class UserWithdrawalController extends Controller
         ]);
 
         $user = Auth::user();
+        $mainBalance = $this->getUserMainBalance($user);
         $setting = WithdrawalSetting::where('cryptocurrency', $request->cryptocurrency)->firstOrFail();
         $usdAmount = round((float) $request->usd_amount, 2);
 
-        if ($usdAmount > $user->balance) {
+        if ($usdAmount > $mainBalance) {
             return back()->withErrors(['usd_amount' => 'Insufficient balance.'])->withInput();
         }
 
@@ -190,6 +191,10 @@ class UserWithdrawalController extends Controller
             ->firstOrFail();
 
         $user = $withdrawal->user;
+        $balance = $user->balance()->firstOrCreate([], [
+            'main_balance' => 0,
+            'trade_balance' => 0,
+        ]);
 
         if ($withdrawal->attempts >= 3) {
             $withdrawal->update(['status' => 'cancelled', 'cancelled_at' => now()]);
@@ -207,13 +212,13 @@ class UserWithdrawalController extends Controller
             ]);
         }
 
-        if ($user->balance < ($withdrawal->usd_amount ?? $withdrawal->amount)) {
+        if ((float) ($balance->main_balance ?? 0) < ($withdrawal->usd_amount ?? $withdrawal->amount)) {
             $withdrawal->update(['status' => 'cancelled', 'cancelled_at' => now()]);
             return redirect()->route('user.withdrawals.history')
                 ->withErrors(['error' => 'Insufficient balance at confirmation time. Withdrawal cancelled.']);
         }
 
-        $user->decrement('balance', $withdrawal->usd_amount ?? $withdrawal->amount);
+        $balance->decrement('main_balance', $withdrawal->usd_amount ?? $withdrawal->amount);
 
         $withdrawal->update([
             'confirmed_at' => now(),
@@ -283,5 +288,15 @@ class UserWithdrawalController extends Controller
                 return is_numeric($close) ? (float) $close : null;
             }
         );
+    }
+
+    private function getUserMainBalance($user): float
+    {
+        $balance = $user->balance()->firstOrCreate([], [
+            'main_balance' => 0,
+            'trade_balance' => 0,
+        ]);
+
+        return (float) ($balance->main_balance ?? 0);
     }
 }
