@@ -40,7 +40,8 @@ class WithdrawalConfirmationMail extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.withdrawal-confirmation',
+            with: ['withdrawal' => $this->withdrawal],
         );
     }
 
@@ -52,13 +53,6 @@ class WithdrawalConfirmationMail extends Mailable
     public function attachments(): array
     {
         return [];
-    }
-
-    public function build()
-    {
-        return $this->subject('Confirm Your Withdrawal')
-                    ->view('emails.withdrawal-confirmation')
-                    ->with(['withdrawal' => $this->withdrawal]);
     }
 
 }
