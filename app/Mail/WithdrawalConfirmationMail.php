@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Models\Withdrawal;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -13,12 +14,14 @@ class WithdrawalConfirmationMail extends Mailable
 {
     use Queueable, SerializesModels;
 
+    public Withdrawal $withdrawal;
+
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(Withdrawal $withdrawal)
     {
-        //
+        $this->withdrawal = $withdrawal;
     }
 
     /**
