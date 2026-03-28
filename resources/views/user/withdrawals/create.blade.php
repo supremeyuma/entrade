@@ -67,6 +67,9 @@
               <option value="{{ $crypto }}">{{ $crypto }}</option>
             @endforeach
           </select>
+          <template x-if="isWalletSelected">
+            <input type="hidden" name="cryptocurrency" :value="form.cryptocurrency">
+          </template>
         </div>
 
         <div>
@@ -79,6 +82,9 @@
               <option :value="net" x-text="net"></option>
             </template>
           </select>
+          <template x-if="isWalletSelected">
+            <input type="hidden" name="network" :value="form.network">
+          </template>
         </div>
 
         <div>
@@ -118,10 +124,10 @@
     function withdrawalForm() {
       return {
         form: {
-          wallet_address: '',
-          cryptocurrency: '',
-          network: '',
-          amount: 0,
+          wallet_address: @json(old('wallet_address', '')),
+          cryptocurrency: @json(old('cryptocurrency', '')),
+          network: @json(old('network', '')),
+          amount: Number(@json(old('amount', 0))),
         },
         feeSettings: @json($feeSettings),
         walletInfo: @json($walletInfo),
@@ -169,7 +175,22 @@
         },
 
         updateFee() {
-        }
+        },
+
+        init() {
+          if (this.form.wallet_address) {
+            const info = this.walletInfo[this.form.wallet_address];
+            if (info) {
+              if (!this.form.cryptocurrency) {
+                this.form.cryptocurrency = info.cryptocurrency;
+              }
+
+              if (!this.form.network) {
+                this.form.network = info.network;
+              }
+            }
+          }
+        },
       };
     }
   </script>
