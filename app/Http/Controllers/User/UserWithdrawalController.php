@@ -254,12 +254,6 @@ class UserWithdrawalController extends Controller
 
     private function getCryptoUsdRate(string $cryptocurrency): ?float
     {
-        $stablecoins = ['USDT', 'USDC', 'DAI', 'BUSD'];
-
-        if (in_array(strtoupper($cryptocurrency), $stablecoins, true)) {
-            return 1.0;
-        }
-
         return Cache::remember(
             'withdrawal_quote_' . strtoupper($cryptocurrency),
             now()->addMinutes(2),

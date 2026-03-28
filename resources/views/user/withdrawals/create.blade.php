@@ -201,21 +201,27 @@
         },
 
         get fee() {
-          let s = this.feeSettings[this.form.cryptocurrency] || { fixed: 0, percent: 0 };
-          let amount = this.convertedAmountRaw || 0;
-          return (s.fixed || 0) + (s.percent ? (s.percent / 100) * amount : 0);
+          const s = this.feeSettings[this.form.cryptocurrency] || { fixed: 0, percent: 0 };
+          const fixed = Number(s.fixed || 0);
+          const percent = Number(s.percent || 0);
+          const amount = Number(this.convertedAmountRaw || 0);
+          return fixed + ((percent / 100) * amount);
         },
 
         get feeDisplay() {
-          return this.fee.toFixed(8);
+          return Number.isFinite(this.fee) ? this.fee.toFixed(8) : '0.00000000';
         },
 
         get netAmountDisplay() {
-          return Math.max(this.convertedAmountRaw - this.fee, 0).toFixed(8);
+          const amount = Number(this.convertedAmountRaw || 0);
+          const fee = Number(this.fee || 0);
+          const net = Math.max(amount - fee, 0);
+          return Number.isFinite(net) ? net.toFixed(8) : '0.00000000';
         },
 
         get convertedAmountDisplay() {
-          return this.convertedAmountRaw > 0 ? this.convertedAmountRaw.toFixed(8) : '';
+          const amount = Number(this.convertedAmountRaw || 0);
+          return amount > 0 && Number.isFinite(amount) ? amount.toFixed(8) : '';
         },
 
         get exchangeRateDisplay() {
