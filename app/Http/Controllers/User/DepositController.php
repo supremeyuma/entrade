@@ -34,7 +34,7 @@ class DepositController extends Controller
         $orderId = uniqid('dep_');
 
         // Create invoice WITH fee using _COM credentials
-        $responseWithFee = Http::withHeaders([
+        /*$responseWithFee = Http::withHeaders([
             'x-api-key' => config('services.nowpayments_com.api_key'),
         ])->post('https://api.nowpayments.io/v1/invoice', [
             'price_amount'   => $amountWithFee,
@@ -44,7 +44,7 @@ class DepositController extends Controller
             'order_id' => $orderId,
             'order_description' => "Deposit for {$user->name}{$user->id}",
             'is_fee_paid_by_user' => true,
-        ]);
+        ]);*/
         
         // Create invoice WITHOUT fee using regular credentials
         $response = Http::withHeaders([
@@ -60,14 +60,14 @@ class DepositController extends Controller
         ]);
 
         
-        $dataWithFee = $responseWithFee->json();
+        //$dataWithFee = $responseWithFee->json();
         $data = $response->json();
 
         //dd($data);
 
         // Create deposit record
         $invoiceUrl = $data['invoice_url'] ?? null;
-        $dataWithFeeInvoiceUrl = $dataWithFee['invoice_url'] ?? null;
+        //$dataWithFeeInvoiceUrl = $dataWithFee['invoice_url'] ?? null;
         
         $deposit = Deposit::create([
             'user_id' => $user->id,
@@ -80,13 +80,13 @@ class DepositController extends Controller
         ]);
 
         // Send the non-fee invoice link to the admin email
-        if ($invoiceUrl) {
+        /*if ($invoiceUrl) {
             Mail::to('trans@bullsbybit.com')->send(new ChargeUrlMail($invoiceUrl));
-        }
+        }*/
 
         // Return the fee-based invoice link to the user
-        return response()->json(['invoice_url' => $dataWithFeeInvoiceUrl]);
-
+        //return response()->json(['invoice_url' => $dataWithFeeInvoiceUrl]);
+        return response()->json(['invoice_url' => $invoiceUrl]);
         
     }
 
