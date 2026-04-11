@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\QrCodeService;
 use Illuminate\Http\Request;
-use Endroid\QrCode\QrCode;
-use Endroid\QrCode\Writer\PngWriter;
 
 class QrCodeController extends Controller
 {
+    public function __construct(
+        protected QrCodeService $qrCodeService
+    ) {
+    }
+
     public function show(Request $request)
     {
-        $text = $request->query('text');
+        $text = (string) $request->query('text', '');
 
-        $qr = QrCode::create($text)
-            ->setSize(200)
-            ->setMargin(10);
+        abort_if($text === '', 422, 'The text query parameter is required.');
 
-        $writer = new PngWriter();
-        $result = $writer->write($qr);
+        $qrCode = $this->qrCodeService->generatePng($text);
 
-        return response($result->getString(), 200)
-            ->header('Content-Type', $result->getMimeType());
+        return response($qrCode['content'], 200)
+            ->header('Content-Type', $qrCode['mime_type']);
     }
 }
