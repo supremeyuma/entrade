@@ -302,7 +302,7 @@
     <div class="max-w-3xl mx-auto text-center space-y-6 md:space-y-8 px-0 sm:px-4 md:px-6">
         {{-- Adjusted text sizes: text-xl md:text-4xl (h2), text-sm md:text-lg (p), text-sm md:text-base (button) --}}
         <h2 class="text-xl sm:text-2xl md:text-4xl font-extrabold leading-tight drop-shadow-lg">
-            Ready to start your crypto journey with Entrade?
+            Ready to start your crypto journey with Bullsbybit?
         </h2>   
         <p class="text-sm text-indigo-600 dark:<section class="pt-12 md:py-20 bg-white dark:bg-gray-900 text-gray-900 dark:text-white sm:text-base md:text-lg max-w-xl mx-auto">
             Sign up today and get exclusive access to top traders and automated portfolio growth.

@@ -29,7 +29,7 @@
                 Company
             </h3>
             <ul class="space-y-2" :class="{ 'hidden md:block': !openSections['company'] }">
-                <li><a href="{{ route('about') }}" class="hover:underline">About Entrade</a></li>
+                <li><a href="{{ route('about') }}" class="hover:underline">About Bullsbybit</a></li>
                 <li><a href="{{ route('careers') }}" class="hover:underline">Careers</a></li>
                 <!--<li><a href="{{ route('blog') }}" class="hover:underline">Blog</a></li>-->
                 <!--<li><a href="{{ route('contact') }}" class="hover:underline">Contact</a></li>-->
@@ -85,12 +85,11 @@
         <!-- Contact -->
         <div>
             <h3 class="font-semibold text-base mb-3">Contact</h3>
-            <p class="mb-1">📞 +234 800 000 0000</p>
-            <p>✉️ support@entrade.com</p>
+            <p>✉️ support@bullsbybit.com</p>
         </div>
     </div>
 
     <div class="mt-10 text-center text-xs text-gray-500">
-        &copy; {{ date('Y') }} Entrade. All rights reserved.
+        &copy; {{ date('Y') }} Bullsbybit. All rights reserved.
     </div>
 </footer>
