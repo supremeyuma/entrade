@@ -1,17 +1,17 @@
 <x-layouts.guest>
     <section class="bg-white dark:bg-gray-950 py-16 px-6">
         <div class="max-w-4xl mx-auto">
-            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Entrade Referral Program</h1>
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Bullsbybit Referral Program</h1>
 
             <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
-                Share Entrade with your network and earn passive income every time someone signs up and funds their account using your unique referral link.
+                Share Bullsbybit with your network and earn passive income every time someone signs up and funds their account using your unique referral link.
             </p>
 
             <div class="mt-8 grid md:grid-cols-2 gap-8">
                 <div class="bg-gray-100 dark:bg-gray-800 p-6 rounded-lg shadow-sm">
                     <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">💰 Earn up to 10%</h2>
                     <p class="text-gray-700 dark:text-gray-300 text-sm">
-                        You’ll receive up to <strong>10% commission</strong> on the deposit amounts of every user who joins Entrade using your referral code or link.
+                        You’ll receive up to <strong>10% commission</strong> on the deposit amounts of every user who joins Bullsbybit using your referral code or link.
                     </p>
                 </div>
 

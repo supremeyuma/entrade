@@ -4,7 +4,7 @@
             <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Markets We Trade On</h1>
 
             <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
-                Entrade supports trading across a wide range of financial markets — empowering our traders with flexibility and users with diverse risk/reward profiles.
+                Bullsbybit supports trading across a wide range of financial markets — empowering our traders with flexibility and users with diverse risk/reward profiles.
             </p>
 
             <div class="grid md:grid-cols-3 gap-6 mt-10">
@@ -35,7 +35,7 @@
 
             <div class="mt-12 space-y-6">
                 <p class="text-gray-700 dark:text-gray-300">
-                    Each market comes with its own characteristics, behaviors, and risk profiles. While some traders on Entrade specialize in a single market (e.g., just Forex), others diversify across multiple markets to balance risk and opportunity.
+                    Each market comes with its own characteristics, behaviors, and risk profiles. While some traders on Bullsbybit specialize in a single market (e.g., just Forex), others diversify across multiple markets to balance risk and opportunity.
                 </p>
 
                 <p class="text-gray-700 dark:text-gray-300">
@@ -43,7 +43,7 @@
                 </p>
 
                 <p class="text-gray-700 dark:text-gray-300">
-                    Entrade ensures transparency by tagging every trade with its respective market so you can easily track where and how your funds are being traded.
+                    Bullsbybit ensures transparency by tagging every trade with its respective market so you can easily track where and how your funds are being traded.
                 </p>
             </div>
 

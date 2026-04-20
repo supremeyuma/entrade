@@ -13,7 +13,7 @@
                 Who <span class="text-primary">We Are</span>
             </h2>
             <p class="text-lg text-gray-700 dark:text-gray-900 leading-relaxed mb-6">
-                Entrade is a next-generation copy trading platform that empowers individuals 
+                Bullsbybit is a next-generation copy trading platform that empowers individuals 
                 to automatically mirror the trades of top-performing investors. 
                 Our mission is to bridge the gap between novice investors and 
                 seasoned professionals with a transparent, secure, and easy-to-use ecosystem.
@@ -43,7 +43,7 @@
     <div class="text-center mb-8 w-full">
         <h2 class="text-3xl font-bold">Our Broker Partners</h2>
         <p class="text-gray-600 dark:text-gray-300 mt-2">
-            Entrade partners with leading global brokers to ensure secure, seamless, and efficient trade execution.
+            Bullsbybit partners with leading global brokers to ensure secure, seamless, and efficient trade execution.
         </p>
     </div>
 
@@ -72,7 +72,7 @@
     <div class="text-center mb-8">
         <h2 class="text-3xl font-bold">Awards & Recognition</h2>
         <p class="text-gray-600 dark:text-gray-300 mt-2">
-            Entrade is honored to have received numerous industry awards for innovation, transparency, and service excellence.
+            Bullsbybit is honored to have received numerous industry awards for innovation, transparency, and service excellence.
         </p>
     </div>
 

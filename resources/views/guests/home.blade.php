@@ -336,12 +336,12 @@
         <div class="grid md:grid-cols-3 gap-6 md:gap-12">
             <article class="bg-white dark:bg-gray-800 rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-lg flex flex-col items-center space-y-4 md:space-y-6">
                 <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="User 1" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-4 border-indigo-600"/>
-                <p class="italic text-gray-600 dark:text-gray-300 max-w-xs text-sm md:text-base">"Entrade transformed the way I manage my crypto investments. Copy trading is seamless and profitable!"</p>
+                <p class="italic text-gray-600 dark:text-gray-300 max-w-xs text-sm md:text-base">"Bullsbybit transformed the way I manage my crypto investments. Copy trading is seamless and profitable!"</p>
                 <strong class="text-indigo-700 font-semibold text-sm md:text-base">Sarah M.</strong>
             </article>
             <article class="bg-white dark:bg-gray-800 rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-lg flex flex-col items-center space-y-4 md:space-y-6">
                 <img src="https://randomuser.me/api/portraits/men/72.jpg" alt="User 2" class="w-16 h-16 md:w-20 md:h-20 rounded-full object-cover border-4 border-indigo-600"/>
-                <p class="italic text-gray-600 dark:text-gray-300 max-w-xs text-sm md:text-base">"I trust Entrade's verified traders. The dashboard gives me all the info I need to make smart decisions."</p>
+                <p class="italic text-gray-600 dark:text-gray-300 max-w-xs text-sm md:text-base">"I trust Bullsbybit's verified traders. The dashboard gives me all the info I need to make smart decisions."</p>
                 <strong class="text-indigo-700 font-semibold text-sm md:text-base">James K.</strong>
             </article>
             <article class="bg-white dark:bg-gray-800 rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-lg flex flex-col items-center space-y-4 md:space-y-6">

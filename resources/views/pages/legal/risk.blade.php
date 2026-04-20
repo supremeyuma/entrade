@@ -3,12 +3,12 @@
         <h1 class="text-3xl font-bold mb-6">Risk Disclosure</h1>
 
         <p class="mb-4">
-            Trading in financial markets involves risk. Past performance is not indicative of future results. By using Entrade, you acknowledge the following:
+            Trading in financial markets involves risk. Past performance is not indicative of future results. By using Bullsbybit, you acknowledge the following:
         </p>
 
         <h2 class="text-xl font-semibold mt-6 mb-2">1. No Guarantees</h2>
         <p class="mb-4">
-            Entrade does not guarantee profits. All trades are at your own risk. The ROI shown is based on the performance of selected traders and can vary significantly.
+            Bullsbybit does not guarantee profits. All trades are at your own risk. The ROI shown is based on the performance of selected traders and can vary significantly.
         </p>
 
         <h2 class="text-xl font-semibold mt-6 mb-2">2. Market Volatility</h2>
@@ -18,7 +18,7 @@
 
         <h2 class="text-xl font-semibold mt-6 mb-2">3. Allocation Responsibility</h2>
         <p class="mb-4">
-            You are solely responsible for choosing which trader(s) to follow and how much to allocate. Entrade only provides the technology to mirror trades.
+            You are solely responsible for choosing which trader(s) to follow and how much to allocate. Bullsbybit only provides the technology to mirror trades.
         </p>
 
         <h2 class="text-xl font-semibold mt-6 mb-2">4. Trader Performance</h2>

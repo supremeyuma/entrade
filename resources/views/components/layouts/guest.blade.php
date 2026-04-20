@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Entrade</title>
+    <title>Bullsbybit</title>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -217,7 +217,7 @@
         x-cloak>
         
         <div class="text-lg font-semibold text-gray-700 dark:text-white border-b border-gray-200 dark:border-gray-700 mb-4">
-            <a href="{{ url('/') }}">Entrade</a>
+            <a href="{{ url('/') }}">Bullsbybit</a>
         </div>
 
         <nav class="space-y-2" x-data="{ toolsOpen: false }">
@@ -262,7 +262,7 @@
                     <path d="M4 6h16M4 12h16M4 18h16"></path>
                 </svg>
             </button>
-            <span class="ml-2 font-semibold text-lg text-gray-800 dark:text-white">Entrade</span>
+            <span class="ml-2 font-semibold text-lg text-gray-800 dark:text-white">Bullsbybit</span>
         </div>-->
         <!-- Mobile theme toggle -->
         <!--<button @click="$store.darkMode.toggle()" class="text-gray-600 dark:text-gray-300 hover:text-gray-800 dark:hover:text-white focus:outline-none">

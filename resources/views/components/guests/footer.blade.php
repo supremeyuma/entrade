@@ -4,9 +4,9 @@
         <div class="flex flex-col justify-between space-y-6">
             <!-- Logo -->
             <div>
-                <img src="{{ asset('images/logo-light.svg') }}" class="block dark:hidden w-44 mb-4" alt="Entrade Logo">
-                <img src="{{ asset('images/logo-dark.svg') }}" class="hidden dark:block w-44 mb-4" alt="Entrade Logo">
-                <p class="text-lg font-medium">Copytrade with <span class="text-primary font-semibold">Entrade</span></p>
+                <img src="{{ asset('images/logo-light.svg') }}" class="block dark:hidden w-44 mb-4" alt="Bullsbybit Logo">
+                <img src="{{ asset('images/logo-dark.svg') }}" class="hidden dark:block w-44 mb-4" alt="Bullsbybit Logo">
+                <p class="text-lg font-medium">Copytrade with <span class="text-primary font-semibold">Bullsbybit</span></p>
             </div>
 
             <!-- App Download -->

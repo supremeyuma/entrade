@@ -3,7 +3,7 @@
         <h1 class="text-3xl font-bold mb-6">Privacy Policy</h1>
 
         <p class="mb-4">
-            At Entrade, we value your privacy and are committed to protecting your personal data. This policy outlines how we collect, use, and safeguard your information.
+            At Bullsbybit, we value your privacy and are committed to protecting your personal data. This policy outlines how we collect, use, and safeguard your information.
         </p>
 
         <h2 class="text-xl font-semibold mt-6 mb-2">1. Information We Collect</h2>
@@ -22,7 +22,7 @@
 
         <h2 class="text-xl font-semibold mt-6 mb-2">3. Data Sharing</h2>
         <p class="mb-4">
-            Entrade does not sell your data. We may share it with trusted third-party services (e.g., payment processors) to deliver our services, but always with strict data protection agreements.
+            Bullsbybit does not sell your data. We may share it with trusted third-party services (e.g., payment processors) to deliver our services, but always with strict data protection agreements.
         </p>
 
         <h2 class="text-xl font-semibold mt-6 mb-2">4. Your Rights</h2>

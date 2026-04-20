@@ -3,17 +3,17 @@
         <h1 class="text-3xl font-bold mb-6">Terms of Use</h1>
 
         <p class="mb-4">
-            Welcome to Entrade. By accessing or using our platform, you agree to comply with and be bound by the following terms. Please review them carefully. If you do not agree to these terms, you should not use Entrade.
+            Welcome to Bullsbybit. By accessing or using our platform, you agree to comply with and be bound by the following terms. Please review them carefully. If you do not agree to these terms, you should not use Bullsbybit.
         </p>
 
         <h2 class="text-xl font-semibold mt-6 mb-2">1. Eligibility</h2>
         <p class="mb-4">
-            You must be at least 18 years old to use Entrade. By registering an account, you confirm that you meet this requirement and are legally capable of entering into a binding contract.
+            You must be at least 18 years old to use Bullsbybit. By registering an account, you confirm that you meet this requirement and are legally capable of entering into a binding contract.
         </p>
 
         <h2 class="text-xl font-semibold mt-6 mb-2">2. Copy Trading</h2>
         <p class="mb-4">
-            Entrade enables users to follow professional traders. All trade decisions and performance are the responsibility of the trader. Users allocate funds to traders and receive ROI based on the trader's performance. There are no guarantees of profit.
+            Bullsbybit enables users to follow professional traders. All trade decisions and performance are the responsibility of the trader. Users allocate funds to traders and receive ROI based on the trader's performance. There are no guarantees of profit.
         </p>
 
         <h2 class="text-xl font-semibold mt-6 mb-2">3. Account Responsibility</h2>
@@ -30,7 +30,7 @@
 
         <h2 class="text-xl font-semibold mt-6 mb-2">5. Changes to Terms</h2>
         <p class="mb-4">
-            Entrade reserves the right to update these terms at any time. Continued use of the platform after updates indicates your acceptance of the revised terms.
+            Bullsbybit reserves the right to update these terms at any time. Continued use of the platform after updates indicates your acceptance of the revised terms.
         </p>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-8">Last updated: August 2025</p>

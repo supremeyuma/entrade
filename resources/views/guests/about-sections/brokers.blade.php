@@ -2,7 +2,7 @@
     <div class="text-center mb-8">
         <h2 class="text-3xl font-bold">Our Broker Partners</h2>
         <p class="text-gray-600 dark:text-gray-300 mt-2">
-            Entrade partners with leading global brokers to ensure secure, seamless, and efficient trade execution.
+            Bullsbybit partners with leading global brokers to ensure secure, seamless, and efficient trade execution.
         </p>
     </div>
 

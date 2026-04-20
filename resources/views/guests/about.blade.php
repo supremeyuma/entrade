@@ -2,9 +2,9 @@
 <section class="bg-white dark:bg-gray-900 py-10 items-center">
     <div class="container">
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold mb-2">About Entrade</h1>
+            <h1 class="text-4xl font-bold mb-2">About Bullsbybit</h1>
             <p class="text-lg text-gray-600 dark:text-gray-300">
-                Learn more about our mission, history, partners, and the people building Entrade.
+                Learn more about our mission, history, partners, and the people building Bullsbybit.
             </p>
         </div>
 

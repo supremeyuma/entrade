@@ -2,7 +2,7 @@
     <div class="text-center mb-8">
         <h2 class="text-3xl font-bold">Awards & Recognition</h2>
         <p class="text-gray-600 dark:text-gray-300 mt-2">
-            Entrade is honored to have received numerous industry awards for innovation, transparency, and service excellence.
+            Bullsbybit is honored to have received numerous industry awards for innovation, transparency, and service excellence.
         </p>
     </div>
 

@@ -1,10 +1,10 @@
 <x-layouts.guest>
     <section class="bg-white dark:bg-gray-950 py-16 px-6">
         <div class="max-w-5xl mx-auto">
-            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Copy Trading on Entrade</h1>
+            <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Copy Trading on Bullsbybit</h1>
 
             <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
-                Entrade’s Copy Trading system allows you to replicate the trading performance of top traders automatically.
+                Bullsbybit’s Copy Trading system allows you to replicate the trading performance of top traders automatically.
                 Whether you're new to trading or looking for passive growth, copy trading makes it easy to participate in the markets with expert guidance.
             </p>
 

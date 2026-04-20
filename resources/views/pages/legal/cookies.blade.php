@@ -3,7 +3,7 @@
         <h1 class="text-3xl font-bold mb-6">Cookie Policy</h1>
 
         <p class="mb-4">
-            Entrade uses cookies to enhance your browsing experience and collect data on site usage to improve functionality.
+            Bullsbybit uses cookies to enhance your browsing experience and collect data on site usage to improve functionality.
         </p>
 
         <h2 class="text-xl font-semibold mt-6 mb-2">1. What Are Cookies?</h2>
@@ -20,7 +20,7 @@
 
         <h2 class="text-xl font-semibold mt-6 mb-2">3. Managing Cookies</h2>
         <p class="mb-4">
-            You can manage cookie preferences in your browser settings. Disabling some cookies may impact your experience on Entrade.
+            You can manage cookie preferences in your browser settings. Disabling some cookies may impact your experience on Bullsbybit.
         </p>
 
         <p class="text-sm text-gray-500 dark:text-gray-400 mt-8">Last updated: August 2025</p>

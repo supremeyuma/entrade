@@ -4,7 +4,7 @@
             <h1 class="text-4xl font-bold text-gray-900 dark:text-white mb-6">Meet the Traders</h1>
 
             <p class="text-lg text-gray-700 dark:text-gray-300 mb-6">
-                At Entrade, we don’t just allow anyone to manage your capital. Every trader on our platform is thoroughly vetted with a proven track record, real trading experience, and performance metrics that speak for themselves.
+                At Bullsbybit, we don’t just allow anyone to manage your capital. Every trader on our platform is thoroughly vetted with a proven track record, real trading experience, and performance metrics that speak for themselves.
             </p>
 
             <div class="grid md:grid-cols-2 gap-6 mb-12">

@@ -18,7 +18,7 @@
                         <h5>a. Personal Details</h5>
                             <p>After registration you will be prompted to complete your account. The first step is to enter your personal details, like name, country and phone number. Please note that it is not possible to change your e-mail address later, but we can change it for you with a simple e-mail request to: support@entrade.com</p>
                         <h5>c. Applicable Fees</h5>
-                            <p>In order to be able to CopyTrade with a Trading Account you do not need to pay any subscription fee. The Entrade Platform is available to all End - Users holding a trading account.</p></div></div>    
+                            <p>In order to be able to CopyTrade with a Trading Account you do not need to pay any subscription fee. The Bullsbybit Platform is available to all End - Users holding a trading account.</p></div></div>    
                 
                 
             </details>

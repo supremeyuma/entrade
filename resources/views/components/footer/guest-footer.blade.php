@@ -2,7 +2,7 @@
     <div class="max-w-7xl mx-auto px-6 py-12 grid grid-cols-1 md:grid-cols-4 gap-8">
         <!-- Branding -->
         <div>
-            <h2 class="text-xl font-bold mb-4">Entrade</h2>
+            <h2 class="text-xl font-bold mb-4">Bullsbybit</h2>
             <p class="text-sm text-gray-600 dark:text-gray-400">Smarter copy trading. Track top traders, copy strategies, and grow your portfolio—effortlessly.</p>
         </div>
 
@@ -56,6 +56,6 @@
     </div>
 
     <div class="border-t border-gray-200 dark:border-gray-700 text-center py-4 text-sm text-gray-500 dark:text-gray-400">
-        © {{ now()->year }} Entrade. All rights reserved.
+        © {{ now()->year }} Bullsbybit. All rights reserved.
     </div>
 </footer>
